@@ -21,50 +21,45 @@ def signup():
 @main.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
-    user = Usuarios.query.filter_by(username=data['username']).first()
+    user = Usuarios.query.filter_by(email=data['email']).first()
     if user and user.check_password(data['password']):
         return jsonify({'message': 'Logged in successfully'}), 200
     return jsonify({'message': 'Invalid username or password'}), 400
 
-@main.route('/usuarios/<usuario_id>', methods=['GET'])
-def get_user(usuario_id):
-    user = Usuarios.query.filter_by(usuario_id=usuario_id).first()
-    if user:
-        return jsonify({
-            'username': user.username,
-            'email': user.email
-        }), 200
-    return jsonify({'message': 'User not found'}), 404
-
-@main.route('/usuarios/<usuario_id>', methods=['PUT'])
-def update_user(usuario_id):
-    user = Usuarios.query.filter_by(usuario_id=usuario_id).first()
-    if user:
-        data = request.get_json()
-        if 'username' in data:
-            user.username = data['username']
-        db.session.commit()
-        return jsonify({'message': 'User updated successfully'}), 200
-    return jsonify({'message': 'User not found'}), 404
-
-@main.route('/usuarios/<usuario_id>', methods=['DELETE'])
-def delete_user(usuario_id):
-    user = Usuarios.query.filter_by(usuario_id=usuario_id).first()
-    if user:
-        db.session.delete(user)
-        db.session.commit()
-        return jsonify({'message': 'User deleted successfully'}), 200
-    return jsonify({'message': 'User not found'}), 404
-
 @main.route('/usuarios', methods=['GET'])
 def get_users():
-    users = Usuarios.query.all()
-    users_list = [{
-        'username': user.username,
-        'email': user.email
-    } for user in users]
-    
-    return jsonify(users_list), 200
+    all_users = Usuarios.query.all()
+    lista_users = [{'usuario_id':users.usuario_id,'username': users.username, 'email': users.email} for users in all_users]
+    return jsonify(lista_users), 200
+
+@main.route('/usuarios/<usuario_id>', methods=['GET','PUT','DELETE'])
+def route_user_id(usuario_id):
+    if request.method == 'GET':
+        user = Usuarios.query.filter_by(usuario_id=usuario_id).first()
+        if user:
+            return jsonify({
+                'username': user.username,
+                'email': user.email
+            }), 200
+        return jsonify({'message': 'User not found'}), 404
+    elif request.method == 'PUT':
+        user = Usuarios.query.filter_by(usuario_id=usuario_id).first()
+        if user:
+            data = request.get_json()
+            if 'username' in data:
+                user.username = data['username']
+            if 'foto_perfil_url' in data:
+                user.foto_perfil_url = data['foto_perfil_url']
+            db.session.commit()
+            return jsonify({'message': 'User updated successfully'}), 200
+        return jsonify({'message': 'User not found'}), 404
+    elif request.method == 'DELETE':
+        user = Usuarios.query.filter_by(usuario_id=usuario_id).first()
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+            return jsonify({'message': 'User deleted successfully'}), 200
+        return jsonify({'message': 'User not found'}), 404
 
 @main.route('/carreras', methods=['GET'])
 def get_carreras():

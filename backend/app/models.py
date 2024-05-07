@@ -6,6 +6,7 @@ class Usuarios(db.Model):
     usuario_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), unique=True, nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
+    foto_perfil_url = db.Column(db.String(255))
     password_hash = db.Column(db.String(255))
 
     def set_password(self, password):
