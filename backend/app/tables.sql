@@ -3,7 +3,7 @@ CREATE TABLE usuarios (
     foto_perfil_url VARCHAR(255),
     username VARCHAR(255) UNIQUE NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
+    password_hash VARCHAR(255) 
 );
 
 CREATE TABLE carreras (

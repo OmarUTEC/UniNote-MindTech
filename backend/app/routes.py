@@ -1,8 +1,89 @@
-from flask import Blueprint, request, jsonify
-from app import db
+from flask import Blueprint, request, session, jsonify, redirect, url_for, abort
 from app.models import Usuarios, Carreras, Documentos, Follows
+from . import db
+from .google_oauth import get_google_oauth_flow
+from config import Config
+import requests
+from pip._vendor import cachecontrol
+import google.auth.transport.requests
+from google.oauth2 import id_token
 
 main = Blueprint('main', __name__)
+
+def login_is_required(function):
+    def wrapper(*args, **kwargs):
+        if "google_id" not in session:
+            return abort(401)
+        else:
+            return function(*args, **kwargs)
+    wrapper.__name__ = function.__name__
+    return wrapper
+
+@main.route("/login-google")
+def login():
+    flow = get_google_oauth_flow()
+    authorization_url, state = flow.authorization_url()
+    session["state"] = state
+    return redirect(authorization_url)
+
+@main.route("/callback")
+def callback():
+    try:
+        flow = get_google_oauth_flow()
+        flow.fetch_token(authorization_response=request.url)
+
+        state_in_session = session.get("state")
+        state_in_request = request.args.get("state")
+        if not state_in_session or not state_in_request or state_in_session != state_in_request:
+            abort(500, description="Error en la validación del estado.")
+
+        credentials = flow.credentials
+        request_session = requests.session()
+        cached_session = cachecontrol.CacheControl(request_session)
+        token_request = google.auth.transport.requests.Request(session=cached_session)
+        id_info = id_token.verify_oauth2_token(
+            id_token=credentials._id_token,
+            request=token_request,
+            audience=Config.GOOGLE_CLIENT_ID
+        )
+
+        user = Usuarios.query.filter_by(email=id_info.get("email")).first()
+        if not user:
+            user = Usuarios(
+                username=id_info.get("name"),
+                email=id_info.get("email"),
+            )
+            db.session.add(user)
+        db.session.commit()
+
+        session["google_id"] = id_info.get("sub")
+        session["name"] = id_info.get("name")
+
+        return redirect(url_for("main.protected_area"))
+
+    except Exception as e:
+        print(f"Error en el callback: {e}")  
+        abort(500, description=f"Error interno del servidor: {str(e)}")
+
+@main.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("main.index"))
+
+@main.route("/")
+def index():
+    return "Hello World <a href='/login-google'><button>Login</button></a>"
+
+@main.route("/protected_area")
+@login_is_required
+def protected_area():
+    return f"Hello {session.get('name')}! <a href='/logout'><button>Logout</button></a>"
+
+def init_routes(app):
+    app.register_blueprint(main)
+
+
+
 
 @main.route('/signup', methods=['POST'])
 def signup():
@@ -19,7 +100,7 @@ def signup():
     return jsonify({'message': 'User created successfully'}), 200
 
 @main.route('/login', methods=['POST'])
-def login():
+def login_simple():
     data = request.get_json()
     user = Usuarios.query.filter_by(email=data['email']).first()
     if user and user.check_password(data['password']):

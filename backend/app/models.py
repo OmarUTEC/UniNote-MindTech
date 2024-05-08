@@ -17,6 +17,8 @@ class Usuarios(db.Model):
     
     documentos = db.relationship('Documentos', backref='autor', lazy=True)
     comentarios = db.relationship('Comentarios', backref='usuario', lazy=True)
+    def __repr__(self):
+        return '<Usuario %r>' % self.username
 
 class Carreras(db.Model):
     __tablename__ = 'carreras'
