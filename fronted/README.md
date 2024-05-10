@@ -1,7 +1,7 @@
 ### Inicializando
 
     npm install
-    npm run dev
+    npm start
 
 > [!IMPORTANT]
 > **Activar Prettier Autoformatter y la Extensión Prettier de VsCode para un codigo más legible (ya incluído)**
