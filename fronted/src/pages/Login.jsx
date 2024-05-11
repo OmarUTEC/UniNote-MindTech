@@ -45,6 +45,17 @@ const Login = () => {
             >
               ¿Olvidaste tu contraseña?
             </button>
+             {/* Botón de inicio de sesión con Google */}
+          <div>
+            <a href="http://localhost:5000/login-google">
+              <button
+                className={`bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${darkMode ? 'bg-gray-600' : ''}`}
+                type="button"
+              >
+                Iniciar sesión con Google
+              </button>
+            </a>
+          </div>
           </div>
         </form>
       </div>
