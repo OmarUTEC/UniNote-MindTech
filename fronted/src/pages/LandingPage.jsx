@@ -45,7 +45,7 @@ const LandingPage = () => {
           <p className={`text-3xl mb-4 ${theme.textColor}`}>Una plataforma dirigida a los estudiantes que quieren aprender y compartir sus aprendizajes</p>
         </div>
         <div className="w-1/2 relative">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-cach-l2 to-transparent "></div>
+          <div className={`absolute top-0 left-0 w-full h-full ${darkMode ? 'bg-gradient-to-r from-gray-900' : 'bg-gradient-to-r from-cach-l2'}`}></div>
           <img src={userstudent} alt="Usuario estudiante" className="rounded-lg shadow-md" />
         </div>
       </main>
