@@ -50,7 +50,7 @@ const Login = () => {
           </div>
           <div className="flex flex-col space-y-2">
            {/* Botón de inicio de sesión con Google */}
-            <a href="http://localhost:5000/login-google" className="w-full">
+            <a href="http://127.0.0.1:5000/login-google" className="w-full">
               <button
                 className={`bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${darkMode ? 'bg-gray-600' : ''}`}
                 type="button"
