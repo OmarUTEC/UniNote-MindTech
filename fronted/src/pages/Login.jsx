@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 const Login = () => {
   const { darkMode } = useTheme();
-
   return (
     
     <div className={`min-h-screen flex items-center justify-center ${darkMode ? 'bg-gray-900 text-white' : 'bg-cach-l2 text-black'}`}>
