@@ -48,24 +48,31 @@ const Login = () => {
             </div>
             <p className={`text-red-500 text-xs italic ${darkMode ? 'text-white' : 'text-red-500'}`}>Por favor ingrese su contraseña.</p>
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col space-y-2">
+           {/* Botón de inicio de sesión con Google */}
+            <a href="http://localhost:5000/login-google" className="w-full">
+              <button
+                className={`bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${darkMode ? 'bg-gray-600' : ''}`}
+                type="button"
+              >
+                Iniciar sesión con Google
+              </button>
+            </a>
             <button
               className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${darkMode ? 'bg-gray-600' : ''}`}
               type="button"
             >
               Iniciar sesión
             </button>
-          <div>
             <button
-              className={`bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${darkMode ? 'bg-gray-600' : ''}`}
+              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${darkMode ? 'bg-gray-600' : ''}`}
               type="button"
             >
               <Link
                 to="/register"
-                className={`inline-block align-baseline font-bold text-sm ${darkMode ? 'text-white' : 'text-blue-500'} hover:text-blue-800`}
+                className={`inline-block align-baseline font-bold ${darkMode ? 'text-white' : 'text-white'}`}
                 >Registrarse</Link>
             </button>
-          </div>
           </div>
         </form>
       </div>
