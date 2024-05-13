@@ -1,5 +1,6 @@
 import React from "react";
 import useTheme from "../theme";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const { darkMode } = useTheme();
@@ -54,22 +55,16 @@ const Login = () => {
             >
               Iniciar sesión
             </button>
-            <button
-              className={`inline-block align-baseline font-bold text-sm ${darkMode ? 'text-white' : 'text-blue-500'} hover:text-blue-800`}
-              onClick={() => console.log("Haz clic en '¿Olvidaste tu contraseña?'")}
-            >
-              ¿Olvidaste tu contraseña?
-            </button>
-             {/* Botón de inicio de sesión con Google */}
           <div>
-            <a href="http://localhost:5000/login-google">
-              <button
-                className={`bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${darkMode ? 'bg-gray-600' : ''}`}
-                type="button"
-              >
-                Iniciar sesión con Google
-              </button>
-            </a>
+            <button
+              className={`bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${darkMode ? 'bg-gray-600' : ''}`}
+              type="button"
+            >
+              <Link
+                to="/register"
+                className={`inline-block align-baseline font-bold text-sm ${darkMode ? 'text-white' : 'text-blue-500'} hover:text-blue-800`}
+                >Registrarse</Link>
+            </button>
           </div>
           </div>
         </form>
