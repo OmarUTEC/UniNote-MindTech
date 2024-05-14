@@ -52,6 +52,9 @@ def callback():
             user = Usuarios(
                 username=id_info.get("name"),
                 email=id_info.get("email"),
+                foto_perfil_url=id_info.get("picture"),
+                nombres=id_info.get("given_name"),
+                apellidos=id_info.get("family_name")
             )
             db.session.add(user)
         db.session.commit()
@@ -62,7 +65,7 @@ def callback():
         return redirect(url_for("main.protected_area"))
 
     except Exception as e:
-        print(f"Error en el callback: {e}")  
+        print(f"Error en el callback: {e}")
         abort(500, description=f"Error interno del servidor: {str(e)}")
 
 @main.route("/logout")
@@ -88,12 +91,25 @@ def init_routes(app):
 @main.route('/signup', methods=['POST'])
 def signup():
     data = request.get_json()
-    username = data['username']
-    password = data['password']
-    email = data['email']
-    if Usuarios.query.filter_by(username=username).first():
+    username = data.get('username')
+    password = data.get('password')
+    email = data.get('email')
+    nombres = data.get('nombres')
+    apellidos = data.get('apellidos')
+    carrera = data.get('carrera')
+    ciclo = data.get('ciclo')
+    
+    if Usuarios.query.filter_by(username=username).first() or Usuarios.query.filter_by(email=email).first():
         return jsonify({'message': 'User already exists'}), 400
-    new_user = Usuarios(username=username, email = email)
+    
+    new_user = Usuarios(
+        username=username, 
+        email=email,
+        nombres=nombres,
+        apellidos=apellidos,
+        carrera=carrera,
+        ciclo=ciclo
+    )
     new_user.set_password(password)
     db.session.add(new_user)
     db.session.commit()
@@ -102,7 +118,7 @@ def signup():
 @main.route('/login', methods=['POST'])
 def login_simple():
     data = request.get_json()
-    user = Usuarios.query.filter_by(email=data['email']).first()
+    user = Usuarios.query.filter_by(username=data['username']).first()
     if user and user.check_password(data['password']):
         return jsonify({'message': 'Logged in successfully'}), 200
     return jsonify({'message': 'Invalid username or password'}), 400
@@ -128,9 +144,22 @@ def route_user_id(usuario_id):
         if user:
             data = request.get_json()
             if 'username' in data:
+                if Usuarios.query.filter_by(username=data['username']).first():
+                    return jsonify({'message': 'Username already exists'}), 400
                 user.username = data['username']
             if 'foto_perfil_url' in data:
                 user.foto_perfil_url = data['foto_perfil_url']
+            if 'nombres' in data:
+                user.nombres = data['nombres']
+            if 'apellidos' in data:
+                user.apellidos = data['apellidos']
+            if 'carrera' in data:
+                user.carrera = data['carrera']
+            if 'ciclo' in data:
+                user.ciclo = data['ciclo']
+            if 'email' in data:
+                user.email = data['email']
+
             db.session.commit()
             return jsonify({'message': 'User updated successfully'}), 200
         return jsonify({'message': 'User not found'}), 404

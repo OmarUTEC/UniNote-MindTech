@@ -3,8 +3,13 @@ CREATE TABLE usuarios (
     foto_perfil_url VARCHAR(255),
     username VARCHAR(255) UNIQUE NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) 
+    password_hash VARCHAR(255),
+    nombres VARCHAR(255),
+    apellidos VARCHAR(255),
+    carrera VARCHAR(255),
+    ciclo VARCHAR(50)
 );
+
 
 CREATE TABLE carreras (
     carrera_id SERIAL PRIMARY KEY,

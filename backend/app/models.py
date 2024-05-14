@@ -8,6 +8,10 @@ class Usuarios(db.Model):
     email = db.Column(db.String(255), unique=True, nullable=False)
     foto_perfil_url = db.Column(db.String(255))
     password_hash = db.Column(db.String(255))
+    nombres = db.Column(db.String(255))
+    apellidos = db.Column(db.String(255))
+    carrera = db.Column(db.String(255))
+    ciclo = db.Column(db.String(50))
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -17,9 +21,10 @@ class Usuarios(db.Model):
     
     documentos = db.relationship('Documentos', backref='autor', lazy=True)
     comentarios = db.relationship('Comentarios', backref='usuario', lazy=True)
-    def __repr__(self):
-        return '<Usuario %r>' % self.username
 
+    def __repr__(self):
+        return f'<Usuario {self.username}>'
+    
 class Carreras(db.Model):
     __tablename__ = 'carreras'
     carrera_id = db.Column(db.Integer, primary_key=True)
