@@ -1,4 +1,6 @@
 
+> [!IMPORTANT]
+> Implementación de prototipos
 # Descripción
 Este proyecto es una plataforma web construida con `React` una biblioteca de JavaScript. React permite construir componentes reutilizables que gestionan su propio estado y se actualizan de manera eficiente cuando los datos cambian. UniNote aproveccha todas las carácterísticas para proporcionar una experiencia de usuario fluida y dinámica.
 
@@ -51,5 +53,9 @@ El proyecto está organizado de la siguiente manera:
 * [Documentación de React](https://react.dev/)
 * [Documentación React Router](https://reactrouter.com/en/main/start/tutorial)
 * [Material-UI](https://mui.com/material-ui/)
+
+
+## PROTOTIPOS REALIZADOS
+- [x] Register
   
  
