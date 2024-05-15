@@ -48,16 +48,26 @@ Además, podría estar interesado en compartir sus propios apuntes y colaborar c
 * **RNF-009**: Compatibilidad
 
 ## ROLES
-### Frontend
-- Omar Chavarria       
-- Nóe Paredes
-- Nicol Campoverde
-- Sebastian Rejas Berrios
-### Backend
-- Alejandro Chipayo
-- Santiago Uribe
-- Aaron Santamaria
+* **Frontend**
+  - Omar Chavarria       
+  - Nóe Paredes
+  - Nicol Campoverde
+  - Alejandro Chipayo
+* **Backend**
+  - Santiago Uribe
+  - Sebastian Rejas Berrios
+  - Aaron Santamaria
 
+## ACTIVIDADES 15/05
+
+***Frontend***
+- [x] Implementación de prototipos
+
+***Backend***
+- [x] Crear repositorio de primer servicio (login)
+- [x] Definir los contratos (API) que permitirá comunicar front y back
+- [x] Implementar las llamadas a las APis externas
+- [x] Crear los elementos de persistencia (Base de datos)
 
 
 
