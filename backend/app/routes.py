@@ -85,9 +85,6 @@ def protected_area():
 def init_routes(app):
     app.register_blueprint(main)
 
-
-
-
 @main.route('/signup', methods=['POST'])
 def signup():
     data = request.get_json()

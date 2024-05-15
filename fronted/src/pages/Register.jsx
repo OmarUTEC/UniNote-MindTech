@@ -6,9 +6,10 @@ const Register = () => {
   const { darkMode } = useTheme();
   const [formData, setFormData] = useState({
     username: "",
+    email: "",
     password: "",
-    nombre: "",
-    apellido: "",
+    nombres: "",
+    apellidos: "",
     carrera: "",
     ciclo: "",
   });
@@ -25,6 +26,13 @@ const Register = () => {
     e.preventDefault();
     // Aquí puedes enviar los datos del formulario a tu servidor o realizar alguna acción
     console.log(formData);
+    fetch('http://127.0.0.1:5000/signup',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
   };
 
   return (
@@ -47,6 +55,20 @@ const Register = () => {
             />
           </div>
           <div className="mb-4">
+            <label className={`block text-sm font-bold mb-2 ${darkMode ? 'text-white' : 'text-gray-700'}`} htmlFor="username">
+              Correo
+            </label>
+            <input
+              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${darkMode ? 'bg-gray-700 text-white' : 'bg-white'}`}
+              id="email"
+              name="email"
+              type="text"
+              placeholder="email"
+              value={formData.email}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mb-4">
             <label className={`block text-sm font-bold mb-2 ${darkMode ? 'text-white' : 'text-gray-700'}`} htmlFor="password">
               Contraseña
             </label>
@@ -62,32 +84,32 @@ const Register = () => {
           </div>
           <div className="mb-4">
             <label className={`block text-sm font-bold mb-2 ${darkMode ? 'text-white' : 'text-gray-700'}`} htmlFor="nombre">
-              Nombre
+              Nombres
             </label>
             <input
               className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${darkMode ? 'bg-gray-700 text-white' : 'bg-white'}`}
-              id="nombre"
-              name="nombre"
+              id="nombres"
+              name="nombres"
               type="text"
-              placeholder="Nombre"
+              placeholder="Nombres"
               value={formData.nombre}
               onChange={handleChange}
             />
           </div>
           <div className="mb-4">
-            <label className={`block text-sm font-bold mb-2 ${darkMode ? 'text-white' : 'text-gray-700'}`} htmlFor="apellido">
-              Apellido
-            </label>
-            <input
-              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${darkMode ? 'bg-gray-700 text-white' : 'bg-white'}`}
-              id="apellido"
-              name="apellido"
-              type="text"
-              placeholder="Apellido"
-              value={formData.apellido}
-              onChange={handleChange}
-            />
-          </div>
+          <label className={`block text-sm font-bold mb-2 ${darkMode ? 'text-white' : 'text-gray-700'}`} htmlFor="apellido">
+            Apellidos
+          </label>
+          <input
+            className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${darkMode ? 'bg-gray-700 text-white' : 'bg-white'}`}
+            id="apellidos"
+            name="apellidos"
+            type="text"
+            placeholder="Apellidos"
+            value={formData.apellidos}  // Cambiado de formData.apellido a formData.apellidos
+            onChange={handleChange}     // Cambiado de formData.apellido a formData.apellidos
+          />
+        </div>
           <div className="mb-4">
             <label htmlFor="carrera" className={`block text-sm font-bold mb-2 ${darkMode ? 'text-white' : 'text-gray-700'}`}>Carrera</label>
             <select
