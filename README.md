@@ -47,23 +47,17 @@ Además, podría estar interesado en compartir sus propios apuntes y colaborar c
 * **RNF-008**: Escalabilidad
 * **RNF-009**: Compatibilidad
 
-1. First list item
-   - First nested list item
-     - Second nested list item
-
 ## ROLES
-- Omar Chavarria
-- [x] Frontend
-       
+### Frontend
+- Omar Chavarria       
 - Nóe Paredes
-- [x] Frontend
-  
-- Nicol Campoverde  
-- [x] Frontend
+- Nicol Campoverde
+- Sebastian Rejas Berrios
+### Backend
 - Alejandro Chipayo
 - Santiago Uribe
 - Aaron Santamaria
-- Sebastian Rejas Berrios
+
 
 
 
