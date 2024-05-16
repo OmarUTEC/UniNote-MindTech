@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
+import Biblioteca from './Biblioteca';
+import Carreras from './Carreras';
+import Inicio from './Inicio';
+import Network from './Network';
+import Upload from './Upload';
 
 function App() {
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState('inicio');
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -56,9 +61,9 @@ function App() {
           </button>
           <button
             className={`block py-2 px-4 mb-2 rounded ${
-              activeTab === 'subir' ? 'bg-gray-400' : 'bg-gray-300'
+              activeTab === 'upload' ? 'bg-gray-400' : 'bg-gray-300'
             }`}
-            onClick={() => handleTabClick('subir')}
+            onClick={() => handleTabClick('upload')}
           >
             SUBIR
           </button>
@@ -68,54 +73,9 @@ function App() {
           {activeTab === 'biblioteca' && <Biblioteca />}
           {activeTab === 'carreras' && <Carreras />}
           {activeTab === 'network' && <Network />}
-          {activeTab === 'subir' && <Subir />}
+          {activeTab === 'upload' && <Upload />}
         </div>
       </div>
-    </div>
-  );
-}
-
-function Inicio() {
-  return (
-    <div>
-      <h2 className="text-xl font-bold mb-2">Inicio</h2>
-      <p>Bienvenido a la página de inicio.</p>
-    </div>
-  );
-}
-
-function Biblioteca() {
-  return (
-    <div>
-      <h2 className="text-xl font-bold mb-2">Biblioteca</h2>
-      <p>Aquí puedes explorar nuestra biblioteca de recursos.</p>
-    </div>
-  );
-}
-
-function Carreras() {
-  return (
-    <div>
-      <h2 className="text-xl font-bold mb-2">Carreras</h2>
-      <p>Información sobre las carreras disponibles.</p>
-    </div>
-  );
-}
-
-function Network() {
-  return (
-    <div>
-      <h2 className="text-xl font-bold mb-2">Network</h2>
-      <p>Únete a nuestra red de estudiantes y profesionales.</p>
-    </div>
-  );
-}
-
-function Subir() {
-  return (
-    <div>
-      <h2 className="text-xl font-bold mb-2">Subir</h2>
-      <p>Sube tus archivos y recursos aquí.</p>
     </div>
   );
 }
