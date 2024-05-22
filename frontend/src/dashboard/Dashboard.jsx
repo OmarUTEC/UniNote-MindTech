@@ -57,7 +57,7 @@ function App() {
             }`}
             onClick={() => handleTabClick('network')}
           >
-            NETWORK
+            PERFIL
           </button>
           <button
             className={`block py-2 px-4 mb-2 rounded ${
