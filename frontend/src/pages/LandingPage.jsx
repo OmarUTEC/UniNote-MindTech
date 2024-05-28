@@ -12,17 +12,21 @@ const LandingPage = () => {
 
   return (
     <div className={`min-h-screen ${theme.backgroundColor}`}>
+      
       <header className={`${theme.navColor} ${theme.navShadow}`}>
+        
         <div className="container mx-auto py-2 px-8 flex justify-between items-center">
+          
           <div className="flex items-center">
             <img src={logo} alt="UniNote" className="h-12" />
-            <span className={`ml-2 text-lg font-bold ${theme.navTextColor}`}>UniNote</span>
+            <span className={`ml-2 text-lg font-bold ${theme.navTextColor}`}> UniNote </span>
           </div>
 
           <nav className="flex items-center">
-            <Link to="/" className={`ml-2 mr-4 text-lg font-bold ${theme.navTextColor}`}>Inicio</Link>
-            <Link to="/metas" className={`ml-2 mr-4 text-lg font-bold ${theme.navTextColor}`}>Metas</Link>
-            <Link to="/login" className={`ml-2 text-lg font-bold ${theme.navTextColor} `}>Iniciar sesión</Link>
+            <Link to="/" className={`ml-2 mr-4 text-lg font-bold ${theme.navTextColor}`}> Inicio </Link>
+            <Link to="/metas" className={`ml-2 mr-4 text-lg font-bold ${theme.navTextColor}`}> Metas </Link>
+            <Link to="/login" className={`ml-2 text-lg font-bold ${theme.navTextColor} `}> Iniciar sesión </Link>
+            
             <button onClick={toggleDarkMode} className={`ml-2 px-4 py-2 rounded-md ${darkMode ? 'text-white bg-transparent' : 'text-blue-500 ' }`}>
               {darkMode ? (
                 <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

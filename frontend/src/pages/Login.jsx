@@ -8,7 +8,8 @@ const Login = () => {
     
     <div className={`min-h-screen flex items-center justify-center ${darkMode ? 'bg-gray-900 text-white' : 'bg-cach-l2 text-black'}`}>
       <div className={`shadow-md rounded px-8 pt-6 pb-8 mb-4 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
-        <h1 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-black'}`}>Iniciar sesión</h1>
+        <h1 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-black'}`}> Iniciar sesión </h1>
+        
         <form>
           <div className="mb-4">
             <label className={`block text-sm font-bold mb-2 ${darkMode ? 'text-white' : 'text-gray-700'}`} htmlFor="username">
@@ -21,6 +22,7 @@ const Login = () => {
               placeholder="Usuario"
             />
           </div>
+
           <div className="mb-6 relative">
             <label className={`block text-sm font-bold mb-2 ${darkMode ? 'text-white' : 'text-gray-700'}`} htmlFor="password">
               Contraseña
@@ -45,11 +47,12 @@ const Login = () => {
                   clipRule="evenodd"
                 />
               </svg>
-            </div>
+              </div>
             <p className={`text-red-500 text-xs italic ${darkMode ? 'text-white' : 'text-red-500'}`}>Por favor ingrese su contraseña.</p>
           </div>
+
           <div className="flex flex-col space-y-2">
-           {/* Botón de inicio de sesión con Google */}
+            {/* Botón de inicio de sesión con Google */}
             <a href="http://127.0.0.1:5000/login-google" className="w-full">
               <button
                 className={`bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${darkMode ? 'bg-gray-600' : ''}`}
@@ -58,23 +61,23 @@ const Login = () => {
                 Iniciar sesión con Google
               </button>
             </a>
+
             <button
               className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${darkMode ? 'bg-gray-600' : ''}`}
-              type="button"
-            >
+              type="button">
               Iniciar sesión
             </button>
+            
             <button
-              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${darkMode ? 'bg-gray-600' : ''}`}
-              type="button"
-            >
-              <Link
-                to="/register"
-                className={`inline-block align-baseline font-bold ${darkMode ? 'text-white' : 'text-white'}`}
-                >Registrarse</Link>
+            className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${darkMode ? 'bg-gray-600' : ''}`}
+            type="button">
+              <Link to="/register"
+              className={`inline-block align-baseline font-bold ${darkMode ? 'text-white' : 'text-white'}`}
+              > Registrarse </Link>
             </button>
           </div>
-        </form>
+
+        </form>      
       </div>
     </div>
   );
