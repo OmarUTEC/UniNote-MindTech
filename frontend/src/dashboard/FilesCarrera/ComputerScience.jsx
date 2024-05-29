@@ -31,7 +31,7 @@ const ComputerScience = () => {
   return (
     <div className={`min-h-screen flex`}>
       <div className={`flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-8 overflow-y-auto ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-200 text-black'}`}>
-        {[1, 2, 3].map((_, index) => (
+        {[1, 2, 3, 4, 5, 6].map((_, index) => (
           <div key={index} className="flex flex-col items-center justify-center w-80 h-80 m-4 border-4 border-black rounded-2xl bg-white dark:bg-gray-800">
             <img src={image_file} alt="File" className="w-full h-1/2 object-cover rounded-t-2xl" />
             <div className="w-full h-1/4 flex flex-col items-center justify-center text-xl border-t-4 border-b-4 border-black">

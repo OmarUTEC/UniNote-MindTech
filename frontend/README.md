@@ -33,6 +33,9 @@ cd nombre-proyecto
 
     npm install -D prettier prettier-plugin-tailwindcss
 
+    npm install @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons
+
+
 ### Compilación
 ```bash
     npm build
