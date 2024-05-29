@@ -17,7 +17,6 @@ const Upload = ({ handleUploadFileClick }) => {
   if(uploadedFiles === 0) {
     return (
       <div className={`min-h-screen flex items-center justify-center ${darkMode ? 'bg-gray-900 text-white' : 'bg-cach-l2 text-black'}`}>
-        
         <div className={`not-uploaded-file`}>
           <p>NO CUENTA CON NINGUN ARCHIVO DISPONIBLE PARA EDITAR</p>
           <button onClick={handleUploadFileClick} className={`item upload-file-button ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
@@ -105,7 +104,6 @@ const Upload = ({ handleUploadFileClick }) => {
           <button> <img src={drop_file_button} alt="Option" className='image-option' /> </button>
         </div>
       </div>
-
     </div>
     </div>
   );

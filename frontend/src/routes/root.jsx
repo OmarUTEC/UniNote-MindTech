@@ -9,6 +9,10 @@ import UploadFile from '../dashboard/UploadFile';
 import Network from '../dashboard/Network';
 import Dashboard from '../dashboard/Dashboard';
 
+// Importar componentes individuales para cada carrera
+import ComputerScience from '../dashboard/FilesCarrera/ComputerScience';
+
+
 const root = [
   {
     path: '/',
@@ -33,6 +37,10 @@ const root = [
   {
     path: '/carreras',
     Element: Carreras
+  },
+  {
+    path: '/carreras/cs',
+    Element: ComputerScience
   },
   {
     path: '/upload',
