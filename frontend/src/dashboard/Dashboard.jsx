@@ -4,6 +4,7 @@ import Carreras from './Carreras';
 import Inicio from './Inicio';
 import Network from './Network';
 import Upload from './Upload';
+import UploadFile from './UploadFile';
 
 function App() {
   const [activeTab, setActiveTab] = useState('inicio');
@@ -56,7 +57,7 @@ function App() {
 
           <button
             className={`block py-2 px-4 mb-2 rounded ${
-              activeTab === 'upload' ? 'bg-gray-400' : 'bg-gray-300'
+              activeTab === 'upload' || activeTab === 'upload-file' ? 'bg-gray-400' : 'bg-gray-300'
             }`}
             onClick={() => handleTabClick('upload')}
           > SUBIR </button>
@@ -68,8 +69,10 @@ function App() {
           {activeTab === 'biblioteca' && <Biblioteca />}
           {activeTab === 'carreras' && <Carreras />}
           {activeTab === 'network' && <Network />}
-          {activeTab === 'upload' && <Upload />}
+          {activeTab === 'upload' && <Upload handleUploadFileClick={() => handleTabClick('upload-file')}/>}
+          {activeTab === 'upload-file' && <UploadFile handleUploadClick={() => handleTabClick('upload')}/>}
         </div>
+
       </div>
     </div>
   );

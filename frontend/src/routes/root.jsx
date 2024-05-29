@@ -5,6 +5,7 @@ import Inicio from '../dashboard/Inicio';
 import Biblioteca from '../dashboard/Biblioteca';
 import Carreras from '../dashboard/Carreras';
 import Upload from '../dashboard/Upload';
+import UploadFile from '../dashboard/UploadFile';
 import Network from '../dashboard/Network';
 import Dashboard from '../dashboard/Dashboard';
 
@@ -36,6 +37,10 @@ const root = [
   {
     path: '/upload',
     Element: Upload
+  },
+  {
+    path: '/upload-file',
+    Element: UploadFile
   },
   {
     path: '/perfil',
