@@ -3,10 +3,19 @@ from app.models import Usuarios, Carreras, Documentos, Follows
 from . import db
 from .google_oauth import get_google_oauth_flow
 from config import Config
+from .drive_api_connect import *
+import datetime
 import requests
 from pip._vendor import cachecontrol
 import google.auth.transport.requests
+import os
 from google.oauth2 import id_token
+from io import BytesIO
+
+UPLOAD_FOLDER = '/temp/folder'
+
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
 
 main = Blueprint('main', __name__)
 
@@ -227,3 +236,50 @@ def follows():
     db.session.add(new_follows)
     db.session.commit()
     return jsonify({'message': 'Success'}), 200
+
+@main.route('/upload_file', methods=['POST'])
+def upload_file():
+    # Obtén los datos del formulario
+    titulo = request.form.get('titulo')
+    carrera = request.form.get('carrera')
+    curso = request.form.get('curso')
+    ciclo = request.form.get('ciclo')
+    descripcion = request.form.get('descripcion')
+
+    # Verifica y obtiene el archivo
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+
+    # Guarda el archivo
+    file_path = os.path.join("", file.filename)
+    file.save(file_path)
+    
+    
+    file_id = upload_file_basic("1E8cQZY3fUnBg2d7wpIl0F1Q98bwGTWJq", file.filename)
+    fecha_actual = datetime.datetime.utcnow()
+    
+    
+    doc = fitz.open(file.filename)
+    _pixmap = doc.load_page(0).get_pixmap()
+    doc.close()    
+    buffered = BytesIO()
+    Image.frombytes("RGB", [_pixmap.width, _pixmap.height], _pixmap.samples).crop((10, 10, 580, 280)).save(buffered, format="JPEG")
+
+    new_file = Documentos(
+        titulo = titulo,
+        descripcion = descripcion,
+        file_id = file_id ,  #
+        preview_image = buffered.getvalue(),
+        usuario_id = 1,
+        carrera_id = int(carrera),
+        fecha_creacion = fecha_actual.strftime("%Y-%m-%d %H:%M:%S") #
+    )
+
+    db.session.add(new_file)
+    db.session.commit()
+    
+    return jsonify({'message': 'File uploaded successfully to Google Drive', 'drive_message': "Gaaaaaaaaaa!"}),200
