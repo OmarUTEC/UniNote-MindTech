@@ -9,10 +9,14 @@ import drop_file_button from '../assets/drop_file_button.png';
 import image_file from '../assets/file_image.png';
 
 const Upload = ({ handleUploadFileClick }) => {
+  
+
   const { darkMode } = useTheme();
   const title = 'Matemáticas Discretas 2 - Grafos';
   const author = "Omar";
   const uploadedFiles = 1;
+
+
 
   if(uploadedFiles === 0) {
     return (
