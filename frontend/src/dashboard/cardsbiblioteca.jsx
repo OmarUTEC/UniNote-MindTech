@@ -22,7 +22,7 @@ const Card = ({ title, author, darkMode }) => {
           <img src={edit_file_button} alt="Edit" className="w-6 h-6" />
         </button>
         <button>
-          <img src={favoritos_file_button} alt="Edit" className="w-6 h-6" />
+          <img src={favoritos_file_button} alt="favoritos" className="w-6 h-6" />
         </button>
         <button>
           <img src={drop_file_button} alt="Delete" className="w-6 h-6" />

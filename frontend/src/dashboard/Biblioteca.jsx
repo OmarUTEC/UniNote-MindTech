@@ -1,6 +1,6 @@
 import React from 'react';
 import useTheme from "../theme";
-import Card from './cards';
+import Card from './cardsbiblioteca';
 
 const Upload = ({ handleUploadFileClick }) => {
   const { darkMode } = useTheme();
