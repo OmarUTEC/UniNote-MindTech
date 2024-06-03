@@ -13,6 +13,8 @@ config.py
 # production
 /build
 
+/myenv
+
 # misc
 .DS_Store
 .env.local
