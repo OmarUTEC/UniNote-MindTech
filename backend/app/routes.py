@@ -274,7 +274,7 @@ def upload_file():
 
         db.session.add(new_file)
         db.session.commit()
-        
+        os.remove(file_path)
         return jsonify({'message': 'File uploaded successfully to Google Drive', 'drive_message': "Gaaaaaaaaaa!"}), 200
     else:
         return 'XD'
