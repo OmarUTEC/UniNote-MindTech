@@ -46,7 +46,15 @@ class Documentos(db.Model):
     favoritos = db.relationship('Favoritos', backref='documento', lazy=True)
     likes = db.relationship('Likes', backref='documento', lazy=True)
     foros = db.relationship('Foros', backref='documento', lazy=True)
-
+    def to_dict(self):
+        return {
+            'titulo': self.titulo,
+            'descripcion': self.descripcion,
+            'usuario_id': self.usuario_id,
+            'carrera_id': self.carrera_id,
+            'file_id':self.file_id,
+            'fecha_creacion': self.fecha_creacion.strftime("%Y-%m-%d %H:%M:%S")
+        }
 class Favoritos(db.Model):
     __tablename__ = 'favoritos'
     favorito_id = db.Column(db.Integer, primary_key=True)

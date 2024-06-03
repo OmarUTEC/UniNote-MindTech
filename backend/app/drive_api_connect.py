@@ -2,16 +2,16 @@ import os
 import google.auth
 import fitz
 import numpy as np
-
+import pathlib
 from PIL import Image
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
-from googleapiclient.http import MediaFileUpload
-from googleapiclient.discovery import build
+from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload  
 from googleapiclient.errors import HttpError
+import io 
 
 SCOPES = ['https://www.googleapis.com/auth/drive']
-SERVICE_ACCOUNT_FILE = "D:/_GENERAL DATA_/Projects/VStudioProjects/SOFTWARE ENGINNER UniNote/UniNote-MindTech-1/backend/app/account_credentials.json"
+SERVICE_ACCOUNT_FILE = os.path.join(pathlib.Path(__file__).parent, "account_credentials.json")
 credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
 drive_service = build('drive', 'v3', credentials=credentials)
 

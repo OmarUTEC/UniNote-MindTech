@@ -1,4 +1,4 @@
-from flask import Blueprint, request, session, jsonify, redirect, url_for, abort
+from flask import Blueprint, request, session, jsonify, redirect, url_for, abort, send_file
 from app.models import Usuarios, Carreras, Documentos, Follows
 from . import db
 from .google_oauth import get_google_oauth_flow
@@ -12,6 +12,7 @@ import os
 from google.oauth2 import id_token
 from io import BytesIO
 
+from flask import render_template
 UPLOAD_FOLDER = '/temp/folder'
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -184,10 +185,6 @@ def get_carreras():
     
     return jsonify(lista_carreras), 200
 
-@main.route('/documentos',methods=['GET'])
-def get_documentos():
-    todos_documentos = Documentos.query.all()
-    return jsonify(todos_documentos),200
 
 @main.route('/followers/<usuario_id>', methods=['GET','DELETE'])
 def route_followers(usuario_id):
@@ -237,49 +234,82 @@ def follows():
     db.session.commit()
     return jsonify({'message': 'Success'}), 200
 
-@main.route('/upload_file', methods=['POST'])
+@main.route('/upload_file', methods=['GET', 'POST'])
 def upload_file():
-    # Obtén los datos del formulario
-    titulo = request.form.get('titulo')
-    carrera = request.form.get('carrera')
-    curso = request.form.get('curso')
-    ciclo = request.form.get('ciclo')
-    descripcion = request.form.get('descripcion')
+    if request.method == 'POST':
+        titulo = request.form.get('titulo')
+        carrera = request.form.get('carrera')
+        curso = request.form.get('curso')
+        ciclo = request.form.get('ciclo')
+        descripcion = request.form.get('descripcion')
 
-    # Verifica y obtiene el archivo
-    if 'file' not in request.files:
-        return jsonify({'error': 'No file part'}), 400
+        if 'file' not in request.files:
+            return jsonify({'error': 'No file part'}), 400
 
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({'error': 'No selected file'}), 400
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'error': 'No selected file'}), 400
+        
+        file_path = os.path.join("", file.filename)
+        file.save(file_path)
+        
+        file_id = upload_file_basic("1E8cQZY3fUnBg2d7wpIl0F1Q98bwGTWJq", file.filename)
+        fecha_actual = datetime.datetime.utcnow()
+        
+        doc = fitz.open(file.filename)
+        _pixmap = doc.load_page(0).get_pixmap()
+        doc.close()    
+        buffered = BytesIO()
+        Image.frombytes("RGB", [_pixmap.width, _pixmap.height], _pixmap.samples).crop((10, 10, 580, 280)).save(buffered, format="JPEG")
 
-    # Guarda el archivo
-    file_path = os.path.join("", file.filename)
-    file.save(file_path)
-    
-    
-    file_id = upload_file_basic("1E8cQZY3fUnBg2d7wpIl0F1Q98bwGTWJq", file.filename)
-    fecha_actual = datetime.datetime.utcnow()
-    
-    
-    doc = fitz.open(file.filename)
-    _pixmap = doc.load_page(0).get_pixmap()
-    doc.close()    
-    buffered = BytesIO()
-    Image.frombytes("RGB", [_pixmap.width, _pixmap.height], _pixmap.samples).crop((10, 10, 580, 280)).save(buffered, format="JPEG")
+        new_file = Documentos(
+            titulo = titulo,
+            descripcion = descripcion,
+            file_id = file_id,
+            preview_image = buffered.getvalue(),
+            usuario_id = 1,
+            carrera_id = int(carrera),
+            fecha_creacion = fecha_actual.strftime("%Y-%m-%d %H:%M:%S")
+        )
 
-    new_file = Documentos(
-        titulo = titulo,
-        descripcion = descripcion,
-        file_id = file_id ,  #
-        preview_image = buffered.getvalue(),
-        usuario_id = 1,
-        carrera_id = int(carrera),
-        fecha_creacion = fecha_actual.strftime("%Y-%m-%d %H:%M:%S") #
-    )
-
-    db.session.add(new_file)
-    db.session.commit()
+        db.session.add(new_file)
+        db.session.commit()
+        
+        return jsonify({'message': 'File uploaded successfully to Google Drive', 'drive_message': "Gaaaaaaaaaa!"}), 200
+    else:
+        return 'XD'
     
-    return jsonify({'message': 'File uploaded successfully to Google Drive', 'drive_message': "Gaaaaaaaaaa!"}),200
+@main.route('/documents', methods=['GET'])
+def get_documents():
+    documents = Documentos.query.all()
+    documents_list = [doc.to_dict() for doc in documents]
+    return jsonify(documents_list), 200
+
+@main.route('/documents/<id>', methods=['GET','DELETE','PUT'])
+def route_documents(id):
+    if request.method =='DELETE':
+        documento = Documentos.query.get(id)
+        if not documento:
+            return jsonify({"Error":"Document not found"}),404
+        
+        delete_files(documento.file_id)
+        db.session.delete(documento)
+        db.session.commit()
+        return jsonify({'message': 'Document deleted successfully'}), 200
+    elif request.method == 'GET':
+        documento = Documentos.query.get(id)
+        doc = documento.to_dict()
+        return jsonify(doc), 200
+
+@main.route('/download/<id>',methods=['GET'])
+def download_doc(id):
+    document = Documentos.query.get(id)
+    if not document:
+        return jsonify({'error': 'Document not found'}), 404
+
+    file_id = document.file_id
+    destination_path = f"/tmp/{document.titulo}.pdf"
+
+    download_file(file_id, destination_path)
+
+    return send_file(destination_path, as_attachment=True)
