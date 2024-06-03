@@ -1,6 +1,6 @@
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
-
+import base64
 class Usuarios(db.Model):
     __tablename__ = 'usuarios'
     usuario_id = db.Column(db.Integer, primary_key=True)
@@ -48,12 +48,14 @@ class Documentos(db.Model):
     foros = db.relationship('Foros', backref='documento', lazy=True)
     def to_dict(self):
         return {
+            'id': self.usuario_id,
             'titulo': self.titulo,
             'descripcion': self.descripcion,
+            'file_id': self.file_id,
+            'preview_image': base64.b64encode(self.preview_image).decode('utf-8') if self.preview_image else None,
             'usuario_id': self.usuario_id,
             'carrera_id': self.carrera_id,
-            'file_id':self.file_id,
-            'fecha_creacion': self.fecha_creacion.strftime("%Y-%m-%d %H:%M:%S")
+            'fecha_creacion': self.fecha_creacion.strftime('%Y-%m-%d %H:%M:%S')
         }
 class Favoritos(db.Model):
     __tablename__ = 'favoritos'
