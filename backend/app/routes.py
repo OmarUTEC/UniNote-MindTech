@@ -13,8 +13,11 @@ from google.oauth2 import id_token
 from io import BytesIO
 
 from flask import render_template
-UPLOAD_FOLDER = '/temp/folder'
 
+# UPLOAD_FOLDER = '/temp/folder'
+#os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'temp')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
