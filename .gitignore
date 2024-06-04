@@ -13,7 +13,7 @@
 /ENV/
 /env/
 /myenv
-env/
+/backend/venv/
 
 config.py
 
