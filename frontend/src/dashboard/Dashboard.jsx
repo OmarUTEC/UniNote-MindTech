@@ -71,13 +71,15 @@ function App() {
           </button>
         </div>
 
-        <div className="flex-1 p-4">
-          {activeTab === 'inicio' && <Inicio />}
-          {activeTab === 'biblioteca' && <Biblioteca />}
-          {activeTab === 'carreras' && <Carreras />}
-          {activeTab === 'network' && <Network />}
-          {activeTab === 'upload' && <Upload handleUploadFileClick={() => handleTabClick('upload-file')} />}
-          {activeTab === 'upload-file' && <UploadFile handleUploadClick={() => handleTabClick('upload')} />}
+        <div className="flex-1 pt-2 pl-6 pr-6">
+          <div className="w-full h-full max-w-full max-h-full">
+            {activeTab === 'inicio' && <Inicio />}
+            {activeTab === 'biblioteca' && <Biblioteca />}
+            {activeTab === 'carreras' && <Carreras />}
+            {activeTab === 'network' && <Network />}
+            {activeTab === 'upload' && <Upload handleUploadFileClick={() => handleTabClick('upload-file')} />}
+            {activeTab === 'upload-file' && <UploadFile handleUploadClick={() => handleTabClick('upload')} />}
+          </div>
         </div>
       </div>
     </div>
