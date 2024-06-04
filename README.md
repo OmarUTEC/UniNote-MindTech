@@ -69,7 +69,17 @@ Además, podría estar interesado en compartir sus propios apuntes y colaborar c
 - [x] Implementar las llamadas a las APis externas
 - [x] Crear los elementos de persistencia (Base de datos)
 
+## ACTIVIDADES 04/06
 
+***Frontend***
+- [x] Login
+- [x] Dashboard
+
+
+***Backend***
+- [x] Requisito RF-001
+- [x] Requisito RF-002
+- [x] Requisito RF-010
 
 
 
