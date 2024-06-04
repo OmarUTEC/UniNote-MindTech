@@ -18,7 +18,10 @@ class Usuarios(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
-    
+
+    def get_usuario_id(self):
+        return {'usuario_id': self.usuario_id}
+
     documentos = db.relationship('Documentos', backref='autor', lazy=True)
     comentarios = db.relationship('Comentarios', backref='usuario', lazy=True)
 

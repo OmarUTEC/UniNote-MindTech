@@ -24,13 +24,9 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aquí puedes enviar los datos del formulario a tu servidor o realizar alguna acción
-    console.log(formData);
     fetch('http://127.0.0.1:5000/signup',{
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)
     })
   };

@@ -124,10 +124,13 @@ def signup():
 @main.route('/login', methods=['POST'])
 def login_simple():
     data = request.get_json()
+    if not data or not 'username' in data or not 'password' in data:
+        return jsonify({'error': 'Missing username or password'}), 400
     user = Usuarios.query.filter_by(username=data['username']).first()
     if user and user.check_password(data['password']):
-        return jsonify({'message': 'Logged in successfully'}), 200
-    return jsonify({'message': 'Invalid username or password'}), 400
+        data = user.get_usuario_id()
+        return jsonify(data), 200
+    return jsonify({'message': 'Invalid username or password'}), 401
 
 
 @main.route('/usuarios', methods=['GET'])
@@ -330,7 +333,7 @@ def download_doc(id):
     return send_file(temp_file.name, as_attachment=True, download_name=f"{document.titulo}.pdf")
 
 
-@main.route('/favorite',methods=['POST','DELETE'])
+@main.route('/favorite', methods=['POST','DELETE'])
 def add_favorite():
     if request.method == 'POST':
         data = request.get_json()
