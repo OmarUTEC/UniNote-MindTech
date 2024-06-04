@@ -11,13 +11,10 @@ import google.auth.transport.requests
 import os
 from google.oauth2 import id_token
 from io import BytesIO
-
+import tempfile
 from flask import render_template
+UPLOAD_FOLDER = '/temp/folder'
 
-# UPLOAD_FOLDER = '/temp/folder'
-#os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'temp')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
@@ -280,7 +277,7 @@ def upload_file():
         os.remove(file_path)
         return jsonify({'message': 'File uploaded successfully to Google Drive', 'drive_message': "Gaaaaaaaaaa!"}), 200
     else:
-        return 'XD'
+        return render_template('from.html')
     
 @main.route('/documents', methods=['GET'])
 def get_documents():
@@ -303,7 +300,19 @@ def route_documents(id):
         documento = Documentos.query.get(id)
         doc = documento.to_dict()
         return jsonify(doc), 200
-
+    elif request.method == 'PUT':
+        documento = Documentos.query.get(id)
+        if documento:
+            data = request.get_json()
+            if 'titulo' in data:
+                documento.titulo = data['titulo']
+            if 'descripcion' in data:
+                documento.descripcion = data['descripcion']
+            db.session.commit()
+            return jsonify({'message': 'Document updated successfully'}), 200
+        
+        return jsonify({'Error': 'Document not found'}), 404
+    
 @main.route('/download/<id>',methods=['GET'])
 def download_doc(id):
     document = Documentos.query.get(id)
@@ -311,8 +320,9 @@ def download_doc(id):
         return jsonify({'error': 'Document not found'}), 404
 
     file_id = document.file_id
-    destination_path = f"/tmp/{document.titulo}.pdf"
+    temp_file = tempfile.NamedTemporaryFile(delete=False)
+    temp_file.close()  
 
-    download_file(file_id, destination_path)
+    download_file(file_id, temp_file.name)
 
-    return send_file(destination_path, as_attachment=True)
+    return send_file(temp_file.name, as_attachment=True, download_name=f"{document.titulo}.pdf")

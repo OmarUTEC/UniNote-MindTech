@@ -93,10 +93,12 @@ def delete_files(file_or_folder_id):
         print(f"Error deleting file/folder with ID: {file_or_folder_id}")
         print(f"Error details: {str(e)}")
 
-def download_file(file_id, save_as):
+def download_file(file_id, destination_path):
     request = drive_service.files().get_media(fileId=file_id)
-    fh = io.FileIO(save_as, 'wb')
+    fh = io.FileIO(destination_path, mode='wb')
+
     downloader = MediaIoBaseDownload(fh, request)
+
     done = False
     while not done:
         status, done = downloader.next_chunk()
