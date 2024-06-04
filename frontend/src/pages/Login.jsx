@@ -2,7 +2,7 @@ import React from "react";
 import useTheme from "../theme";
 import { Link } from "react-router-dom";
 
-const Login = () => {
+const Login = () => {  
   const { darkMode } = useTheme();
   return (
     

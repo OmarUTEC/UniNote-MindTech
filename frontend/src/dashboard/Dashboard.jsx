@@ -18,7 +18,7 @@ function App() {
   };
 
   return (
-    <div className={`flex flex-col h-screen ${theme.backgroundColor} ${theme.textColor}`}>
+    <div className={`overflow-hidden flex flex-col h-screen ${theme.backgroundColor} ${theme.textColor}`}>
       <div className={`${theme.navColor} ${theme.navTextColor} py-2 px-2 flex justify-between items-center`}> 
         <div className="flex items-center text-xl font-bold">
           <img src={logo} alt="logo" className="w-12 h-12 mr-2" />
@@ -42,33 +42,23 @@ function App() {
           <button
             className={`w-full block py-2 px-4 mb-2 rounded border ${activeTab === 'inicio' ? 'border-gray-400' : 'border-gray-300'} ${theme.buttonColor} ${theme.buttonTextColor} focus:outline-none`}
             onClick={() => handleTabClick('inicio')}
-          >
-            INICIO
-          </button>
+          >INICIO</button>
           <button
             className={`w-full block py-2 px-4 mb-2 rounded border ${activeTab === 'biblioteca' ? 'border-gray-400' : 'border-gray-300'} ${theme.buttonColor} ${theme.buttonTextColor} focus:outline-none`}
             onClick={() => handleTabClick('biblioteca')}
-          >
-            BIBLIOTECA
-          </button>
+          >BIBLIOTECA</button>
           <button
             className={`w-full block py-2 px-4 mb-2 rounded border ${activeTab === 'carreras' ? 'border-gray-400' : 'border-gray-300'} ${theme.buttonColor} ${theme.buttonTextColor} focus:outline-none`}
             onClick={() => handleTabClick('carreras')}
-          >
-            CARRERAS
-          </button>
+          >CARRERAS</button>
           <button
             className={`w-full block py-2 px-4 mb-2 rounded border ${activeTab === 'network' ? 'border-gray-400' : 'border-gray-300'} ${theme.buttonColor} ${theme.buttonTextColor} focus:outline-none`}
             onClick={() => handleTabClick('network')}
-          >
-            PERFIL
-          </button>
+          >PERFIL</button>
           <button
             className={`w-full block py-2 px-4 mb-2 rounded border ${activeTab === 'upload' || activeTab === 'upload-file' ? 'border-gray-400' : 'border-gray-300'} ${theme.buttonColor} ${theme.buttonTextColor} focus:outline-none`}
             onClick={() => handleTabClick('upload')}
-          >
-            SUBIR
-          </button>
+          >SUBIR</button>
         </div>
 
         <div className="flex-1 pt-2 pl-6 pr-6">
@@ -81,6 +71,7 @@ function App() {
             {activeTab === 'upload-file' && <UploadFile handleUploadClick={() => handleTabClick('upload')} />}
           </div>
         </div>
+        
       </div>
     </div>
   );
