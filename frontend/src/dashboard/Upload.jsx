@@ -1,18 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import useTheme from "../theme";
-import upload_file from '../assets/upload_file_button.png';
 import Card from './cards';
+import UploadIcon from './UploadIcon'; // Import the SVG component
 
-const Upload = ({ userId, handleUploadFileClick }) => {
+const Upload = ({ handleUploadFileClick }) => {
   const { darkMode } = useTheme();
-  const [documents, setDocuments] = useState([]);
-  const [uploadedFiles, setUploadedFiles] = useState(0);
-  const hasFetched = useRef(false);
+  const title = 'Matemáticas Discretas 2 - Grafos';
+  const author = "Omar";
+  const uploadedFiles = 1;
 
+  const [documents, setDocuments] = useState([]);
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/documents/user/${userId}`, {
+        const response = await fetch('http://127.0.0.1:5000/documents', {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });
@@ -21,17 +22,12 @@ const Upload = ({ userId, handleUploadFileClick }) => {
         }
         const data = await response.json();
         setDocuments(data);
-        setUploadedFiles(data.length);
       } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
       }
     };
-    if (!hasFetched.current) {
-      fetchDocuments();
-      hasFetched.current = true; // marca como verdadero después de la primera llamada
-    }
-  }, [userId]);
-
+    fetchDocuments();
+  }, []);
 
   if (uploadedFiles === 0) {
     return (
@@ -42,32 +38,30 @@ const Upload = ({ userId, handleUploadFileClick }) => {
             onClick={handleUploadFileClick}
             className={`rounded-lg border-2 border-black ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-md p-4 flex flex-col items-center w-48 h-48`}
           >
-            <img src={upload_file} alt="Upload File" className="w-24 h-24" />
-            <p className="text-base mt-4">SUBIR NUEVO ARCHIVO {userId}</p>
+            <div className="w-24 h-24"> {/* Ajustar el tamaño del contenedor */}
+              <UploadIcon />
+            </div>
+            <p className="text-base mt-4">SUBIR NUEVO ARCHIVO</p>
           </button>
         </div>
       </div>
     );
   }
+
   return (
     <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 p-12 overflow-y-auto ${darkMode ? 'bg-gray-900 text-white' : 'bg-cach-l2 text-black'}`}>
       <button onClick={handleUploadFileClick} className={`flex flex-col items-center w-full h-full rounded-lg border-2 border-black ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-md p-4`}>
-        <div className="flex items-center justify-center w-full h-full">
-          <img src={upload_file} alt="Upload File" className="w-3/5 h-3/5 object-cover rounded-lg" />
+        <div className="w-24 h-24"> {/* Ajustar el tamaño del contenedor */}
+          <UploadIcon />
         </div>
-        <p className="text-base font-bold mt-4">
-          SUBIR NUEVO ARCHIVO {userId}
-        </p>
+        <p className="text-base font-bold mt-4">SUBIR NUEVO ARCHIVO</p>
       </button>
-
+  
       {documents.map((document, index) => (
-        <Card
-          key={index}
-          title={document.titulo}
-          author={document.usuario_id}
-          darkMode={darkMode} />
+        <Card key={index} title={document.titulo} author={document.usuario_id} darkMode={darkMode} />
       ))}
-  </div>
+  
+    </div>
   );
 };
 
