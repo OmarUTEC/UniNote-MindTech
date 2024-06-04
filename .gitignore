@@ -5,6 +5,16 @@
 /.pnp
 .pnp.js
 
+# python virtual environments
+/venv
+/ENV
+/env
+/venv/
+/ENV/
+/env/
+/myenv
+env/
+
 config.py
 
 # testing
@@ -12,8 +22,6 @@ config.py
 
 # production
 /build
-
-/myenv
 
 # misc
 .DS_Store

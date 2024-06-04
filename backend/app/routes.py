@@ -13,7 +13,15 @@ from google.oauth2 import id_token
 from io import BytesIO
 import tempfile
 from flask import render_template
+
 UPLOAD_FOLDER = '/temp/folder'
+
+"""
+if Linux :
+    bash : sudo chmod 777 /temp/folder
+else :
+    continue
+"""
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
