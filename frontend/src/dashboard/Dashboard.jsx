@@ -19,7 +19,7 @@ function App() {
   const handleTabClick = (tab) => { setActiveTab(tab); };
 
   return (
-    <div className={`overflow-hidden flex flex-col h-screen ${theme.backgroundColor} ${theme.textColor}`}>
+    <div className={`flex flex-col h-screen ${theme.backgroundColor} ${theme.textColor}`}>
       <div className={`${theme.navColor} ${theme.navTextColor} py-2 px-2 flex justify-between items-center`}> 
         <div className="flex items-center text-xl font-bold">
           <img src={logo} alt="logo" className="w-12 h-12 mr-2" />
