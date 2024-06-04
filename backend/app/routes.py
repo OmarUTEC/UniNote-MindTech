@@ -1,5 +1,5 @@
 from flask import Blueprint, request, session, jsonify, redirect, url_for, abort, send_file
-from app.models import Usuarios, Carreras, Documentos, Follows
+from app.models import Usuarios, Carreras, Documentos, Follows, Favoritos, Likes
 from . import db
 from .google_oauth import get_google_oauth_flow
 from config import Config
@@ -326,3 +326,88 @@ def download_doc(id):
     download_file(file_id, temp_file.name)
 
     return send_file(temp_file.name, as_attachment=True, download_name=f"{document.titulo}.pdf")
+
+
+@main.route('/favorite',methods=['POST','DELETE'])
+def add_favorite():
+    if request.method == 'POST':
+        data = request.get_json()
+        usuario_id = data.get('usuario_id')
+        documento_id = data.get('documento_id')
+
+        if not usuario_id or not documento_id:
+            return jsonify({'error': 'Missing usuario_id or documento_id'}), 400
+
+        existing_favorite = Favoritos.query.filter_by(usuario_id=usuario_id, documento_id=documento_id).first()
+        if existing_favorite:
+            return jsonify({'message': 'Favorite already exists'})
+
+        new_favorite = Favoritos(usuario_id=usuario_id, documento_id=documento_id)
+        db.session.add(new_favorite)
+        db.session.commit()
+
+        return jsonify({'message': 'Favorite added successfully'}), 200
+    elif request.method == 'DELETE':
+        data = request.get_json()
+        usuario_id = data.get('usuario_id')
+        documento_id = data.get('documento_id')
+
+        if not usuario_id or not documento_id:
+            return jsonify({'error': 'Missing usuario_id or documento_id'}), 400
+
+        favorite = Favoritos.query.filter_by(usuario_id=usuario_id, documento_id=documento_id).first()
+        if not favorite:
+            return jsonify({'error': 'Favorite not found'}), 404
+
+        db.session.delete(favorite)
+        db.session.commit()
+
+        return jsonify({'message': 'Favorite deleted successfully'}), 200
+
+
+@main.route('/like', methods=['POST','DELETE'])
+def add_like():
+    if request.method == 'POST':
+        data = request.get_json()
+        usuario_id = data.get('usuario_id')
+        documento_id = data.get('documento_id')
+
+        if not usuario_id or not documento_id:
+            return jsonify({'error': 'Missing usuario_id or documento_id'}), 400
+
+        existing_like = Likes.query.filter_by(usuario_id=usuario_id, documento_id=documento_id).first()
+        if existing_like:
+            return jsonify({'message': 'Like already exists'})
+
+        new_like = Likes(usuario_id=usuario_id, documento_id=documento_id)
+        db.session.add(new_like)
+        db.session.commit()
+
+        return jsonify({'message': 'Like added successfully'}), 200
+    elif request.method == 'DELETE':
+        data = request.get_json()
+        usuario_id = data.get('usuario_id')
+        documento_id = data.get('documento_id')
+
+        if not usuario_id or not documento_id:
+            return jsonify({'error': 'Missing usuario_id or documento_id'}), 400
+
+        like = Likes.query.filter_by(usuario_id=usuario_id, documento_id=documento_id).first()
+        if not like:
+            return jsonify({'error': 'Like not found'}), 404
+
+        db.session.delete(like)
+        db.session.commit()
+
+        return jsonify({'message': 'Like deleted successfully'}), 200
+
+
+@main.route('/favorites/<documento_id>', methods=['GET'])
+def get_favorites(documento_id):
+    count = Favoritos.query.filter_by(documento_id=documento_id).count()
+    return jsonify({'favorites_count': count}), 200
+
+@main.route('/likes/<documento_id>', methods=['GET'])
+def get_likes(documento_id):
+    count = Likes.query.filter_by(documento_id=documento_id).count()
+    return jsonify({'likes': count}), 200
