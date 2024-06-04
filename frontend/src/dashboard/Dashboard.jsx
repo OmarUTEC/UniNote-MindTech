@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import Biblioteca from './Biblioteca';
 import Carreras from './Carreras';
 import Inicio from './Inicio';
@@ -9,13 +10,13 @@ import logo from '../assets/logo.png';
 import useTheme, { lightTheme, darkTheme } from '../theme.jsx';
 
 function App() {
+  const location = useLocation();
+  const { userId } = location.state || {};
   const { darkMode, toggleDarkMode } = useTheme();
   const theme = darkMode ? darkTheme : lightTheme;
   const [activeTab, setActiveTab] = useState('inicio');
 
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-  };
+  const handleTabClick = (tab) => { setActiveTab(tab); };
 
   return (
     <div className={`overflow-hidden flex flex-col h-screen ${theme.backgroundColor} ${theme.textColor}`}>
@@ -36,7 +37,6 @@ function App() {
           </button>
         </div>
       </div>
-
       <div className="flex flex-1">
         <div className={`${theme.navColor} w-56 p-4 mt-2 rounded-lg`}>
           <button
@@ -60,18 +60,16 @@ function App() {
             onClick={() => handleTabClick('upload')}
           >SUBIR</button>
         </div>
-
         <div className="flex-1 pt-2 pl-6 pr-6">
           <div className="w-full h-full max-w-full max-h-full">
             {activeTab === 'inicio' && <Inicio />}
             {activeTab === 'biblioteca' && <Biblioteca />}
             {activeTab === 'carreras' && <Carreras />}
             {activeTab === 'network' && <Network />}
-            {activeTab === 'upload' && <Upload handleUploadFileClick={() => handleTabClick('upload-file')} />}
-            {activeTab === 'upload-file' && <UploadFile handleUploadClick={() => handleTabClick('upload')} />}
+            {activeTab === 'upload' && <Upload userId={userId} handleUploadFileClick={() => handleTabClick('upload-file')} />}
+            {activeTab === 'upload-file' && <UploadFile userId={userId} handleUploadClick={() => handleTabClick('upload')} />}
           </div>
-        </div>
-        
+        </div>    
       </div>
     </div>
   );

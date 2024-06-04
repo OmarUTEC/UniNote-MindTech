@@ -4,14 +4,15 @@ import useTheme from "../theme";
 import right_arrow from '../assets/right_arrow.jpg';
 import upload_file from '../assets/upload_file.png';
 
-const UploadFile = ({ handleUploadClick }) => {
+const UploadFile = ({ userId,  handleUploadClick }) => {
   const { darkMode } = useTheme();
   const [formData, setFormData] = useState({
+    userId: userId,
     titulo: "",
     carrera: "",
     curso: "",
     ciclo: "",
-    descripcion: "",
+    descripcion: ""
   });
   const [file, setFile] = useState(null);
 
@@ -42,12 +43,8 @@ const UploadFile = ({ handleUploadClick }) => {
       body: data,
     })
       .then(response => response.json())
-      .then(data => {
-        console.log(data);
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
+      .then(data => { console.log(data); })
+      .catch(error => { console.error('Error:', error); });
   };
 
   return (

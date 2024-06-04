@@ -17,7 +17,6 @@ UPLOAD_FOLDER = '/temp/folder'
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-
 main = Blueprint('main', __name__)
 
 def login_is_required(function):
@@ -29,6 +28,7 @@ def login_is_required(function):
     wrapper.__name__ = function.__name__
     return wrapper
 
+
 @main.route("/login-google")
 def login():
     flow = get_google_oauth_flow()
@@ -36,17 +36,16 @@ def login():
     session["state"] = state
     return redirect(authorization_url)
 
+
 @main.route("/callback")
 def callback():
     try:
         flow = get_google_oauth_flow()
         flow.fetch_token(authorization_response=request.url)
-
         state_in_session = session.get("state")
         state_in_request = request.args.get("state")
         if not state_in_session or not state_in_request or state_in_session != state_in_request:
             abort(500, description="Error en la validación del estado.")
-
         credentials = flow.credentials
         request_session = requests.session()
         cached_session = cachecontrol.CacheControl(request_session)
@@ -56,7 +55,6 @@ def callback():
             request=token_request,
             audience=Config.GOOGLE_CLIENT_ID
         )
-
         user = Usuarios.query.filter_by(email=id_info.get("email")).first()
         if not user:
             user = Usuarios(
@@ -68,32 +66,34 @@ def callback():
             )
             db.session.add(user)
         db.session.commit()
-
         session["google_id"] = id_info.get("sub")
         session["name"] = id_info.get("name")
-
         return redirect(url_for("main.protected_area"))
-
     except Exception as e:
         print(f"Error en el callback: {e}")
         abort(500, description=f"Error interno del servidor: {str(e)}")
+
 
 @main.route("/logout")
 def logout():
     session.clear()
     return redirect(url_for("main.index"))
 
+
 @main.route("/")
 def index():
     return "Hello World <a href='/login-google'><button>Login</button></a>"
+
 
 @main.route("/protected_area")
 @login_is_required
 def protected_area():
     return f"Hello {session.get('name')}! <a href='/logout'><button>Logout</button></a>"
 
+
 def init_routes(app):
     app.register_blueprint(main)
+
 
 @main.route('/signup', methods=['POST'])
 def signup():
@@ -105,10 +105,8 @@ def signup():
     apellidos = data.get('apellidos')
     carrera = data.get('carrera')
     ciclo = data.get('ciclo')
-    
     if Usuarios.query.filter_by(username=username).first() or Usuarios.query.filter_by(email=email).first():
         return jsonify({'message': 'User already exists'}), 400
-    
     new_user = Usuarios(
         username=username, 
         email=email,
@@ -122,6 +120,7 @@ def signup():
     db.session.commit()
     return jsonify({'message': 'User created successfully'}), 200
 
+
 @main.route('/login', methods=['POST'])
 def login_simple():
     data = request.get_json()
@@ -130,11 +129,13 @@ def login_simple():
         return jsonify({'message': 'Logged in successfully'}), 200
     return jsonify({'message': 'Invalid username or password'}), 400
 
+
 @main.route('/usuarios', methods=['GET'])
 def get_users():
     all_users = Usuarios.query.all()
     lista_users = [{'usuario_id':users.usuario_id,'username': users.username, 'email': users.email} for users in all_users]
     return jsonify(lista_users), 200
+
 
 @main.route('/usuarios/<usuario_id>', methods=['GET','PUT','DELETE'])
 def route_user_id(usuario_id):
@@ -166,7 +167,6 @@ def route_user_id(usuario_id):
                 user.ciclo = data['ciclo']
             if 'email' in data:
                 user.email = data['email']
-
             db.session.commit()
             return jsonify({'message': 'User updated successfully'}), 200
         return jsonify({'message': 'User not found'}), 404
@@ -178,11 +178,11 @@ def route_user_id(usuario_id):
             return jsonify({'message': 'User deleted successfully'}), 200
         return jsonify({'message': 'User not found'}), 404
 
+
 @main.route('/carreras', methods=['GET'])
 def get_carreras():
     todas_carreras = Carreras.query.all()
     lista_carreras = [{'carrera_id': carrera.carrera_id, 'nombre': carrera.nombre} for carrera in todas_carreras]
-    
     return jsonify(lista_carreras), 200
 
 
@@ -194,8 +194,7 @@ def route_followers(usuario_id):
             return jsonify({'message': 'Usuario no encontrado'}), 404
         seguidores = db.session.query(Usuarios).join(Follows, Usuarios.usuario_id == Follows.follower_id).filter(Follows.following_id == usuario_id).all()    
         lista_seguidores = [{'username': seguidor.username} for seguidor in seguidores]
-        return jsonify(lista_seguidores), 200
-    
+        return jsonify(lista_seguidores), 200    
     elif request.method =='DELETE':
         follower = Follows.query.filter_by(follower_id=usuario_id).first()
         if follower:
@@ -234,64 +233,67 @@ def follows():
     db.session.commit()
     return jsonify({'message': 'Success'}), 200
 
+
 @main.route('/upload_file', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
+        userId = request.form.get('userId')
         titulo = request.form.get('titulo')
         carrera = request.form.get('carrera')
         curso = request.form.get('curso')
         ciclo = request.form.get('ciclo')
         descripcion = request.form.get('descripcion')
-
         if 'file' not in request.files:
             return jsonify({'error': 'No file part'}), 400
-
         file = request.files['file']
         if file.filename == '':
             return jsonify({'error': 'No selected file'}), 400
-        
         file_path = os.path.join("", file.filename)
         file.save(file_path)
-        
         file_id = upload_file_basic("1E8cQZY3fUnBg2d7wpIl0F1Q98bwGTWJq", file.filename)
         fecha_actual = datetime.datetime.utcnow()
-        
         doc = fitz.open(file.filename)
         _pixmap = doc.load_page(0).get_pixmap()
         doc.close()    
         buffered = BytesIO()
         Image.frombytes("RGB", [_pixmap.width, _pixmap.height], _pixmap.samples).crop((10, 10, 580, 280)).save(buffered, format="JPEG")
-
         new_file = Documentos(
             titulo = titulo,
             descripcion = descripcion,
             file_id = file_id,
             preview_image = buffered.getvalue(),
-            usuario_id = 1,
+            usuario_id = userId,
             carrera_id = int(carrera),
             fecha_creacion = fecha_actual.strftime("%Y-%m-%d %H:%M:%S")
         )
-
         db.session.add(new_file)
         db.session.commit()
         os.remove(file_path)
         return jsonify({'message': 'File uploaded successfully to Google Drive', 'drive_message': "Gaaaaaaaaaa!"}), 200
     else:
         return render_template('from.html')
-    
+
+
 @main.route('/documents', methods=['GET'])
 def get_documents():
     documents = Documentos.query.all()
     documents_list = [doc.to_dict() for doc in documents]
     return jsonify(documents_list), 200
 
+
+@main.route('/documents/user/<int:id>', methods=['GET'])
+def get_documents_by_user(id):
+    documents = Documentos.query.filter_by(usuario_id=id).all()
+    documents_list = [doc.to_dict() for doc in documents]
+    return jsonify(documents_list), 200
+
+
 @main.route('/documents/<id>', methods=['GET','DELETE','PUT'])
 def route_documents(id):
     if request.method =='DELETE':
         documento = Documentos.query.get(id)
         if not documento:
-            return jsonify({"Error":"Document not found"}),404
-        
+            return jsonify({"Error":"Document not found"}), 404
         delete_files(documento.file_id)
         db.session.delete(documento)
         db.session.commit()
@@ -310,9 +312,9 @@ def route_documents(id):
                 documento.descripcion = data['descripcion']
             db.session.commit()
             return jsonify({'message': 'Document updated successfully'}), 200
-        
         return jsonify({'Error': 'Document not found'}), 404
-    
+
+
 @main.route('/download/<id>',methods=['GET'])
 def download_doc(id):
     document = Documentos.query.get(id)
