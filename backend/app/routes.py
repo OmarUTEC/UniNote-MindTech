@@ -271,6 +271,8 @@ def upload_file():
         new_file = Documentos(
             titulo = titulo,
             descripcion = descripcion,
+            curso = curso,
+            ciclo = ciclo,
             file_id = file_id,
             preview_image = buffered.getvalue(),
             usuario_id = userId,

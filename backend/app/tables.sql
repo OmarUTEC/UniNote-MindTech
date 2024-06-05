@@ -20,6 +20,8 @@ CREATE TABLE documentos (
     documento_id SERIAL PRIMARY KEY,
     titulo VARCHAR(255) NOT NULL,
     descripcion TEXT,
+    curso VARCHAR(255),
+    ciclo INTEGER,
     file_id VARCHAR(40) NOT NULL,
 	preview_image BYTEA,
     usuario_id INTEGER NOT NULL,

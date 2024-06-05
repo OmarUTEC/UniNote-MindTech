@@ -40,6 +40,8 @@ class Documentos(db.Model):
     documento_id = db.Column(db.Integer, primary_key=True)
     titulo = db.Column(db.String(255), nullable=False)
     descripcion = db.Column(db.Text)
+    curso = db.Column(db.String(255))
+    ciclo = db.Column(db.Integer)
     file_id = db.Column(db.String(40), nullable=False)
     preview_image = db.Column(db.LargeBinary)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.usuario_id'), nullable=False)
@@ -55,6 +57,8 @@ class Documentos(db.Model):
             'titulo': self.titulo,
             'descripcion': self.descripcion,
             'file_id': self.file_id,
+            'curso':self.curso,
+            'ciclo':self.ciclo,
             'preview_image': base64.b64encode(self.preview_image).decode('utf-8') if self.preview_image else None,
             'usuario_id': self.usuario_id,
             'carrera_id': self.carrera_id,
