@@ -1,6 +1,6 @@
 import React from 'react';
 
-const UploadIcon = () => (
+const UploadIcon = ({ color = 'black' }) => (
   <svg
     version="1.1"
     id="Icons"
@@ -12,7 +12,7 @@ const UploadIcon = () => (
     preserveAspectRatio="xMidYMid meet"
   >
     <style type="text/css">
-      {`.st0{fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}`}
+      {`.st0{fill:none;stroke:${color};stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}`}
     </style>
     <line className="st0" x1="16" y1="20" x2="16" y2="4"/>
     <polyline className="st0" points="12,8 16,4 20,8 "/>

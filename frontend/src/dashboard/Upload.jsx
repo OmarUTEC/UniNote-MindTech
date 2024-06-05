@@ -32,6 +32,8 @@ const Upload = ({ userId, handleUploadFileClick }) => {
     }
   }, [userId]);
 
+  const iconColor = darkMode ? 'white' : 'black';
+
   if (uploadedFiles === 0) {
     return (
       <div className={`min-h-screen flex items-center justify-center ${darkMode ? 'bg-gray-900 text-white' : 'bg-cach-l2 text-black'}`}>
@@ -42,7 +44,7 @@ const Upload = ({ userId, handleUploadFileClick }) => {
             className={`rounded-lg border-2 border-black ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-md p-4 flex flex-col items-center w-48 h-48`}
           >
             <div className="w-24 h-24">
-              <UploadIcon />
+              <UploadIcon color={iconColor} />
             </div>
             <p className="text-base mt-4">SUBIR NUEVO ARCHIVO {userId}</p>
           </button>
@@ -54,8 +56,8 @@ const Upload = ({ userId, handleUploadFileClick }) => {
   return (
     <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 p-12 overflow-y-auto ${darkMode ? 'bg-gray-900 text-white' : 'bg-cach-l2 text-black'}`}>
       <button onClick={handleUploadFileClick} className={`flex flex-col items-center w-full h-full rounded-lg border-2 border-black ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-md p-4`}>
-        <div className="flex items-center justify-center w-full h-full">
-          <UploadIcon className="w-3/5 h-3/5 object-cover rounded-lg" />
+        <div className="flex items-center justify-center w-40 h-full">
+          <UploadIcon className="w-3/5 h-3/5 object-cover rounded-lg" color={iconColor} />
         </div>
         <p className="text-base font-bold mt-4">
           SUBIR NUEVO ARCHIVO
@@ -68,7 +70,9 @@ const Upload = ({ userId, handleUploadFileClick }) => {
           title={document.titulo}
           author={document.usuario_id}
           idDocument={document.id}
-          darkMode={darkMode} />
+          darkMode={darkMode}
+          preview={document.preview_image} // Agregado el prop preview con la imagen de vista previa
+        />
       ))}
     </div>
   );
