@@ -71,6 +71,7 @@ const Upload = ({ userId, handleUploadFileClick }) => {
           author={document.usuario_id}
           idDocument={document.id}
           darkMode={darkMode}
+          preview={document.preview_image} // Agregado el prop preview con la imagen de vista previa
         />
       ))}
     </div>

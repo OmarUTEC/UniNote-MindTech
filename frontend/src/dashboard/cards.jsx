@@ -4,7 +4,7 @@ import edit_file_button from '../assets/edit_file_button.png';
 import drop_file_button from '../assets/drop_file_button.png';
 import image_file from '../assets/file_image.png';
 
-const Card = ({ title, author, idDocument, darkMode }) => {
+const Card = ({ title, author, idDocument, darkMode, preview }) => {
   const [isDownloading, setIsDownloading] = useState(false);
 
   const handleDownloadClick = async () => {
@@ -33,7 +33,7 @@ const Card = ({ title, author, idDocument, darkMode }) => {
   
   return (
     <div className={`rounded-lg border-2 border-black ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-md transform-origin-center transition-transform duration-300 ease-in-out`}>
-      <img src={image_file} alt="File" className="w-full h-32 object-cover object-fit: contain" />
+      <img src={preview ? `data:image/jpeg;base64,${preview}` : image_file} alt="File" className="w-full h-32 object-cover object-fit: contain" />
       <div className="p-2 ">
         <h2 className="text-lg font-bold">{title}</h2>
         <p className="text-sm text-gray-500">Autor: {author}</p>
