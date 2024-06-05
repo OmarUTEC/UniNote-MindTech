@@ -76,7 +76,7 @@ def callback():
         db.session.commit()
         session["google_id"] = id_info.get("sub")
         session["name"] = id_info.get("name")
-        return redirect(url_for("main.protected_area"))
+        return redirect(('http://localhost:3000/dashboard'))
     except Exception as e:
         print(f"Error en el callback: {e}")
         abort(500, description=f"Error interno del servidor: {str(e)}")
