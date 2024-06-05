@@ -67,13 +67,8 @@ const Upload = ({ userId, handleUploadFileClick }) => {
           key={index}
           title={document.titulo}
           author={document.usuario_id}
-<<<<<<< Updated upstream
-          darkMode={darkMode}
-        />
-=======
           idDocument={document.id}
           darkMode={darkMode} />
->>>>>>> Stashed changes
       ))}
     </div>
   );

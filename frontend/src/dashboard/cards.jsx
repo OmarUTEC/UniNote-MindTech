@@ -38,15 +38,9 @@ const Card = ({ title, author, idDocument, darkMode }) => {
         <h2 className="text-lg font-bold">{title}</h2>
         <p className="text-sm text-gray-500">Autor: {author}</p>
       </div>
-<<<<<<< Updated upstream
-      <div className="flex justify-around items-center p-6 border-t-2 border-black">
-        <button>
-          <img src={download_file_button} alt="Download" className="w-6 h-6 object-fit: contain" />
-=======
       <div className="flex justify-around p-6 border-t-2 border-black">
         <button onClick={handleDownloadClick} disabled={isDownloading}>
           <img src={download_file_button} alt="Download" className="w-6 h-6" />
->>>>>>> Stashed changes
         </button>
         <button>
           <img src={edit_file_button} alt="Edit" className="w-6 h-6 object-fit: contain" />
