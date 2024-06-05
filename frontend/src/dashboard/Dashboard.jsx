@@ -11,7 +11,7 @@ import useTheme, { lightTheme, darkTheme } from '../theme.jsx';
 
 function App() {
   const location = useLocation();
-  const { userId } = location.state || {};
+  const { userId = 0 } = location.state;
   const { darkMode, toggleDarkMode } = useTheme();
   const theme = darkMode ? darkTheme : lightTheme;
   const [activeTab, setActiveTab] = useState('inicio');

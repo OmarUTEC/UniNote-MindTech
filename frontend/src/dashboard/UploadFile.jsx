@@ -42,7 +42,9 @@ const UploadFile = ({ userId,  handleUploadClick }) => {
       method: 'POST',
       body: data,
     })
-      .then(response => response.json())
+      .then(response => {
+        response.json()
+      })
       .catch(error => { console.error('Error:', error); });
   };
 

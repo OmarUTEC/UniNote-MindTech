@@ -28,7 +28,7 @@ const Upload = ({ userId, handleUploadFileClick }) => {
     };
     if (!hasFetched.current) {
       fetchDocuments();
-      hasFetched.current = true; // marca como verdadero después de la primera llamada
+      hasFetched.current = true;
     }
   }, [userId]);
 
@@ -58,7 +58,7 @@ const Upload = ({ userId, handleUploadFileClick }) => {
           <UploadIcon className="w-3/5 h-3/5 object-cover rounded-lg" />
         </div>
         <p className="text-base font-bold mt-4">
-          SUBIR NUEVO ARCHIVO {userId}
+          SUBIR NUEVO ARCHIVO
         </p>
       </button>
 
@@ -67,8 +67,13 @@ const Upload = ({ userId, handleUploadFileClick }) => {
           key={index}
           title={document.titulo}
           author={document.usuario_id}
+<<<<<<< Updated upstream
           darkMode={darkMode}
         />
+=======
+          idDocument={document.id}
+          darkMode={darkMode} />
+>>>>>>> Stashed changes
       ))}
     </div>
   );
