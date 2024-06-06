@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import useTheme from "../theme";
-import { Link } from "react-router-dom";
 
 const Register = () => {
-  const { darkMode } = useTheme();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -24,141 +21,126 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch('http://127.0.0.1:5000/signup',{
+    fetch('http://127.0.0.1:5000/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)
-    })
+    });
   };
 
   return (
-    <div className={`min-h-screen flex items-center justify-center ${darkMode ? 'bg-gray-900 text-white' : 'bg-cach-l2 text-black'}`}>
-      <div className={`shadow-md rounded px-8 pt-6 pb-8 mb-4 ${darkMode ? 'bg-gray-800' : 'bg-white'} w-96`}>
-        <h1 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-black'}`}>Registro</h1>
-        <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-            <label className={`block text-sm font-bold mb-2 ${darkMode ? 'text-white' : 'text-gray-700'}`} htmlFor="username">
-              Usuario
-            </label>
-            <input
-              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${darkMode ? 'bg-gray-700 text-white' : 'bg-white'}`}
-              id="username"
-              name="username"
-              type="text"
-              placeholder="Usuario"
-              value={formData.username}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="mb-4">
-            <label className={`block text-sm font-bold mb-2 ${darkMode ? 'text-white' : 'text-gray-700'}`} htmlFor="username">
-              Correo
-            </label>
-            <input
-              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${darkMode ? 'bg-gray-700 text-white' : 'bg-white'}`}
-              id="email"
-              name="email"
-              type="text"
-              placeholder="email"
-              value={formData.email}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="mb-4">
-            <label className={`block text-sm font-bold mb-2 ${darkMode ? 'text-white' : 'text-gray-700'}`} htmlFor="password">
-              Contraseña
-            </label>
-            <input
-              className={`shadow appearance-none border rounded w-full py-2 px-3 mb-3 leading-tight focus:outline-none focus:shadow-outline ${darkMode ? 'bg-gray-700 text-white' : 'bg-white'}`}
-              id="password"
-              name="password"
-              type="password"
-              placeholder="******************"
-              value={formData.password}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="mb-4">
-            <label className={`block text-sm font-bold mb-2 ${darkMode ? 'text-white' : 'text-gray-700'}`} htmlFor="nombre">
-              Nombres
-            </label>
-            <input
-              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${darkMode ? 'bg-gray-700 text-white' : 'bg-white'}`}
-              id="nombres"
-              name="nombres"
-              type="text"
-              placeholder="Nombres"
-              value={formData.nombre}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="mb-4">
-          <label className={`block text-sm font-bold mb-2 ${darkMode ? 'text-white' : 'text-gray-700'}`} htmlFor="apellido">
-            Apellidos
-          </label>
+    <div className="register-form">
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="username"></label>
           <input
-            className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${darkMode ? 'bg-gray-700 text-white' : 'bg-white'}`}
+            id="username"
+            name="username"
+            type="text"
+            placeholder="Usuario"
+            value={formData.username}
+            onChange={handleChange}
+            className="input-field"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="email"></label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="Correo"
+            value={formData.email}
+            onChange={handleChange}
+            className="input-field"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="password"></label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Contraseña"
+            value={formData.password}
+            onChange={handleChange}
+            className="input-field"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="nombres"></label>
+          <input
+            id="nombres"
+            name="nombres"
+            type="text"
+            placeholder="Nombres"
+            value={formData.nombres}
+            onChange={handleChange}
+            className="input-field"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="apellidos"></label>
+          <input
             id="apellidos"
             name="apellidos"
             type="text"
             placeholder="Apellidos"
-            value={formData.apellidos}  // Cambiado de formData.apellido a formData.apellidos
-            onChange={handleChange}     // Cambiado de formData.apellido a formData.apellidos
+            value={formData.apellidos}
+            onChange={handleChange}
+            className="input-field"
           />
         </div>
-          <div className="mb-4">
-            <label htmlFor="carrera" className={`block text-sm font-bold mb-2 ${darkMode ? 'text-white' : 'text-gray-700'}`}>Carrera</label>
-            <select
-              id="carrera"
-              name="carrera"
-              value={formData.carrera}
-              onChange={handleChange}
-              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${darkMode ? 'bg-gray-700 text-white' : 'bg-white'}`}
-            >
-              <option value="">Selecciona una carrera</option>
-              <option value="Quimica">Quimica</option>
-              <option value="Data Science">Data Science</option>
-              <option value="Ingenieria Civil">Ingenieria Civil</option>
-              <option value="Ingenieria Ambiental">Ingenieria Ambiental</option>
-              <option value="CS">CS</option>
-              <option value="Ingenieria Mecatronica">Ingenieria Mecatronica</option>
-              {/* Agrega más opciones según sea necesario */}
-            </select>
-          </div>
-          <div className="mb-4">
-            <label htmlFor="ciclo" className={`block text-sm font-bold mb-2 ${darkMode ? 'text-white' : 'text-gray-700'}`}>Ciclo</label>
-            <select
-              id="ciclo"
-              name="ciclo"
-              value={formData.ciclo}
-              onChange={handleChange}
-              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${darkMode ? 'bg-gray-700 text-white' : 'bg-white'}`}
-            >
-              <option value="">Selecciona ciclo</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              {/* Agrega más opciones según sea necesario */}
-            </select>
-          </div>
-          <div className="flex items-center justify-between">
-            <button
-              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${darkMode ? 'bg-gray-600' : ''}`}
-              type="submit"
-            >
-              Registrarse
-            </button>
-            <Link
-              to="/login"
-              className={`inline-block align-baseline font-bold text-sm ${darkMode ? 'text-white' : 'text-blue-500'} hover:text-blue-800`}
-            >
-              Regresar al login
-            </Link>
-          </div>
-        </form>
-      </div>
+        <div className="form-group">
+          <label htmlFor="carrera"></label>
+          <select
+            id="carrera"
+            name="carrera"
+            value={formData.carrera}
+            onChange={handleChange}
+            className="input-field"
+          >
+            <option value="">Selecciona una carrera</option>
+            <option value="1">Administración y Negocios Digitales</option>
+            <option value="2">Bioingeniería</option>
+            <option value="3">Ciencia de la Computación</option>
+            <option value="4">Ciencia de Datos</option>
+            <option value="5">Ingeniería Ambiental</option>
+            <option value="6">Ingeniería Civil</option>
+            <option value="7">Ingeniería de la Energía</option>
+            <option value="8">Ingeniería Electrónica</option>
+            <option value="9">Ingeniería Industrial</option>
+            <option value="10">Ingeniería Mecánica</option>
+            <option value="11">Ingeniería Mecatrónica</option>
+            <option value="12">Ingeniería Química</option>
+          </select>
+        </div>
+        <div className="form-group">
+          <label htmlFor="ciclo"></label>
+          <select
+            id="ciclo"
+            name="ciclo"
+            value={formData.ciclo}
+            onChange={handleChange}
+            className="input-field"
+          >
+            <option value="">Selecciona ciclo</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+        </div>
+        <div className="form-actions">
+          <button type="submit" className="login-button">Registrarse</button>
+        </div>
+      </form>
     </div>
   );
 };
