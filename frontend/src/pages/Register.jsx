@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -10,6 +12,7 @@ const Register = () => {
     carrera: "",
     ciclo: "",
   });
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,14 +20,41 @@ const Register = () => {
       ...formData,
       [name]: value,
     });
+    setError("");
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const { username, email, password, nombres, apellidos, carrera, ciclo } = formData;
+
+    if (!username || !email || !password || !nombres || !apellidos || !carrera || !ciclo) {
+      setError("Por favor, rellena todos los campos.");
+      return;
+    }
+
     fetch('http://127.0.0.1:5000/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)
+    })
+    .then(response => {
+      if (response.status === 200) {
+        alert("Usuario registrado correctamente")
+        navigate('/login');
+      }
+      else if(response.status === 401){
+        setError("El correo ingresado ya existe, por favor escoja otro.")
+      } 
+      else if(response.status === 402){
+        setError("El nombre de usuario ya existe, por favor escoja otro.")
+      } 
+      else {
+        setError("Error al registrarse. Por favor, inténtalo de nuevo.");
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      setError("Error al registrarse. Por favor, inténtalo de nuevo.");
     });
   };
 
@@ -137,6 +167,7 @@ const Register = () => {
             <option value="10">10</option>
           </select>
         </div>
+        {error && <p className="error-message">{error}</p>}
         <div className="form-actions">
           <button type="submit" className="login-button">Registrarse</button>
         </div>

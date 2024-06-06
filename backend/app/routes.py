@@ -113,8 +113,12 @@ def signup():
     apellidos = data.get('apellidos')
     carrera = data.get('carrera')
     ciclo = data.get('ciclo')
-    if Usuarios.query.filter_by(username=username).first() or Usuarios.query.filter_by(email=email).first():
-        return jsonify({'message': 'User already exists'}), 400
+
+    if Usuarios.query.filter_by(username=username).first():
+        return jsonify({'message': 'Username already exists'}), 402
+    elif Usuarios.query.filter_by(email=email).first():
+        return jsonify({'message':'Email already exists'}),401
+    
     new_user = Usuarios(
         username=username, 
         email=email,

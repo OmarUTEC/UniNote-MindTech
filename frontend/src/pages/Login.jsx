@@ -12,6 +12,7 @@ const Login = () => {
     username: "",
     password: ""
   });
+  const [error, setError] = useState("");
 
   const toggleView = () => {
     setIsLogin(!isLogin);
@@ -23,6 +24,7 @@ const Login = () => {
       ...formData,
       [name]: value,
     });
+    setError("");
   };
 
   const handleGoogleLogin = () => {
@@ -31,6 +33,14 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const { username, password } = formData;
+
+    // Validar campos vacíos
+    if (!username || !password) {
+      setError("Por favor, rellena todos los campos.");
+      return;
+    }
+
     fetch('http://127.0.0.1:5000/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -39,10 +49,11 @@ const Login = () => {
       .then(response => {
         if (response.status === 200) {
           return response.json();
-        } else if (response.status === 400) {
-          navigate('/');
+        } else if (response.status === 401) {
+          setError("Usuario o contraseña incorrecta.");
           throw new Error('Bad Request');
         } else {
+          setError("Error inesperado. Por favor, inténtalo de nuevo.");
           throw new Error('Unhandled status code: ' + response.status);
         }
       })
@@ -82,6 +93,7 @@ const Login = () => {
               </div>
               <input type="text" name="username" placeholder="Username" className="input-field" onChange={handleChange} />
               <input type="password" name="password" placeholder="Password" className="input-field" onChange={handleChange} />
+              {error && <p className="error-message">{error}</p>}
               <button className="login-button" onClick={handleSubmit}>Log in</button>
             </>
           ) : (

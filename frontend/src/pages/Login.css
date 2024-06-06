@@ -133,3 +133,16 @@
     min-height: 80%;
   }
   
+  .slogan {
+    font-family: 'Copperplate Gothic', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffffff;
+  }
+
+  .error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  
