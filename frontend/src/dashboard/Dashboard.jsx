@@ -65,7 +65,7 @@ function App() {
             {activeTab === 'inicio' && <Inicio />}
             {activeTab === 'biblioteca' && <Biblioteca />}
             {activeTab === 'carreras' && <Carreras />}
-            {activeTab === 'network' && <Network />}
+            {activeTab === 'network' && <Network userId={userId} />}
             {activeTab === 'upload' && <Upload userId={userId} handleUploadFileClick={() => handleTabClick('upload-file')} />}
             {activeTab === 'upload-file' && <UploadFile userId={userId} handleUploadClick={() => handleTabClick('upload')} />}
           </div>
