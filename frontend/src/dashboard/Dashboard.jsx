@@ -5,7 +5,7 @@ import Carreras from './Carreras';
 import Inicio from './Inicio';
 import Network from './Network';
 import Upload from './Upload';
-import UploadFile from './UploadFile';
+import UploadFile from './components/upload/form';
 import logo from '../assets/logo.png';
 import useTheme, { lightTheme, darkTheme } from '../theme.jsx';
 

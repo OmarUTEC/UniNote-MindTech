@@ -5,7 +5,7 @@ import Inicio from '../dashboard/Inicio';
 import Biblioteca from '../dashboard/Biblioteca';
 import Carreras from '../dashboard/Carreras';
 import Upload from '../dashboard/Upload';
-import UploadFile from '../dashboard/UploadFile';
+import UploadFile from '../dashboard/components/upload/form';
 import Network from '../dashboard/Network';
 import Dashboard from '../dashboard/Dashboard';
 

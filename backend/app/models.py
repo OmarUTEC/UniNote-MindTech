@@ -53,7 +53,7 @@ class Documentos(db.Model):
     foros = db.relationship('Foros', backref='documento', lazy=True)
     def to_dict(self):
         return {
-            'id': self.documento_id,
+            'doucmento_id': self.documento_id,
             'titulo': self.titulo,
             'descripcion': self.descripcion,
             'file_id': self.file_id,

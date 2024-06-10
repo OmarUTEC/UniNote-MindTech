@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import useTheme from "../theme";
-import UploadIcon from './UploadIcon';
-import Card from './cards';
+
+import UploadFileButton from './components/upload/button';
+import UploadFileItem from './components/upload/item';
 
 const Upload = ({ userId, handleUploadFileClick }) => {
   const { darkMode } = useTheme();
@@ -32,22 +33,12 @@ const Upload = ({ userId, handleUploadFileClick }) => {
     }
   }, [userId]);
 
-  const iconColor = darkMode ? 'white' : 'black';
-
   if (uploadedFiles === 0) {
     return (
       <div className={`min-h-screen flex items-center justify-center ${darkMode ? 'bg-gray-900 text-white' : 'bg-cach-l2 text-black'}`}>
-        <div className="flex flex-col items-center justify-center gap-6 text-2xl font-bold">
-          <p>NO CUENTA CON NINGUN ARCHIVO DISPONIBLE PARA EDITAR</p>
-          <button
-            onClick={handleUploadFileClick}
-            className={`rounded-lg border-2 border-black ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-md p-4 flex flex-col items-center w-48 h-48`}
-          >
-            <div className="w-24 h-24">
-              <UploadIcon color={iconColor} />
-            </div>
-            <p className="text-base mt-4">SUBIR NUEVO ARCHIVO {userId}</p>
-          </button>
+        <div className="flex flex-col items-center justify-center">
+          <p className="text-2xl font-bold">NO CUENTA CON NINGUN ARCHIVO DISPONIBLE PARA EDITAR</p>
+          <UploadFileButton handleClick={handleUploadFileClick}/>
         </div>
       </div>
     );
@@ -55,23 +46,16 @@ const Upload = ({ userId, handleUploadFileClick }) => {
 
   return (
     <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 p-12 overflow-y-auto ${darkMode ? 'bg-gray-900 text-white' : 'bg-cach-l2 text-black'}`}>
-      <button onClick={handleUploadFileClick} className={`flex flex-col items-center w-full h-full rounded-lg border-2 border-black ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-md p-4`}>
-        <div className="flex items-center justify-center w-40 h-full">
-          <UploadIcon className="w-3/5 h-3/5 object-cover rounded-lg" color={iconColor} />
-        </div>
-        <p className="text-base font-bold mt-4">
-          SUBIR NUEVO ARCHIVO
-        </p>
-      </button>
-
+      <UploadFileButton handleClick={handleUploadFileClick}/>
+      
       {documents.map((document, index) => (
-        <Card
+        <UploadFileItem
           key={index}
           title={document.titulo}
           author={document.usuario_id}
-          idDocument={document.id}
+          idDocument={document.documento_id}
           darkMode={darkMode}
-          preview={document.preview_image} // Agregado el prop preview con la imagen de vista previa
+          preview={document.preview_image}
         />
       ))}
     </div>

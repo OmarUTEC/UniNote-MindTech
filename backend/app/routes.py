@@ -302,8 +302,6 @@ def get_documents():
 def get_documents_by_user(id):
     documents = Documentos.query.filter_by(usuario_id=id).all()
     documents_list = [doc.to_dict() for doc in documents]
-    for item in documents_list:
-        print(item)
     return jsonify(documents_list), 200
 
 
