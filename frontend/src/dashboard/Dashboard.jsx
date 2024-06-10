@@ -4,6 +4,7 @@ import Biblioteca from './Biblioteca';
 import Carreras from './Carreras';
 import Inicio from './Inicio';
 import Network from './Network';
+import UpdateUserData from '../dashboard/components/network/form';
 import Upload from './Upload';
 import UploadFile from './components/upload/form';
 import logo from '../assets/logo.png';
@@ -65,9 +66,10 @@ function App() {
             {activeTab === 'inicio' && <Inicio />}
             {activeTab === 'biblioteca' && <Biblioteca />}
             {activeTab === 'carreras' && <Carreras />}
-            {activeTab === 'network' && <Network userId={userId} />}
-            {activeTab === 'upload' && <Upload userId={userId} handleUploadFileClick={() => handleTabClick('upload-file')} />}
-            {activeTab === 'upload-file' && <UploadFile userId={userId} handleUploadClick={() => handleTabClick('upload')} />}
+            {activeTab === 'network' && <Network userId={userId} handleClick={() => handleTabClick('update-data')}/>}
+            {activeTab === 'upload' && <Upload userId={userId} handleUploadFileClick={() => handleTabClick('upload-file')}/>}
+            {activeTab === 'upload-file' && <UploadFile userId={userId} handleUploadClick={() => handleTabClick('upload')}/>}
+            {activeTab === 'update-data' && <UpdateUserData userId={userId} handleClick={() => handleTabClick('network')}/>}
           </div>
         </div>    
       </div>

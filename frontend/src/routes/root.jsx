@@ -7,6 +7,7 @@ import Carreras from '../dashboard/Carreras';
 import Upload from '../dashboard/Upload';
 import UploadFile from '../dashboard/components/upload/form';
 import Network from '../dashboard/Network';
+import UpdateUserData from '../dashboard/components/network/form';
 import Dashboard from '../dashboard/Dashboard';
 
 // Importar componentes individuales para cada carrera
@@ -42,6 +43,9 @@ const root = [{
   }, {
     path: '/perfil',
     Element: Network
+  }, {
+    path: '/update-data',
+    Element: UpdateUserData
   }, {
     path: '/dashboard',
     Element: Dashboard

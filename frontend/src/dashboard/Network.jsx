@@ -5,7 +5,7 @@ import profilePicture from '../assets/profilepicture.jpg';
 import followersIcon from '../assets/followers.png';
 import followingIcon from '../assets/following.png';
 
-const Network = ({userId}) => {
+const Network = ({userId, handleClick}) => {
   const { darkMode } = useTheme();
   const [userData, setData] = useState([]);
 
@@ -34,11 +34,12 @@ const Network = ({userId}) => {
   return (
     <div className={`w-full pt-24 flex flex-col items-center ${darkMode ? 'bg-gray-900 text-white' : 'bg-cach-l2 text-black'}`}>
       
-    <div className={`w-3/5 h-full bg-gray-100 rounded-3xl border-4 border-black flex flex-col gap-12 p-12`}>
+    <div className={`w-3/5 h-full bg-gray-100 rounded-3xl border-4 border-black flex flex-col gap-12 pt-8 pb-8 pr-4 pl-4`}>
 
       <div className='w-full h-3/4 flex flex-col lg:flex-row items-center justify-center p-6'>
         <div className="w-full lg:w-2/5 flex flex-col items-center justify-center">
           <img src={profilePicture} alt="Profile" className='profile-image w-60 h-60 rounded-full object-cover border-4 border-black' />
+          <button onClick={handleClick} className="bg-yellow-500"> <p>ACTUALIZAR PERFIL</p> </button>
         </div>
         
         <div className='w-full lg:w-3/5 h-full flex flex-col gap-8 p-4 bg-white rounded-lg shadow-lg mt-6 lg:mt-0 lg:ml-6'>
@@ -92,6 +93,13 @@ const Network = ({userId}) => {
             <h2>{numFollowers}</h2>
           </div>
         </button>
+
+        <button className='flex items-center justify-center w-1/5 p-6 border-4 border-black rounded-lg bg-blue-500'>
+          <div className="text-xl font-bold">
+          <p>ID: {userId}</p>
+          </div>
+        </button>
+
         <button className='flex items-center justify-center w-1/3 p-6 border-4 border-black rounded-lg bg-blue-500'>
           <img src={followingIcon} alt="Following" className='w-20 h-20 mr-6' />
           <div className="text-xl font-bold">
