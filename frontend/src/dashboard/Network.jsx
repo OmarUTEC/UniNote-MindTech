@@ -12,41 +12,40 @@ const Network = () => {
   const numFollowing = 38;
 
   return (
-    <div className={`min-h-screen flex items-center justify-center ${darkMode ? 'bg-gray-900 text-white' : 'bg-cach-l2 text-black'}`}>
-      <div className='container'>
-        <div className='custom-profile flex items-center justify-center'>
-          <img src={profilePicture} alt="Profile" className='profile-image w-60 h-60 rounded-full object-cover border-4 border-black' />
-          <div className='profile-details ml-8'>
-            <div className='profile-info mb-4'>
-              <h2>{profileName}</h2>
-            </div>
-            <div className='profile-info'>
-              <h2>{email}</h2>
-            </div>
-            <div className='bg-red-500 w-full py-3 border-2 border-black rounded-lg'>
-            <h2 className='text-white text-center'>ELIMINAR PERFIL</h2>
+    <div className={`w-full flex flex-col items-center ${darkMode ? 'bg-gray-900 text-white' : 'bg-cach-l2 text-black'}`}>
+      
+    <div className={`w-3/5 h-1/2 bg-white flex flex-col`}>
 
-            </div>
+        <div className='w-full h-3/4 flex flex-row items-center justify-center bg-red-500'>
+          <div className="w-2/5 h-full flex flex-col items-center justify-center bg-green-500">
+            <img src={profilePicture} alt="Profile" className='profile-image w-60 h-60 rounded-full object-cover border-4 border-black' />
+          </div>
+          
+          <div className='w-3/5 h-full flex flex-col gap-6 p-4'>
+            <div> <p>{profileName}</p> </div>
+            <div> <p>{email}</p> </div>
           </div>
         </div>
-        <div className='custom-buttons flex justify-between mt-8'>
-        <button className='custom-button flex items-center justify-center w-1/3 p-6 border-2 border-black rounded-lg bg-blue-500'>
-        <img src={followersIcon} alt="Followers" className='button-image w-20 h-20 mr-4' />
-        <div>
-          <h2 className='button-text'>FOLLOWERS</h2>
-          <h2 className='button-text'>{numFollowers}</h2>
-        </div>
-      </button>
 
-          <button className='custom-button flex items-center justify-center w-1/3 p-6 border-2 border-black rounded-lg bg-blue-500'>
-            <img src={followingIcon} alt="Following" className='button-image w-20 h-20 mr-4' />
-            <div>
-              <h2 className='button-text'>FOLLOWING</h2>
-              <h2 className='button-text'>{numFollowing}</h2>
+        
+        <div className='w-full h-1/4 flex flex-row justify-around p-8'>  
+          <button className='flex items-center justify-center w-1/3 p-6 border-4 border-black rounded-lg bg-blue-500'>
+            <img src={followersIcon} alt="Followers" className='w-20 h-20 mr-6' />
+            <div className="text-xl font-bold">
+              <h2>FOLLOWERS</h2>
+              <h2>{numFollowers}</h2>
+            </div>
+          </button>
+          <button className='flex items-center justify-center w-1/3 p-6 border-4 border-black rounded-lg bg-blue-500'>
+            <img src={followingIcon} alt="Following" className='w-20 h-20 mr-6' />
+            <div className="text-xl font-bold">
+            <p>FOLLOWING</p>
+            <p>{numFollowing}</p>
             </div>
           </button>
         </div>
-      </div>
+
+    </div>
     </div>
   );
 };
