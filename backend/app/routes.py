@@ -162,6 +162,7 @@ def route_user_id(usuario_id):
                 'name': user.nombres,
                 'surname': user.apellidos,
                 'career': career.nombre,
+                'idCareer': user.carrera,
                 'cycle': user.ciclo,
                 'username': user.username,
                 'email': user.email

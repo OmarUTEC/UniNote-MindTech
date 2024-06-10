@@ -23,7 +23,7 @@ function App() {
     <div className={`flex flex-col h-screen ${theme.backgroundColor} ${theme.textColor}`}>
       <div className={`${theme.navColor} ${theme.navTextColor} py-2 px-2 flex justify-between items-center`}> 
         <div className="flex items-center text-xl font-bold">
-          <img src={logo} alt="logo" className="w-12 h-12 mr-2" />
+          <img src={logo} alt="logo" className="w-12 h-12 mr-2"/>
           UniNote
         </div>
         <div>
