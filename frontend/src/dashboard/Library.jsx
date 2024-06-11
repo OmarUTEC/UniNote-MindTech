@@ -11,7 +11,7 @@ const Library = ({ userId }) => {
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/documents`, {
+        const response = await fetch(`http://127.0.0.1:5000/documents/library/${userId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });
@@ -36,8 +36,8 @@ const Library = ({ userId }) => {
         <LibraryItem
           key={index}
           title={document.titulo}
-          author={document.usuario_id}
-          idDocument={document.documento_id}
+          documentId={document.documento_id}
+          userId={document.usuario_id}
           darkMode={darkMode}
           preview={document.preview_image}
         />

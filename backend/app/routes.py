@@ -17,13 +17,6 @@ from sqlalchemy import and_
 
 UPLOAD_FOLDER = '/temp/folder'
 
-"""
-if Linux :
-    bash : sudo chmod 777 /temp/folder
-else :
-    continue
-"""
-
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 main = Blueprint('main', __name__)
@@ -320,6 +313,13 @@ def get_documents_by_user(id):
     return jsonify(documents_list), 200
 
 
+@main.route('/documents/library/<int:id>', methods=['GET'])
+def get_documents_by_library(id):
+    documents = Documentos.query.filter(Documentos.usuario_id != id).all()
+    documents_list = [doc.to_dict() for doc in documents]
+    return jsonify(documents_list), 200
+
+
 @main.route('/documents/<id>', methods=['GET','DELETE','PUT'])
 def route_documents(id):
     if request.method =='DELETE':
@@ -362,7 +362,7 @@ def download_doc(id):
     return send_file(temp_file.name, as_attachment=True, download_name=f"{document.titulo}.pdf")
 
 
-@main.route('/favorite', methods=['POST','DELETE'])
+@main.route('/favourite', methods=['POST','DELETE'])
 def add_favorite():
     if request.method == 'POST':
         data = request.get_json()
@@ -441,6 +441,14 @@ def get_favorites(documento_id):
     count = Favoritos.query.filter_by(documento_id=documento_id).count()
     return jsonify({'favorites_count': count}), 200
 
+@main.route('/likes/find/<int:userId>/<int:documentId>', methods=['GET'])
+def find_like(userId, documentId):
+    answer = False
+    like = Likes.query.filter(Likes.documento_id == documentId, Likes.usuario_id == userId).first()
+    if like:
+        answer = True
+    print(answer)
+    return jsonify({'answer': answer}), 200
 
 @main.route('/likes/<documento_id>', methods=['GET'])
 def get_likes(documento_id):
