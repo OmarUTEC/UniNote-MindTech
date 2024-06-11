@@ -14,17 +14,17 @@ const LandingPage = () => {
   const metas = [
     {
       title: 'Meta 1',
-      description: 'Descripción de la meta 1.',
+      description: 'Fomentar una mayor participación y colaboración entre estudiantes en el proceso de aprendizaje a través del uso de la plataforma.',
       image: meta1,
     },
     {
       title: 'Meta 2',
-      description: 'Descripción de la meta 2.',
+      description: ' Ayudar a los estudiantes a obtener una comprensión más profunda de los cursos superiores, incluyendo su metodología, dificultad y contenido, para una mejor preparación académica.',
       image: meta2,
     },
     {
       title: 'Meta 3',
-      description: 'Descripción de la meta 3.',
+      description: 'Crear una cultura de colaboración y compartición de conocimientos entre los estudiantes, promoviendo la reciprocidad y el apoyo mutuo.',
       image: meta3,
     },
   ];
