@@ -13,6 +13,7 @@ from google.oauth2 import id_token
 from io import BytesIO
 import tempfile
 from flask import render_template
+from sqlalchemy import and_
 
 UPLOAD_FOLDER = '/temp/folder'
 
@@ -152,7 +153,7 @@ def get_users():
     return jsonify(lista_users), 200
 
 
-@main.route('/usuarios/<usuario_id>', methods=['GET','PUT','DELETE'])
+@main.route('/usuarios/<int:usuario_id>', methods=['GET','PUT','DELETE'])
 def route_user_id(usuario_id):
     if request.method == 'GET':
         user = Usuarios.query.filter_by(usuario_id=usuario_id).first()
@@ -172,8 +173,16 @@ def route_user_id(usuario_id):
         user = Usuarios.query.filter_by(usuario_id=usuario_id).first()
         if user:
             data = request.get_json()
+            print(data)
             if 'username' in data:
-                if Usuarios.query.filter_by(username=data['username']).first():
+                existing_user = Usuarios.query.filter(
+                    and_(
+                        Usuarios.username == data['username'],
+                        Usuarios.usuario_id != usuario_id
+                    )
+                ).first()
+
+                if existing_user:
                     return jsonify({'message': 'Username already exists'}), 400
                 user.username = data['username']
             if 'foto_perfil_url' in data:
@@ -431,6 +440,7 @@ def add_like():
 def get_favorites(documento_id):
     count = Favoritos.query.filter_by(documento_id=documento_id).count()
     return jsonify({'favorites_count': count}), 200
+
 
 @main.route('/likes/<documento_id>', methods=['GET'])
 def get_likes(documento_id):
