@@ -17,7 +17,6 @@ const Item = ({ title, idDocument, darkMode, preview }) => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      // Crear un enlace y simular un clic para iniciar la descarga
       const a = document.createElement('a');
       a.style.display = 'none';
       a.href = downloadFileUrl;
@@ -42,7 +41,7 @@ const Item = ({ title, idDocument, darkMode, preview }) => {
         <img src={`data:image/jpeg;base64,${preview}`} alt="File" className="w-full h-full rounded-3xl"/>
       </div>  
       
-      <div className="w-full h-1/5 flex items-center justify-center border-t-2 border-b-2 border-black">
+      <div className="w-full h-1/5 flex flex-col items-center justify-center border-t-2 border-b-2 border-black">
         <p className="text-base font-bold">{title}</p>
       </div>
       

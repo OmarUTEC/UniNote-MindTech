@@ -2,7 +2,7 @@ import LandingPage from '../pages/LandingPage';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Inicio from '../dashboard/Inicio';
-import Biblioteca from '../dashboard/Biblioteca';
+import Library from '../dashboard/Library';
 import Carreras from '../dashboard/Carreras';
 import Upload from '../dashboard/Upload';
 import UploadFile from '../dashboard/components/upload/form';
@@ -27,7 +27,7 @@ const root = [{
     Element: Inicio
   }, {
     path: '/biblioteca',
-    Element: Biblioteca 
+    Element: Library
   }, {
     path: '/carreras',
     Element: Carreras

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import Biblioteca from './Biblioteca';
+import Library from './Library';
 import Carreras from './Carreras';
 import Inicio from './Inicio';
 import Network from './Network';
@@ -63,9 +63,9 @@ function App() {
         </div>
         <div className="flex-1 pt-2 pl-6 pr-6">
           <div className="w-full h-full max-w-full max-h-full">
-            {activeTab === 'inicio' && <Inicio />}
-            {activeTab === 'biblioteca' && <Biblioteca />}
-            {activeTab === 'carreras' && <Carreras />}
+            {activeTab === 'inicio' && <Inicio/>}
+            {activeTab === 'biblioteca' && <Library userId={userId}/>}
+            {activeTab === 'carreras' && <Carreras/>}
             {activeTab === 'network' && <Network userId={userId} handleClick={() => handleTabClick('update-data')}/>}
             {activeTab === 'upload' && <Upload userId={userId} handleUploadFileClick={() => handleTabClick('upload-file')}/>}
             {activeTab === 'upload-file' && <UploadFile userId={userId} handleUploadClick={() => handleTabClick('upload')}/>}
