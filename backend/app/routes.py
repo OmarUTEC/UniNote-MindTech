@@ -368,7 +368,6 @@ def add_favorite():
         data = request.get_json()
         usuario_id = data.get('usuario_id')
         documento_id = data.get('documento_id')
-
         if not usuario_id or not documento_id:
             return jsonify({'error': 'Missing usuario_id or documento_id'}), 400
 
@@ -385,7 +384,6 @@ def add_favorite():
         data = request.get_json()
         usuario_id = data.get('usuario_id')
         documento_id = data.get('documento_id')
-
         if not usuario_id or not documento_id:
             return jsonify({'error': 'Missing usuario_id or documento_id'}), 400
 
@@ -405,7 +403,7 @@ def add_like():
         data = request.get_json()
         usuario_id = data.get('usuario_id')
         documento_id = data.get('documento_id')
-
+        print(data)
         if not usuario_id or not documento_id:
             return jsonify({'error': 'Missing usuario_id or documento_id'}), 400
 
@@ -422,7 +420,7 @@ def add_like():
         data = request.get_json()
         usuario_id = data.get('usuario_id')
         documento_id = data.get('documento_id')
-
+        print(data)
         if not usuario_id or not documento_id:
             return jsonify({'error': 'Missing usuario_id or documento_id'}), 400
 

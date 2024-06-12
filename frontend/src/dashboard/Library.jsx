@@ -20,9 +20,7 @@ const Library = ({ userId }) => {
         }
         const data = await response.json();
         setDocuments(data);
-      } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
-      }
+      } catch (error) { console.error('There was a problem with the fetch operation:', error); }
     };
     if (!hasFetched.current) {
       fetchDocuments();
@@ -37,7 +35,8 @@ const Library = ({ userId }) => {
           key={index}
           title={document.titulo}
           documentId={document.documento_id}
-          userId={document.usuario_id}
+          userId={userId}
+          authorId={document.usuario_id}
           darkMode={darkMode}
           preview={document.preview_image}
         />

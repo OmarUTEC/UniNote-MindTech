@@ -6,7 +6,7 @@ import unfavourite from '../icons/unfavourite.png';
 import favourite from '../icons/favourite.png';
 
 
-const Item = ({ title, userId, documentId, darkMode, preview }) => {
+const Item = ({ title, userId, authorId, documentId, darkMode, preview }) => {
   const [markedFavourite, setFavourite] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [likeOperation, setLikeOperation] = useState(false);
@@ -101,7 +101,7 @@ const Item = ({ title, userId, documentId, darkMode, preview }) => {
       
       <div className="w-full h-1/5 flex flex-col items-center justify-center border-t-2 border-b-2 border-black">
         <p className="text-base font-bold">{title}</p>
-        <p className="text-sm text-gray-500">Autor: {userId} - {like ? 'true' : 'false'}</p>
+        <p className="text-sm text-gray-500">Autor: {authorId} - {like ? 'true' : 'false'}</p>
       </div>
       
       <div className="w-full h-1/5 flex items-center justify-around p-1">

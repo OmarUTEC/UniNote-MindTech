@@ -40,9 +40,9 @@ CREATE TABLE favoritos (
 );
 
 CREATE TABLE likes (
-    like_id SERIAL PRIMARY KEY,
-    usuario_id INTEGER NOT NULL,
-    documento_id INTEGER NOT NULL,
+    usuario_id INTEGER,
+    documento_id INTEGER,
+    PRIMARY KEY (usuario_id,documento_id),
     FOREIGN KEY (usuario_id) REFERENCES usuarios(usuario_id) ON DELETE CASCADE,
     FOREIGN KEY (documento_id) REFERENCES documentos(documento_id) ON DELETE CASCADE
 );

@@ -36,7 +36,7 @@ const Upload = ({ userId, handleUploadFileClick }) => {
   if (uploadedFiles === 0) {
     return (
       <div className={`min-h-screen flex items-center justify-center ${darkMode ? 'bg-gray-900 text-white' : 'bg-cach-l2 text-black'}`}>
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center gap-12">
           <p className="text-2xl font-bold">NO CUENTA CON NINGUN ARCHIVO DISPONIBLE PARA EDITAR</p>
           <UploadFileButton handleClick={handleUploadFileClick}/>
         </div>
