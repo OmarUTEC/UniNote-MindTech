@@ -70,7 +70,8 @@ def callback():
         db.session.commit()
         session["google_id"] = id_info.get("sub")
         session["name"] = id_info.get("name")
-        return redirect(('http://localhost:3000/dashboard'))
+        data = user.get_usuario_id()
+        return jsonify(data), 200
     except Exception as e:
         print(f"Error en el callback: {e}")
         abort(500, description=f"Error interno del servidor: {str(e)}")
@@ -205,7 +206,7 @@ def route_user_id(usuario_id):
 @main.route('/carreras', methods=['GET'])
 def get_carreras():
     todas_carreras = Carreras.query.all()
-    lista_carreras = [{'carrera_id': carrera.carrera_id, 'nombre': carrera.nombre} for carrera in todas_carreras]
+    lista_carreras = [{'careerId': carrera.carrera_id, 'careerName': carrera.nombre} for carrera in todas_carreras]
     return jsonify(lista_carreras), 200
 
 
@@ -313,9 +314,15 @@ def get_documents_by_user(id):
     return jsonify(documents_list), 200
 
 
-@main.route('/documents/library/<int:id>', methods=['GET'])
-def get_documents_by_library(id):
-    documents = Documentos.query.filter(Documentos.usuario_id != id).all()
+@main.route('/library/<int:userId>', methods=['GET'])
+def get_documents_by_library(userId):
+    documents = Documentos.query.filter(Documentos.usuario_id != userId).all()
+    documents_list = [doc.to_dict() for doc in documents]
+    return jsonify(documents_list), 200
+
+@main.route('/library/<int:userId>/career/<int:careerId>', methods=['GET'])
+def get_documents_by_career(userId, careerId):
+    documents = Documentos.query.filter(Documentos.usuario_id != userId, Documentos.carrera_id == careerId).all()
     documents_list = [doc.to_dict() for doc in documents]
     return jsonify(documents_list), 200
 
@@ -445,7 +452,6 @@ def find_like(userId, documentId):
     like = Likes.query.filter(Likes.documento_id == documentId, Likes.usuario_id == userId).first()
     if like:
         answer = True
-    print(answer)
     return jsonify({'answer': answer}), 200
 
 @main.route('/likes/<documento_id>', methods=['GET'])

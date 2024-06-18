@@ -10,9 +10,6 @@ import Network from '../dashboard/Network';
 import UpdateUserData from '../dashboard/components/network/form';
 import Dashboard from '../dashboard/Dashboard';
 
-// Importar componentes individuales para cada carrera
-import ComputerScience from '../dashboard/FilesCarrera/ComputerScience';
-
 const root = [{
     path: '/',
     Element: LandingPage
@@ -29,22 +26,22 @@ const root = [{
     path: '/biblioteca',
     Element: Library
   }, {
-    path: '/carreras',
+    path: '/career',
     Element: Carreras
   }, {
-    path: '/carreras/cs',
-    Element: ComputerScience
+    path: '/career/library',
+    Element: Library
   }, {
     path: '/upload',
     Element: Upload
   }, {
-    path: '/upload-file',
+    path: '/upload/file_upload',
     Element: UploadFile
   }, {
-    path: '/perfil',
+    path: '/network',
     Element: Network
   }, {
-    path: '/update-data',
+    path: '/network/user_data_update',
     Element: UpdateUserData
   }, {
     path: '/dashboard',

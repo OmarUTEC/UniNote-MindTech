@@ -11,12 +11,14 @@ import logo from '../assets/logo.png';
 import useTheme, { lightTheme, darkTheme } from '../theme.jsx';
 
 function App() {
-  const location = useLocation();
-  const { userId = 0 } = location.state;
   const { darkMode, toggleDarkMode } = useTheme();
   const theme = darkMode ? darkTheme : lightTheme;
-  const [activeTab, setActiveTab] = useState('inicio');
 
+  const location = useLocation();
+  const { userId = 0 } = location.state;
+  const [careerId, setCareerId] = useState(0);
+
+  const [activeTab, setActiveTab] = useState('inicio');
   const handleTabClick = (tab) => { setActiveTab(tab); };
 
   return (
@@ -46,11 +48,11 @@ function App() {
           >INICIO</button>
           <button
             className={`w-full block py-2 px-4 mb-2 rounded border ${activeTab === 'biblioteca' ? 'border-gray-400' : 'border-gray-300'} ${theme.buttonColor} ${theme.buttonTextColor} focus:outline-none`}
-            onClick={() => handleTabClick('biblioteca')}
+            onClick={() => handleTabClick('library')}
           >BIBLIOTECA</button>
           <button
             className={`w-full block py-2 px-4 mb-2 rounded border ${activeTab === 'carreras' ? 'border-gray-400' : 'border-gray-300'} ${theme.buttonColor} ${theme.buttonTextColor} focus:outline-none`}
-            onClick={() => handleTabClick('carreras')}
+            onClick={() => handleTabClick('career')}
           >CARRERAS</button>
           <button
             className={`w-full block py-2 px-4 mb-2 rounded border ${activeTab === 'network' ? 'border-gray-400' : 'border-gray-300'} ${theme.buttonColor} ${theme.buttonTextColor} focus:outline-none`}
@@ -64,14 +66,15 @@ function App() {
         <div className="flex-1 pt-2 pl-6 pr-6">
           <div className="w-full h-full max-w-full max-h-full">
             {activeTab === 'inicio' && <Inicio/>}
-            {activeTab === 'biblioteca' && <Library userId={userId}/>}
-            {activeTab === 'carreras' && <Carreras/>}
-            {activeTab === 'network' && <Network userId={userId} handleClick={() => handleTabClick('update-data')}/>}
-            {activeTab === 'upload' && <Upload userId={userId} handleUploadFileClick={() => handleTabClick('upload-file')}/>}
-            {activeTab === 'upload-file' && <UploadFile userId={userId} handleUploadClick={() => handleTabClick('upload')}/>}
-            {activeTab === 'update-data' && <UpdateUserData userId={userId} handleClick={() => handleTabClick('network')}/>}
+            {activeTab === 'library' && <Library filters={{ userId: userId, careerId: 0 }} />}
+            {activeTab === 'career' && <Carreras userId={userId} setCareerId={setCareerId} handleClick={() => handleTabClick('career/library')}/>}
+            {activeTab === 'career/library' && <Library filters={{ userId: userId, careerId: careerId }} />}
+            {activeTab === 'network' && <Network userId={userId} handleClick={() => handleTabClick('/network/user_data_update')}/>}
+            {activeTab === '/network/user_data_update' && <UpdateUserData userId={userId} handleClick={() => handleTabClick('network')}/>}
+            {activeTab === 'upload' && <Upload userId={userId} handleUploadFileClick={() => handleTabClick('/upload/file_upload')}/>}
+            {activeTab === '/upload/file_upload' && <UploadFile userId={userId} handleUploadClick={() => handleTabClick('upload')}/>}
           </div>
-        </div>    
+        </div>
       </div>
     </div>
   );
