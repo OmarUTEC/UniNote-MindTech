@@ -66,9 +66,11 @@ class Documentos(db.Model):
 
 class Favoritos(db.Model):
     __tablename__ = 'favoritos'
-    favorito_id = db.Column(db.Integer, primary_key=True)
-    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.usuario_id'), nullable=False)
-    documento_id = db.Column(db.Integer, db.ForeignKey('documentos.documento_id'), nullable=False)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.usuario_id'), primary_key=True)
+    documento_id = db.Column(db.Integer, db.ForeignKey('documentos.documento_id'), primary_key=True)
+    def __init__(self, usuario_id, documento_id):
+        self.usuario_id = usuario_id
+        self.documento_id = documento_id
 
 class Likes(db.Model):
     __tablename__ = 'likes'

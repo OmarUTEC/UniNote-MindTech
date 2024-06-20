@@ -1,34 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import download_file_button from '../icons/download_file_button.png';
-import unlike from '../icons/unlike.jpg';
-import liked from '../icons/like.jpg';
-import unfavourite from '../icons/unfavourite.png';
-import favourite from '../icons/favourite.png';
+
+import yes_like from '../icons/like.jpg';
+import not_like from '../icons/unlike.jpg';
+
+import yes_favourite from '../icons/favourite.png';
+import not_favourite from '../icons/unfavourite.png';
 
 
 const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview }) => {
-  const [markedFavourite, setFavourite] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
-  const [likeOperation, setLikeOperation] = useState(false);
+
   const [like, setLike] = useState(null);
+  const [likeOperation, setLikeOperation] = useState(false);
+
+  const [favourite, setFavourite] = useState(null);
+  const [favouriteOperation, setFavouriteOperation] = useState(false);
 
   useEffect(() => {
-    const fetchLike = async () => {
+    const fetchLike = async() => {
       try {
         const response = await fetch(`http://127.0.0.1:5000/likes/find/${userId}/${documentId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
+        if (!response.ok) { throw new Error('Network response was not ok'); }
         const data = await response.json();
         setLike(data.answer);
-      } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
-      }
+      } catch (error) { console.error('There was a problem with the fetch operation:', error); }
+    };
+    const fetchFavourite = async() => {
+      try {
+        const response = await fetch(`http://127.0.0.1:5000/favourite/find/${userId}/${documentId}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        if (!response.ok) { throw new Error('Network response was not ok'); }
+        const data = await response.json();
+        setFavourite(data.answer);
+      } catch (error) { console.error('There was a problem with the fetch operation:', error); }
     };
     fetchLike();
+    fetchFavourite();
   }, [userId, documentId]);
 
   const handleDownloadClick = async () => {
@@ -56,6 +69,7 @@ const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview
 
   const handleLikeClick = async () => {
     if (likeOperation) return;
+    setLikeOperation(true);
     const dataLike = { 'usuario_id': userId, 'documento_id': documentId };  
     try {
       let response;
@@ -72,9 +86,7 @@ const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview
           body: JSON.stringify(dataLike),
         });
       }
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
+      if (!response.ok) { throw new Error('Network response was not ok'); }
       setLike(prevLike => !prevLike);
     } catch (error) {
       console.error('There was a problem with the download operation:', error);
@@ -83,9 +95,32 @@ const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview
     }
   };
   
-
-  const toggleFavourite = () => {
-    setFavourite(prevFarourite => !prevFarourite);
+  const handleFavouriteClick = async() => {
+    if (favouriteOperation) return;
+    setFavouriteOperation(true);
+    const dataFavourite = { 'usuario_id': userId, 'documento_id': documentId };  
+    try {
+      let response;
+      if (favourite) {
+        response = await fetch(`http://127.0.0.1:5000/favourite`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(dataFavourite),
+        });
+      } else {
+        response = await fetch(`http://127.0.0.1:5000/favourite`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(dataFavourite),
+        });
+      }
+      if (!response.ok) { throw new Error('Network response was not ok'); }
+      setFavourite(prevFarourite => !prevFarourite);
+    } catch (error) {
+      console.error('There was a problem with the download operation:', error);
+    } finally {
+      setFavouriteOperation(false);
+    }
   };
   
   return (
@@ -109,10 +144,10 @@ const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview
           <img src={download_file_button} alt="Download" />
         </button>
         <button onClick={handleLikeClick} disabled={likeOperation} className="w-8 h-8" >
-          <img src={like ? liked : unlike} alt="Like" />
+          <img src={like ? yes_like : not_like} alt="Like" />
         </button>
-        <button onClick={toggleFavourite} className="w-8 h-8" >
-          <img src={markedFavourite ? favourite : unfavourite} alt="favoritos" />
+        <button onClick={handleFavouriteClick} disabled={favouriteOperation} className="w-8 h-8" >
+          <img src={favourite ? yes_favourite : not_favourite} alt="favoritos" />
         </button>
       </div>
     </div>

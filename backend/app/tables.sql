@@ -10,7 +10,6 @@ CREATE TABLE usuarios (
     ciclo VARCHAR(50)
 );
 
-
 CREATE TABLE carreras (
     carrera_id SERIAL PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL
@@ -38,7 +37,6 @@ CREATE TABLE favoritos (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(usuario_id) ON DELETE CASCADE,
     FOREIGN KEY (documento_id) REFERENCES documentos(documento_id) ON DELETE CASCADE
 );
-
 
 CREATE TABLE likes (
     usuario_id INTEGER,
@@ -71,7 +69,6 @@ CREATE TABLE follows(
     FOREIGN KEY (follower_id) REFERENCES usuarios(usuario_id) ON DELETE CASCADE,
     FOREIGN KEY (following_id) REFERENCES usuarios(usuario_id) ON DELETE CASCADE
 );
-
 
 INSERT INTO carreras(nombre) VALUES 
     ('Administración y Negocios Digitales'),
