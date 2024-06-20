@@ -1,7 +1,6 @@
 from google_auth_oauthlib.flow import Flow
 import pathlib
 import os
-from config import Config
 
 def get_google_oauth_flow():
     client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secret.json")

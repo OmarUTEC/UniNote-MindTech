@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import useTheme from "../theme";
 import LibraryItem from './components/library/item';
 
-const Library = ({ filters }) => {
+const Bookshelf = ({ filters }) => {
   const { darkMode } = useTheme();
   const [documents, setDocuments] = useState([]);
   const hasFetched = useRef(false); 
@@ -50,4 +50,4 @@ const Library = ({ filters }) => {
   );
 };
 
-export default Library;
+export default Bookshelf;

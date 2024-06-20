@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Library from './Library';
-import Biblioteca from './Biblioteca';
+import Bookshelf from './Bookshelf';
 import Carreras from './Carreras';
 import Inicio from './Inicio';
 import Network from './Network';
@@ -106,7 +106,7 @@ function App() {
         <div className="flex-1 pt-2 pl-6 pr-6">
           <div className="w-full h-full max-w-full max-h-full">
             {activeTab === 'inicio' && <Inicio/>}
-            {activeTab === 'library' && <Biblioteca filters={{ userId: userId, careerId: 0 }} />}
+            {activeTab === 'library' && <Bookshelf filters={{ userId: userId, careerId: 0 }} />}
             {activeTab === 'career' && <Carreras userId={userId} setCareerId={setCareerId} handleClick={() => handleTabClick('career/library')}/>}
             {activeTab === 'career/library' && <Library filters={{ userId: userId, careerId: careerId }} />}
             {activeTab === 'network' && <Network userId={userId} handleClick={() => handleTabClick('/network/user_data_update')}/>}

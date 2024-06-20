@@ -39,3 +39,4 @@ def find_favourite(userId, documentId):
 def count_favourite(documentId):
     count = Favoritos.query.filter_by(documento_id=documentId).count()
     return jsonify({'answer': count}), 200
+

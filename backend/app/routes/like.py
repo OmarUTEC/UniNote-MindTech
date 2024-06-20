@@ -6,35 +6,27 @@ from ..drive_api_connect import *
 like_bp = Blueprint('like', __name__)
 
 
-@like_bp.route('/like', methods=['POST','DELETE'])
-def add_like():
+@like_bp.route('/like', methods=['POST', 'DELETE'])
+def manage_like():
+    data = request.get_json()
+    usuario_id = data.get('usuario_id')
+    documento_id = data.get('documento_id')
+    if not usuario_id or not documento_id:
+        return jsonify({'error':'Missing usuario_id or documento_id'}), 400
+    itemFound = Likes.query.filter_by(usuario_id=usuario_id, documento_id=documento_id).first()
     if request.method == 'POST':
-        data = request.get_json()
-        usuario_id = data.get('usuario_id')
-        documento_id = data.get('documento_id')
-        print(data)
-        if not usuario_id or not documento_id:
-            return jsonify({'error': 'Missing usuario_id or documento_id'}), 400
-        existing_like = Likes.query.filter_by(usuario_id=usuario_id, documento_id=documento_id).first()
-        if existing_like:
-            return jsonify({'message': 'Like already exists'})
+        if itemFound:
+            return jsonify({'message':'Like already exists'}), 400
         new_like = Likes(usuario_id=usuario_id, documento_id=documento_id)
         db.session.add(new_like)
         db.session.commit()
-        return jsonify({'message': 'Like added successfully'}), 200
+        return jsonify({'message':'Like added successfully'}), 200
     elif request.method == 'DELETE':
-        data = request.get_json()
-        usuario_id = data.get('usuario_id')
-        documento_id = data.get('documento_id')
-        print(data)
-        if not usuario_id or not documento_id:
-            return jsonify({'error': 'Missing usuario_id or documento_id'}), 400
-        like = Likes.query.filter_by(usuario_id=usuario_id, documento_id=documento_id).first()
-        if not like:
-            return jsonify({'error': 'Like not found'}), 404
-        db.session.delete(like)
+        if not itemFound:
+            return jsonify({'error':'Like not found'}), 404
+        db.session.delete(itemFound)
         db.session.commit()
-        return jsonify({'message': 'Like deleted successfully'}), 200
+        return jsonify({'message':'Like deleted successfully'}), 200
 
 
 @like_bp.route('/likes/find/<int:userId>/<int:documentId>', methods=['GET'])
