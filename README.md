@@ -55,7 +55,7 @@ Además, podría estar interesado en compartir sus propios apuntes y colaborar c
   - Alejandro Chipayo
 * **Backend**
   - Santiago Uribe
-  - Sebastian Rejas Berrios
+  - Sebastian Rejas berrios
   - Aaron Santamaria
 
 ## ACTIVIDADES 15/05
