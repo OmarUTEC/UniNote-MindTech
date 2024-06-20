@@ -66,47 +66,48 @@ function App() {
             <div className="text-xl font-semibold">{userName}</div>
             <div className="text-sm">4 Amigos | 8 Subidos</div>
           </div>
+          
           <button
             className={`w-full flex items-center py-2 px-4 mb-2 rounded ${activeTab === 'inicio' ? 'bg-blue-200' : ''} ${theme.buttonTextColor} focus:outline-none`}
             onClick={() => handleTabClick('inicio')}
-          >
-            <i className="fas fa-home mr-2"></i>INICIO
+          > <i className="fas fa-home mr-2"></i>INICIO
           </button>
+          
           <button
             className={`w-full flex items-center py-2 px-4 mb-2 rounded ${activeTab === 'library' ? 'bg-blue-200' : ''} ${theme.buttonTextColor} focus:outline-none`}
             onClick={() => handleTabClick('library')}
-          >
-            <i className="fas fa-book mr-2"></i>BIBLIOTECA
+          > <i className="fas fa-book mr-2"></i>BIBLIOTECA
           </button>
+
           <button
             className={`w-full flex items-center py-2 px-4 mb-2 rounded ${activeTab === 'career' ? 'bg-blue-200' : ''} ${theme.buttonTextColor} focus:outline-none`}
             onClick={() => handleTabClick('career')}
-          >
-            <i className="fas fa-graduation-cap mr-2"></i>CARRERAS
+          > <i className="fas fa-graduation-cap mr-2"></i>CARRERAS
           </button>
+          
           <button
             className={`w-full flex items-center py-2 px-4 mb-2 rounded ${activeTab === 'network' ? 'bg-blue-200' : ''} ${theme.buttonTextColor} focus:outline-none`}
             onClick={() => handleTabClick('network')}
-          >
-            <i className="fas fa-user mr-2"></i>PERFIL
+          > <i className="fas fa-user mr-2"></i>PERFIL
           </button>
+
           <button
             className={`w-full flex items-center py-2 px-4 mb-2 rounded ${activeTab === 'upload' ? 'bg-blue-200' : ''} ${theme.buttonTextColor} focus:outline-none`}
             onClick={() => handleTabClick('upload')}
-          >
-            <i className="fas fa-upload mr-2"></i>SUBIR
+          > <i className="fas fa-upload mr-2"></i>SUBIR
           </button>
+          
           <button
             className={`w-full flex items-center py-2 px-4 mb-2 rounded ${theme.buttonTextColor} focus:outline-none`}
             onClick={() => handleTabClick('logout')}
-          >
-            <i className="fas fa-sign-out-alt mr-2"></i>CERRAR SESIÓN
+          > <i className="fas fa-sign-out-alt mr-2"></i>CERRAR SESIÓN
           </button>
         </div>
+        
         <div className="flex-1 pt-2 pl-6 pr-6">
           <div className="w-full h-full max-w-full max-h-full">
             {activeTab === 'inicio' && <Inicio/>}
-            {activeTab === 'library' && <Bookshelf filters={{ userId: userId, careerId: 0 }} />}
+            {activeTab === 'library' && <Bookshelf userId={userId} />}
             {activeTab === 'career' && <Carreras userId={userId} setCareerId={setCareerId} handleClick={() => handleTabClick('career/library')}/>}
             {activeTab === 'career/library' && <Library filters={{ userId: userId, careerId: careerId }} />}
             {activeTab === 'network' && <Network userId={userId} handleClick={() => handleTabClick('/network/user_data_update')}/>}

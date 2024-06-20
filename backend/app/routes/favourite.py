@@ -40,3 +40,11 @@ def count_favourite(documentId):
     count = Favoritos.query.filter_by(documento_id=documentId).count()
     return jsonify({'answer': count}), 200
 
+@favourite_bp.route('/favourite/bookshelf/<int:userId>', methods=['GET'])
+def get_bookshelf(userId):
+    try:
+        favourite = Favoritos.query.filter_by(usuario_id=userId).all()
+        bookshelf = [fav.documento.to_dict() for fav in favourite]
+        return jsonify(bookshelf)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
