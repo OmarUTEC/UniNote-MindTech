@@ -53,13 +53,13 @@ const Chat = () => {
   };
 
   return (
-    <div className="w-80 fixed right-0 top-0 h-screen flex flex-col bg-gray-300 dark:bg-gray-900 border-l border-gray-300 dark:border-gray-700 shadow-lg overflow-hidden">
+    <div className="w-80 fixed right-0 top-0 h-screen flex flex-col bg-indigo-300 dark:bg-gray-900 border-l border-gray-300 dark:border-gray-700 shadow-lg overflow-hidden">
       <div className="flex-1 p-4 overflow-y-auto">
         {messages.map((message) => (
           <div
             key={message.id}
             className="mb-2 p-2 bg-white dark:bg-gray-800 rounded-lg shadow"
-            style={{ wordWrap: "break-word" }} // Agregar estilo para envolver el texto
+            style={{ wordWrap: "break-word", color: "black" }} // Estilo para el color del texto
           >
             {message.text}
           </div>
@@ -74,7 +74,7 @@ const Chat = () => {
           placeholder="Escribe tu mensaje..."
           className="w-full p-2 border rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
           rows="1"
-          style={{ overflow: "hidden", maxWidth: "100%" }}
+          style={{ overflow: "hidden", maxWidth: "100%", color: "black" }} // Estilo para el color del texto
         />
         <div className="flex mt-2 space-x-2">
           <button

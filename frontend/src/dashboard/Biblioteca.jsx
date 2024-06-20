@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import useTheme from "../theme";
 import LibraryItem from './components/library/item';
-import Chat from './Chat';  // Importa el componente Chat
 
 const Library = ({ filters }) => {
   const { darkMode } = useTheme();
@@ -34,7 +33,6 @@ const Library = ({ filters }) => {
   }, [ userId, careerId ]);
 
   return (
-    <div className={`flex ${darkMode ? 'bg-gray-900 text-white' : 'bg-cach-l2 text-black'}`}>
       <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 p-12 overflow-y-auto">
         {documents.map((document, index) => (
           <LibraryItem
@@ -48,9 +46,7 @@ const Library = ({ filters }) => {
             preview={document.preview_image}
           />
         ))}
-      </div>
-      <Chat /> {/* Agrega el componente Chat */}
-    </div>
+        </div>
   );
 };
 
