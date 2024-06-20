@@ -1,8 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from config import Config
-
 from flask_cors import CORS
+from config import Config
 
 db = SQLAlchemy()
 
@@ -13,8 +12,7 @@ def create_app():
     CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
     
     with app.app_context():
-        from .routes import main as main_blueprint
-        app.register_blueprint(main_blueprint)
-    
-
+        from app.routes import init_routes
+        init_routes(app)
     return app
+

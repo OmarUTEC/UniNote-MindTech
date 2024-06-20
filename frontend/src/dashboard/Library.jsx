@@ -49,7 +49,7 @@ const Library = ({ filters }) => {
           />
         ))}
       </div>
-      <Chat /> {/* Agrega el componente Chat */}
+      <Chat />
     </div>
   );
 };
