@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Login.css'; 
 import Register from './Register';
 import logo from '../assets/logo.png';
@@ -14,6 +14,23 @@ const Login = () => {
   });
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    const handleMessage = (event) => {
+      if (event.origin === "http://127.0.0.1:5000") {
+        const userId = event.data.usuario_id;
+        if (userId) {
+          navigate('/dashboard', { state: { userId } });
+        }
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
+  }, [navigate]);
+
   const toggleView = () => {
     setIsLogin(!isLogin);
   };
@@ -28,15 +45,22 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = 'http://127.0.0.1:5000/login-google';
+    const width = 500;
+    const height = 600;
+    const left = (window.innerWidth / 2) - (width / 2);
+    const top = (window.innerHeight / 2) - (height / 2);
 
+    window.open(
+      'http://127.0.0.1:5000/login-google', 
+      'GoogleAuth',
+      `width=${width},height=${height},top=${top},left=${left}`
+    );
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const { username, password } = formData;
 
-    // Validar campos vacíos
     if (!username || !password) {
       setError("Por favor, rellena todos los campos.");
       return;

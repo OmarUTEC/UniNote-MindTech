@@ -67,10 +67,17 @@ def callback():
         session["google_id"] = id_info.get("sub")
         session["name"] = id_info.get("name")
         data = user.get_usuario_id()
-        return jsonify(data), 200
+        
+        return f"""
+        <script>
+            window.opener.postMessage({data}, "http://localhost:3000");
+            window.close();
+        </script>
+        """
     except Exception as e:
         print(f"Error en el callback: {e}")
         abort(500, description=f"Error interno del servidor: {str(e)}")
+
 
 
 @auth_bp.route("/logout")
