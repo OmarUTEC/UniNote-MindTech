@@ -13,19 +13,14 @@ class Usuarios(db.Model):
     apellidos = db.Column(db.String(255))
     carrera = db.Column(db.String(255))
     ciclo = db.Column(db.String(50))
-
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
-
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
-
     def get_usuario_id(self):
         return {'usuario_id': self.usuario_id}
-
     documentos = db.relationship('Documentos', backref='autor', lazy=True)
     comentarios = db.relationship('Comentarios', backref='usuario', lazy=True)
-
     def __repr__(self):
         return f'<Usuario {self.username}>'
     
@@ -46,7 +41,6 @@ class Documentos(db.Model):
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.usuario_id'), nullable=False)
     carrera_id = db.Column(db.Integer, db.ForeignKey('carreras.carrera_id'), nullable=False)
     fecha_creacion = db.Column(db.DateTime, server_default=db.func.now())
-
     favoritos = db.relationship('Favoritos', backref='documento', lazy=True)
     likes = db.relationship('Likes', backref='documento', lazy=True)
     foros = db.relationship('Foros', backref='documento', lazy=True)

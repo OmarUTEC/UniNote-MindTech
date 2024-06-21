@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import useTheme from "../theme";
 import LibraryItem from './components/library/item';
-import Chat from './Chat';  // Importa el componente Chat
+import Chat from './Chat';
 
 const Library = ({ filters }) => {
   const { darkMode } = useTheme();

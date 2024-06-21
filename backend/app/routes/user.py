@@ -47,7 +47,6 @@ def route_user_id(usuario_id):
                         Usuarios.usuario_id != usuario_id
                     )
                 ).first()
-
                 if existing_user:
                     return jsonify({'message': 'Username already exists'}), 400
                 user.username = data['username']

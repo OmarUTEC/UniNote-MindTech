@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, send_file
-from app.models import Documentos
+from app.models import Usuarios, Documentos
 from .. import db
 from ..drive_api_connect import *
 import datetime
@@ -119,3 +119,16 @@ def download_doc(id):
     download_file(file_id, temp_file.name)
     return send_file(temp_file.name, as_attachment=True, download_name=f"{document.titulo}.pdf")
 
+
+@document_bp.route('/document/general-search', methods=['GET'])
+def get_user_documents():
+    try:
+        results = db.session.query(Usuarios.username, Documentos).join(Documentos, Usuarios.usuario_id == Documentos.usuario_id).all()
+        user_documents = []
+        for username, doc in results:
+            data = doc.to_dict()
+            data['username'] = username
+            user_documents.append(data)
+        return jsonify(user_documents)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500

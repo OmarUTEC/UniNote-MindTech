@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
 import pub from '../assets/pub.png';
 import user from '../assets/user.png';
 import estrella from '../assets/estrella.png';
@@ -61,12 +60,14 @@ const styles = {
     fontWeight: 'bold',
   },
   feedFooter: {
+    width: '100%',
     padding: '10px',
   },
   iconButtons: {
     display: 'flex',
-    marginRight: '30px',
+    marginRight: '4px',
     alignItems: 'center',
+    width: '100%',
   },
   icon: {
     width: '20px',
@@ -105,21 +106,25 @@ const FeedItem = ({ username, description }) => {
         <img src={user} alt="Avatar usuario" style={styles.feedHeaderImg} />
         <span style={styles.username}>{username}</span>
       </div>
-      <img src={pub} alt="Publicación" className="h-12" />
+      <img src={pub} alt="Publicación" className="h-12 w-full" />
       <div style={styles.feedFooter}>
-        <div style={styles.iconButtons}>
+        <div style={styles.iconButtons} className='justify-around'>
+          
           <button onClick={() => handleButtonClick('star')}>
             <img src={estrella} alt="star" style={styles.icon} />
             <span style={styles.iconNumber}>{clicks.star ? 1 : 0}</span>
           </button>
+          
           <button onClick={() => handleButtonClick('like')}>
             <img src={like} alt="like" style={styles.icon} />
             <span style={styles.iconNumber}>{clicks.like ? 1 : 0}</span>
           </button>
+          
           <button onClick={() => handleButtonClick('download')}>
             <img src={descarga} alt="download" style={styles.icon} />
             <span style={styles.iconNumber}>{clicks.download ? 1 : 0}</span>
           </button>
+
         </div>
         <div style={styles.description}>
           <strong></strong> {description}
@@ -129,23 +134,47 @@ const FeedItem = ({ username, description }) => {
   );
 };
 
-const Inicio = () => (
-  <div style={styles.page}>
-    <div style={styles.mainContent}>
-      <h2 className="text-xl font-bold mb-2">USUARIOS</h2>
-      <p>Publicaciones.</p>
-      <Link to="/inicio" className="text-blue-500"></Link>
-
-      <div style={styles.flex}>
-        <FeedItem username="Noe" description="Descripción de la publicación 1." />
-        <FeedItem username="Javier" description="Descripción de la publicación 2." />
-        <FeedItem username="Santiago" description="Descripción de la publicación 3." />
-        <FeedItem username="Sebastian" description="Descripción de la publicación 4." />
-        <FeedItem username="Nicol" description="Descripción de la publicación 5." />
-        <FeedItem username="Santiago" description="Descripción de la publicación 6." />
+const Inicio = () => {
+  const hasFetched = useRef(false); 
+  const [document, setDocument] = useState([]);
+  
+  useEffect(() => {
+    const fetchDocuments = async () => {
+      try {
+        const searchPath = `http://127.0.0.1:5000/document/general-search`;
+        const response = await fetch(searchPath, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        if (!response.ok) { throw new Error('Network response was not ok'); }
+        const data = await response.json();
+        setDocument(data);
+      } catch (error) { console.error('There was a problem with the fetch operation:', error); }
+    };
+    if (!hasFetched.current) {
+      fetchDocuments();
+      hasFetched.current = true;
+    }
+  }, []);
+  
+  return (
+    <div style={styles.page}>
+      <div style={styles.mainContent}>
+        <h2 className="text-xl font-bold mb-2">USUARIOS</h2>
+        <p>Publicaciones.</p>
+  
+        <div style={styles.flex}>
+          {document.map((document, index) => (
+            <FeedItem
+              key={index} 
+              username={document.username}
+              description={document.descripcion}
+            />
+          ))}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default Inicio;
