@@ -49,9 +49,6 @@ const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
-
-      setPdfUrl('');
-      setIsPdfDownloaded(false);
     } catch (error) {
       console.error('There was a problem with the download operation:', error);
     } finally {
@@ -80,7 +77,6 @@ const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview
       const fileUrl = URL.createObjectURL(blob);
       setPdfUrl(fileUrl);  
       setIsPdfDownloaded(true);
-      setShowPdfModal(true); 
     } catch (error) {
       console.error('There was a problem with viewing the PDF:', error);
     } finally {
@@ -153,7 +149,11 @@ const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview
                 <p className="text-2xl">Cargando...</p>
               </div>
             ) : (
-              <iframe src={pdfUrl} className="w-full h-full border-none"></iframe>
+              <iframe 
+                src={pdfUrl} 
+                className="w-full h-full border-none"
+                title={`PDF viewer for ${title}`}
+              ></iframe>
             )}
           </div>
         </div>
