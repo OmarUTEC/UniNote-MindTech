@@ -53,9 +53,8 @@ const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview
       a.download = title;
       document.body.appendChild(a);
       a.click();
-      window.URL.revokeObjectURL(url);  // Liberar el objeto URL después de la descarga
+      window.URL.revokeObjectURL(url);  
 
-      // Limpiar la URL del PDF descargado y marcar como no descargado
       setPdfUrl('');
       setIsPdfDownloaded(false);
     } catch (error) {
@@ -66,14 +65,14 @@ const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview
   };
 
   const handleViewPdfClick = async () => {
-    setShowPdfModal(true); // Mostrar ventana de precarga antes de comenzar la descarga
+    setShowPdfModal(true);
 
     if (isPdfDownloaded) {
-      setIsLoading(false); // Asegurarse de que no se muestre el estado de carga si el PDF ya está descargado
+      setIsLoading(false);
       return;
     }
 
-    setIsLoading(true); // Mostrar ventana de precarga
+    setIsLoading(true); 
 
     const viewPdfUrl = `http://127.0.0.1:5000/download/${documentId}`;
 
@@ -84,12 +83,12 @@ const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview
       }
       const blob = await response.blob();
       const fileUrl = URL.createObjectURL(blob);
-      setPdfUrl(fileUrl);  // Almacenar la URL del PDF descargado
+      setPdfUrl(fileUrl);  
       setIsPdfDownloaded(true);
     } catch (error) {
       console.error('There was a problem with viewing the PDF:', error);
     } finally {
-      setIsLoading(false); // Ocultar ventana de precarga
+      setIsLoading(false);
     }
   };
 
@@ -118,9 +117,9 @@ const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview
 
   return (
     <div className={`w-96 h-96 flex flex-col items-center rounded-3xl border-2 border-black ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-md transform-origin-center transition-transform duration-300 ease-in-out`}>
-      <div className="w-full h-3/5">
-        <img src={`data:image/jpeg;base64,${preview}`} alt="File" className="w-full h-full rounded-3xl" />
-      </div>
+      <button onClick={handleViewPdfClick} disabled={isLoading} className="w-full h-3/5 rounded-3xl overflow-hidden">
+        <img src={`data:image/jpeg;base64,${preview}`} alt="File" className="w-full h-full object-cover" />
+      </button>
       <div className="w-full h-1/5 flex flex-col items-center justify-center border-t-2 border-b-2 border-black">
         <p className="text-base font-bold">{title}</p>
         <p className="text-sm text-gray-500">Autor: {authorId} - Carrera: {careerId}</p>
