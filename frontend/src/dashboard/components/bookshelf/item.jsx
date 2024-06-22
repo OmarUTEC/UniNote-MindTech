@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import download_file_button from '../icons/download_file_button.png';
-
 import yes_like from '../icons/like.jpg';
 import not_like from '../icons/unlike.jpg';
+import eye_icon from '../icons/ojo.png';
+import loading_spinner from '../icons/loading_spinner.gif';
+import close_icon from '../icons/close.png';
 
 const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview }) => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [like, setLike] = useState(null);
   const [likeOperation, setLikeOperation] = useState(false);
+  const [showPdfModal, setShowPdfModal] = useState(false);
+  const [pdfUrl, setPdfUrl] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isPdfDownloading, setIsPdfDownloading] = useState(false);
+  const [isPdfDownloaded, setIsPdfDownloaded] = useState(false);
 
   useEffect(() => {
     const fetchData = async (endpoint, setter) => {
@@ -33,17 +40,58 @@ const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview
     try {
       const response = await fetch(downloadFileUrl);
       if (!response.ok) throw new Error('Network response was not ok');
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.style.display = 'none';
-      a.href = downloadFileUrl;
+      a.href = url;
+      a.download = title;
       document.body.appendChild(a);
       a.click();
-      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+
+      // Limpiar la URL del PDF descargado y marcar como no descargado
+      setPdfUrl('');
+      setIsPdfDownloaded(false);
     } catch (error) {
       console.error('There was a problem with the download operation:', error);
     } finally {
       setIsDownloading(false);
     }
+  };
+
+  const handleViewPdfClick = async () => {
+    if (isPdfDownloaded) {
+      setShowPdfModal(true);
+      return;
+    }
+
+    setIsPdfDownloading(true); // Marcar que se está descargando el PDF
+    setIsLoading(true);
+    setShowPdfModal(true);
+
+    const viewPdfUrl = `http://127.0.0.1:5000/download/${documentId}`;
+
+    try {
+      const response = await fetch(viewPdfUrl);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const blob = await response.blob();
+      const fileUrl = URL.createObjectURL(blob);
+      setPdfUrl(fileUrl);  // Almacenar la URL del PDF descargado
+      setIsPdfDownloaded(true);
+      setShowPdfModal(true);  // Mostrar el modal solo después de haber descargado y almacenado el PDF
+    } catch (error) {
+      console.error('There was a problem with viewing the PDF:', error);
+    } finally {
+      setIsPdfDownloading(false); // Finalizar la descarga del PDF
+      setIsLoading(false);
+    }
+  };
+
+  const closeModal = () => {
+    setShowPdfModal(false);
   };
 
   const handleOperationClick = async (type, setter, value, setterOperation, operationValue) => {
@@ -76,15 +124,41 @@ const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview
       </div>
       <div className="w-full h-1/5 flex items-center justify-around p-1">
         <button onClick={handleDownloadClick} disabled={isDownloading} className="w-8 h-8">
-          <img src={download_file_button} alt="Download" />
+          {isDownloading ? (
+            <img src={loading_spinner} alt="Downloading..." className="w-full h-full" />
+          ) : (
+            <img src={download_file_button} alt="Download" />
+          )}
         </button>
-        <button
-          onClick={() => handleOperationClick('like', setLike, like, setLikeOperation, likeOperation)}
-          disabled={likeOperation}
-          className="w-8 h-8"
-        > <img src={like ? yes_like : not_like} alt="Like" />
+        <button onClick={handleViewPdfClick} disabled={isLoading || isPdfDownloading} className="w-8 h-8">
+          {isLoading || isPdfDownloading ? (
+            <img src={loading_spinner} alt="Loading" className="w-full h-full" />
+          ) : (
+            <img src={eye_icon} alt="View PDF" />
+          )}
+        </button>
+        <button onClick={() => handleOperationClick('like', setLike, like, setLikeOperation, likeOperation)} disabled={likeOperation} className="w-8 h-8">
+          <img src={like ? yes_like : not_like} alt="Like" />
         </button>
       </div>
+
+      {showPdfModal && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+          <div className="bg-white p-3 rounded-lg shadow-lg relative w-3/4 h-3/4">
+            <button onClick={closeModal} className="absolute top-0 right-0 -mt-8 -mr-8 p-2 bg-gray-200 rounded-full shadow-md" style={{ cursor: 'pointer' }}>
+              <img src={close_icon} alt="Close" className="w-6 h-6" />
+            </button>
+            {isLoading || isPdfDownloading ? (
+              <div className="flex items-center justify-center h-full">
+                <img src={loading_spinner} alt="Loading..." className="w-20 h-20 mr-3" />
+                <p className="text-2xl">Cargando...</p>
+              </div>
+            ) : (
+              <iframe src={pdfUrl} className="w-full h-full border-none"></iframe>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
