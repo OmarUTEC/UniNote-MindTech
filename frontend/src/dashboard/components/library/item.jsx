@@ -54,9 +54,6 @@ const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);  
-
-      setPdfUrl('');
-      setIsPdfDownloaded(false);
     } catch (error) {
       console.error('There was a problem with the download operation:', error);
     } finally {
@@ -65,14 +62,13 @@ const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview
   };
 
   const handleViewPdfClick = async () => {
-    setShowPdfModal(true);
-
     if (isPdfDownloaded) {
-      setIsLoading(false);
+      setShowPdfModal(true);
       return;
     }
 
-    setIsLoading(true); 
+    setIsLoading(true);
+    setShowPdfModal(true);
 
     const viewPdfUrl = `http://127.0.0.1:5000/download/${documentId}`;
 
@@ -159,7 +155,11 @@ const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview
                 <p className="text-2xl"> Cargando...</p>
               </div>
             ) : (
-              <iframe src={pdfUrl} className="w-full h-full border-none"></iframe>
+              <iframe 
+                src={pdfUrl} 
+                className="w-full h-full border-none"
+                title={`PDF viewer for ${title}`}
+              ></iframe>
             )}
           </div>
         </div>
