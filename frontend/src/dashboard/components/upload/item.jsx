@@ -71,9 +71,9 @@ const Item = ({ title, idDocument, darkMode, preview }) => {
         ${darkMode ? 'bg-gray-800' : 'bg-white'}
         shadow-md transform-origin-center transition-transform duration-300 ease-in-out`}>
 
-      <div className="w-full h-3/5">
-        <img src={`data:image/jpeg;base64,${preview}`} alt="File" className="w-full h-full rounded-3xl"/>
-      </div>  
+      <button onClick={handleViewPdfClick} disabled={isLoading} className="w-full h-3/5 rounded-3xl overflow-hidden">
+        <img src={`data:image/jpeg;base64,${preview}`} alt="File" className="w-full h-full object-cover"/>
+      </button>  
 
       <div className="w-full h-1/5 flex flex-col items-center justify-center border-t-2 border-b-2 border-black">
         <p className="text-base font-bold">{title}</p>
