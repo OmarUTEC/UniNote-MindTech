@@ -50,7 +50,6 @@ const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview
       a.click();
       window.URL.revokeObjectURL(url);
 
-      // Limpiar la URL del PDF descargado y marcar como no descargado
       setPdfUrl('');
       setIsPdfDownloaded(false);
     } catch (error) {
@@ -66,7 +65,7 @@ const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview
       return;
     }
 
-    setIsPdfDownloading(true); // Marcar que se está descargando el PDF
+    setIsPdfDownloading(true); 
     setIsLoading(true);
     setShowPdfModal(true);
 
@@ -79,13 +78,13 @@ const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview
       }
       const blob = await response.blob();
       const fileUrl = URL.createObjectURL(blob);
-      setPdfUrl(fileUrl);  // Almacenar la URL del PDF descargado
+      setPdfUrl(fileUrl);  
       setIsPdfDownloaded(true);
-      setShowPdfModal(true);  // Mostrar el modal solo después de haber descargado y almacenado el PDF
+      setShowPdfModal(true); 
     } catch (error) {
       console.error('There was a problem with viewing the PDF:', error);
     } finally {
-      setIsPdfDownloading(false); // Finalizar la descarga del PDF
+      setIsPdfDownloading(false); 
       setIsLoading(false);
     }
   };
@@ -115,9 +114,9 @@ const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview
 
   return (
     <div className={`w-96 h-96 flex flex-col items-center rounded-3xl border-2 border-black ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-md transform-origin-center transition-transform duration-300 ease-in-out`}>
-      <div className="w-full h-3/5">
+      <button onClick={handleViewPdfClick} disabled={isLoading} className="w-full h-3/5 rounded-3xl overflow-hidden">
         <img src={`data:image/jpeg;base64,${preview}`} alt="File" className="w-full h-full rounded-3xl" />
-      </div>
+      </button>
       <div className="w-full h-1/5 flex flex-col items-center justify-center border-t-2 border-b-2 border-black">
         <p className="text-base font-bold">{title}</p>
         <p className="text-sm text-gray-500">Autor: {authorId} - Carrera: {careerId}</p>
