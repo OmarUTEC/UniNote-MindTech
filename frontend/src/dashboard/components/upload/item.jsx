@@ -11,6 +11,7 @@ const Item = ({ title, idDocument, darkMode, preview }) => {
   const [showPdfModal, setShowPdfModal] = useState(false);
   const [pdfUrl, setPdfUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isPdfDownloaded, setIsPdfDownloaded] = useState(false);
 
   const handleDownloadClick = async () => {
     if (isDownloading) return;
@@ -39,6 +40,11 @@ const Item = ({ title, idDocument, darkMode, preview }) => {
   };
 
   const handleViewPdfClick = async () => {
+    if (isPdfDownloaded) {
+      setShowPdfModal(true);
+      return;
+    }
+
     setIsLoading(true);
     setShowPdfModal(true);
 
@@ -52,6 +58,7 @@ const Item = ({ title, idDocument, darkMode, preview }) => {
       const blob = await response.blob();
       const fileUrl = URL.createObjectURL(blob);
       setPdfUrl(fileUrl);
+      setIsPdfDownloaded(true);
     } catch (error) {
       console.error('There was a problem with viewing the PDF:', error);
     } finally {
@@ -61,7 +68,6 @@ const Item = ({ title, idDocument, darkMode, preview }) => {
 
   const closeModal = () => {
     setShowPdfModal(false);
-    setPdfUrl('');
   };
 
   return (
@@ -106,7 +112,7 @@ const Item = ({ title, idDocument, darkMode, preview }) => {
 
       {showPdfModal && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
-          <div className="bg-white p-3 rounded-lg shadow-lg relative w-3/4 h-3/4">{/*tamaño de la visualizacion del pdf */}
+          <div className="bg-white p-3 rounded-lg shadow-lg relative w-3/4 h-3/4">
             <button onClick={closeModal} className="absolute top-0 right-0 -mt-8 -mr-8 p-2 bg-gray-200 rounded-full shadow-md" style={{ cursor: 'pointer' }}>
               <img src={close_icon} alt="Close" className="w-6 h-6" />
             </button>
@@ -116,7 +122,11 @@ const Item = ({ title, idDocument, darkMode, preview }) => {
                  <p className="text-2xl"> Cargando...</p>
               </div>
             ) : (
-              <iframe src={pdfUrl} className="w-full h-full border-none"></iframe>
+              <iframe 
+                src={pdfUrl} 
+                className="w-full h-full border-none"
+                title={`PDF viewer for ${title}`}
+              ></iframe>
             )}
           </div>
         </div>
