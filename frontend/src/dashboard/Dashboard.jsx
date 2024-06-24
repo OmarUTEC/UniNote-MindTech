@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+
 import { useLocation } from 'react-router-dom';
 import Library from './Library';
 import Bookshelf from './Bookshelf';
@@ -46,10 +48,12 @@ function App() {
   return (
     <div className={`flex flex-col h-screen ${theme.backgroundColor} ${theme.textColor}`}>
       <div className={`${theme.navColor} ${theme.navTextColor} py-2 px-2 flex justify-between items-center`}>
-        <div className="flex items-center text-xl font-bold">
-          <img src={logo} alt="logo" className="w-12 h-12 mr-2"/>
-          UniNote
-        </div>
+      <div className="flex items-center text-xl font-bold">
+      <Link to="/" className="flex items-center">
+        <img src={logo} alt="logo" className="w-12 h-12 mr-2"/>
+        UniNote
+      </Link>
+    </div>
         <div>
           <button onClick={toggleDarkMode} className="mx-2 text-white hover:text-gray-300 focus:outline-none">
             <i className={`fas ${darkMode ? 'fa-sun' : 'fa-moon'}`}></i>
@@ -104,7 +108,7 @@ function App() {
           </button>
         </div>
         
-        <div className="flex-1 pt-2 pl-6 pr-6">
+        <div className={`flex-1 pt-2 pl-6 pr-6 ${theme.backgroundColor}`}> {/*mantener el color al expandir las pestañas*/}
           <div className="w-full h-full max-w-full max-h-full">
             {activeTab === 'inicio' && <Inicio/>}
             {activeTab === 'library' && <Bookshelf userId={userId} />}
@@ -114,6 +118,7 @@ function App() {
             {activeTab === '/network/user_data_update' && <UpdateUserData userId={userId} handleClick={() => handleTabClick('network')}/>}
             {activeTab === 'upload' && <Upload userId={userId} handleUploadFileClick={() => handleTabClick('/upload/file_upload')}/>}
             {activeTab === '/upload/file_upload' && <UploadFile userId={userId} handleUploadClick={() => handleTabClick('upload')}/>}
+            
           </div>
         </div>
       </div>

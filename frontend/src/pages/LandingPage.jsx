@@ -7,6 +7,10 @@ import meta1 from '../assets/meta1.png';
 import meta2 from '../assets/meta2.png';
 import meta3 from '../assets/meta3.png';
 
+import omar from '../assets/Team/omar.png';
+
+import githubLogo from '../assets/github.png';
+
 const LandingPage = () => {
   const { darkMode, toggleDarkMode } = useTheme();
   const theme = darkMode ? darkTheme : lightTheme;
@@ -32,6 +36,53 @@ const LandingPage = () => {
     const metasSection = document.getElementById('metas');
     metasSection.scrollIntoView({ behavior: 'smooth' });
   };
+
+  const teamMembers = [
+    {
+      name: 'Nicol Campoverde',
+      role: 'Desarrollador Front - End',
+      image: userstudent,
+      githubUsername: 'YaciraUTEC',
+    },
+    {
+      name: 'Aron Santamaria',
+      role: 'Desarrollador Back - End',
+      image: userstudent,
+      githubUsername: 'Ajax-Kroos',
+    },
+    {
+      name: 'Omar Chavarria',
+      role: 'Desarrollador Front - End',
+      image: omar,
+      githubUsername: 'OmarUTEC',
+    },
+    {
+      name: 'Noe Paredes',
+      role: 'Desarrollador Front - End',
+      image: userstudent,
+      githubUsername: 'NoeParedes',
+    },
+    {
+      name: 'Alejandro Chipayo',
+      role: 'Desarrollador Full Stack',
+      image: userstudent,
+      githubUsername: 'alef7893',
+    },
+    {
+      name: 'Santiago Uribe',
+      role: 'Desarrollador Back - End',
+      image: userstudent,
+      githubUsername: 'SantiagoUribe269',
+    },
+    {
+      name: 'Sebastian Rejas',
+      role: 'Disarrollador Back - End',
+      image: userstudent,
+      githubUsername: 'SebastianRejas19',
+    },
+  ];
+
+
   return (
     <div className={`min-h-screen ${theme.backgroundColor}`}>
       
@@ -39,9 +90,11 @@ const LandingPage = () => {
         
         <div className="container mx-auto py-2 px-8 flex justify-between items-center">
           
-          <div className="flex items-center">
-            <img src={logo} alt="UniNote" className="h-12" />
-            <span className={`ml-2 text-lg font-bold ${theme.navTextColor}`}>UniNote</span>
+          <div className="flex items-center text-xl font-bold">
+            <Link to="/" className="flex items-center">
+              <img src={logo} alt="logo" className="w-12 h-12 mr-2"/>
+              UniNote
+            </Link>
           </div>
 
           <nav className="flex items-center">
@@ -91,22 +144,47 @@ const LandingPage = () => {
       <img src={userstudent} alt="Usuario estudiante" className="rounded-lg shadow-md w-full" />
     </div>
   </main>
+
+  
   <section id="metas" className="container mx-auto py-8 px-8">
-    <h2 className={`text-4xl font-bold mb-8 ${theme.textColor}`}>Nuestras Metas</h2>
-    <div className="flex flex-wrap justify-center">
-      {metas.map((meta, index) => (
-        <div key={index} className={`w-full md:w-1/4 p-4`}>
-          <div className={`rounded-lg shadow-md p-4 ${darkMode ? 'bg-black-800' : 'bg-gray-100'}`}>
-            <div className="flex items-center mb-2">
-              <h3 className={`text-lg font-bold ${theme.textColor}`}>{meta.title}</h3>
-            </div>
-            <img src={meta.image} alt={meta.title} className="mb-2 w-full h-32 object-cover" />
-            <p className={`text-sm ${theme.textColor}`}>{meta.description}</p>
-          </div>
+  <h2 className={`text-4xl font-bold mb-8 ${theme.textColor}`}>Nuestras Metas</h2>
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    {metas.map((meta, index) => (
+      <div key={index} className="rounded-lg shadow-md overflow-hidden">
+        <img src={meta.image} alt={meta.title} className="w-full h-64 object-cover" />
+        <div className={`p-4 ${darkMode ? 'bg-black-800' : 'bg-gray-100'}`}>
+          <h3 className={`text-lg font-bold mb-2 ${theme.textColor}`}>{meta.title}</h3>
+          <p className={`text-sm mb-4 ${theme.textColor}`}>{meta.description}</p>
+          <button className={`px-4 py-2 rounded-md ${theme.buttonColor}`}>
+            Leer más
+          </button>
         </div>
-      ))}
-    </div>
-  </section>
+      </div>
+    ))}
+  </div>
+</section>
+
+
+      {/* Sección de redes sociales */}
+      <section className="container mx-auto py-8 px-8">
+        <h2 className={`text-4xl font-bold mb-8 ${theme.textColor}`}>Equipo</h2>
+        <div className="flex flex-wrap justify-center">
+          {teamMembers.map((member, index) => (
+            <div key={index} className="w-full md:w-1/4 p-4 flex flex-col items-center">
+              <div className="rounded-full overflow-hidden mb-2">
+                <img src={member.image} alt={member.name} className="w-32 h-32 object-cover" />
+              </div>
+              <h3 className={`text-lg font-bold text-center ${theme.textColor}`}>{member.name}</h3>
+              <p className={`text-sm text-center ${theme.textColor}`}>{member.role}</p>
+              <a href={`https://github.com/${member.githubUsername}`} target="_blank" rel="noopener noreferrer" className="block mt-2 text-center">
+                <img src={githubLogo} alt="GitHub" className="w-20 h-15 inline-block mr-2" />
+                GitHub
+              </a>
+            </div>
+          ))}
+        </div>
+      </section>
+
 </div>
 );
 };

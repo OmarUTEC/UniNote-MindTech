@@ -31,11 +31,11 @@ const Library = ({ filters }) => {
       fetchDocuments();
       hasFetched.current = true;
     }
-  }, [ userId, careerId ]);
+  }, [userId, careerId]);
 
   return (
-    <div className={`flex ${darkMode ? 'bg-gray-900 text-white' : 'bg-cach-l2 text-black'}`}>
-      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 p-12 overflow-y-auto">
+    <div className={`flex ${darkMode ? 'bg-gray-900 text-white' : 'bg-cach-l2 text-black'}`} style={{ height: '100vh' }}>
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 p-4 overflow-y-auto">
         {documents.map((document, index) => (
           <LibraryItem
             key={index}
@@ -49,7 +49,9 @@ const Library = ({ filters }) => {
           />
         ))}
       </div>
-      <Chat />
+      <div className="w-80 h-full bg-white dark:bg-gray-800 p-4 flex-shrink-0">
+        <Chat />
+      </div>
     </div>
   );
 };

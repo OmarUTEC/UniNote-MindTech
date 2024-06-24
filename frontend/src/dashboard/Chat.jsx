@@ -53,7 +53,7 @@ const Chat = () => {
   };
 
   return (
-    <div className="w-80 fixed right-0 top-0 h-screen flex flex-col bg-indigo-300 dark:bg-gray-900 border-l border-gray-300 dark:border-gray-700 shadow-lg overflow-hidden">
+    <div className="w-full h-full flex flex-col bg-indigo-300 dark:bg-gray-900 border-l border-gray-300 dark:border-gray-700 shadow-lg overflow-hidden">
       <div className="flex-1 p-4 overflow-y-auto">
         {messages.map((message) => (
           <div

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import './Login.css'; 
 import Register from './Register';
 import logo from '../assets/logo.png';
@@ -92,7 +93,9 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="logo-section">
-        <img src={logo} alt="Logo" className="logo" />
+        <Link to="/" className="flex items-center">
+          <img src={logo} alt="Logo" className="logo" />
+        </Link>
         <p className="slogan">"Compartir para Aprender"</p>
       </div>
       <div className="login-section">
