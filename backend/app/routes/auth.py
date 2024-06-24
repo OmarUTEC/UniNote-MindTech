@@ -60,7 +60,9 @@ def callback():
                 email=id_info.get("email"),
                 foto_perfil_url=id_info.get("picture"),
                 nombres=id_info.get("given_name"),
-                apellidos=id_info.get("family_name")
+                apellidos=id_info.get("family_name"),
+                carrera=" ",
+                ciclo=" "
             )
             db.session.add(user)
         db.session.commit()
