@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, send_file
-from app.models import Usuarios, Documentos
+from app.models import Usuarios, Documentos, Likes
 from .. import db
 from ..drive_api_connect import *
 import datetime
@@ -7,6 +7,7 @@ import os
 from io import BytesIO
 import tempfile
 from flask import render_template
+from sqlalchemy import func
 
 document_bp = Blueprint('document', __name__)
 
@@ -130,5 +131,32 @@ def get_user_documents():
             data['username'] = username
             user_documents.append(data)
         return jsonify(user_documents)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+@document_bp.route('/search/documents', methods=['GET'])
+def search_documents():
+    try:
+        query = Documentos.query
+        documents = query.order_by(Documentos.fecha_creacion.desc()).all()
+        sorted_documents = [doc.to_dict() for doc in documents]
+        return jsonify(sorted_documents), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+@document_bp.route('/search/most_liked', methods=['GET'])
+def search_documents_by_likes():
+    try:
+        documents = db.session.query(
+            Documentos,
+            func.count(Likes.documento_id).label('like_count')
+        ).outerjoin(Likes, Documentos.documento_id == Likes.documento_id)\
+        .group_by(Documentos.documento_id)\
+        .order_by(func.count(Likes.documento_id).desc(), Documentos.fecha_creacion.desc()).all()
+
+        sorted_documents = [doc.to_dict() for doc in documents]
+        return jsonify(sorted_documents), 200
+
     except Exception as e:
         return jsonify({'error': str(e)}), 500
