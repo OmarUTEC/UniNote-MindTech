@@ -19,7 +19,7 @@ class Usuarios(db.Model):
         return check_password_hash(self.password_hash, password)
     def get_usuario_id(self):
         return {'usuario_id': self.usuario_id}
-    documentos = db.relationship('Documentos', backref='autor', lazy=True)
+    documentos = db.relationship('Documentos', backref='autor', lazy=True, cascade='all, delete-orphan')
     comentarios = db.relationship('Comentarios', backref='usuario', lazy=True)
     def __repr__(self):
         return f'<Usuario {self.username}>'
@@ -41,8 +41,8 @@ class Documentos(db.Model):
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.usuario_id'), nullable=False)
     carrera_id = db.Column(db.Integer, db.ForeignKey('carreras.carrera_id'), nullable=False)
     fecha_creacion = db.Column(db.DateTime, server_default=db.func.now())
-    favoritos = db.relationship('Favoritos', backref='documento', lazy=True)
-    likes = db.relationship('Likes', backref='documento', lazy=True)
+    favoritos = db.relationship('Favoritos', backref='documento', lazy=True, cascade='all, delete-orphan')
+    likes = db.relationship('Likes', backref='documento', lazy=True, cascade='all, delete-orphan')
     foros = db.relationship('Foros', backref='documento', lazy=True)
     def to_dict(self):
         return {
