@@ -108,7 +108,7 @@ function App() {
           </button>
         </div>
         
-        <div className={`flex-1 pt-2 pl-6 pr-6 ${theme.backgroundColor}`}> {/*mantener el color al expandir las pestañas*/}
+        <div className={`flex-1 pt-2 pl-6 pr-6 ${theme.backgroundColor}`}>
           <div className="w-full h-full max-w-full max-h-full">
             {activeTab === 'inicio' && <Inicio/>}
             {activeTab === 'library' && <Bookshelf userId={userId} />}

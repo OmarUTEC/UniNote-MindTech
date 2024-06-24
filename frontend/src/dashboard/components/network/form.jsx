@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import useTheme from "../../../theme";
 
 import right_arrow from '../icons/right_arrow.jpg';
+import perfil from '../icons/unlike.jpg'
 
 const UpdateUserData = ({ userId,  handleClick }) => {
   const { darkMode } = useTheme();
@@ -71,7 +72,7 @@ const UpdateUserData = ({ userId,  handleClick }) => {
       <form onSubmit={handleSubmit} className='w-full h-5/6 flex flex-col lg:flex-row items-center justify-center p-6'>
             
         <div className="w-full lg:w-2/5 flex flex-col items-center justify-center gap-4">
-          <img src={right_arrow} alt="Profile" className='profile-image w-60 h-60 rounded-full object-cover border-4 border-black' />
+          <img src={perfil} alt="Profile" className='profile-image w-60 h-60 rounded-full object-cover border-4 border-black' />
           <button type="submit" className="w-3/5 h-16 bg-yellow-500"> <p>ACTUALIZAR PERFIL</p> </button>
         </div>
             

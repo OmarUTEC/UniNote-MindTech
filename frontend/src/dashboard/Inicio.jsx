@@ -1,9 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import pub from '../assets/pub.png';
-import user from '../assets/user.png';
-import estrella from '../assets/estrella.png';
-import like from '../assets/like.png';
-import descarga from '../assets/descarga.png';
+import FeedItem from './components/inicio/item';
 
 const styles = {
   page: {
@@ -18,8 +14,11 @@ const styles = {
   },
   flex: {
     display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    height: '100%',
+    overflowY: 'auto',
   },
   mainContent: {
     backgroundColor: '#ffffff',
@@ -32,112 +31,12 @@ const styles = {
     width: '100%',
     maxWidth: '1200px',
   },
-  feedContainer: {
-    width: '100%',
-    maxWidth: '300px',
-    backgroundColor: '#ffffff',
-    border: '1px solid #dddddd',
-    borderRadius: '10px',
-    overflow: 'hidden',
-    margin: '30px',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-    position: 'relative',
-  },
-  feedHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: '10px',
-    borderBottom: '1px solid #dbdbdb',
-    backgroundColor: '#CCD1D1',
-  },
-  feedHeaderImg: {
-    borderRadius: '50%',
-    width: '32px',
-    height: '32px',
-    marginRight: '10px',
-  },
-  username: {
-    fontWeight: 'bold',
-  },
-  feedFooter: {
-    width: '100%',
-    padding: '10px',
-  },
-  iconButtons: {
-    display: 'flex',
-    marginRight: '4px',
-    alignItems: 'center',
-    width: '100%',
-  },
-  icon: {
-    width: '20px',
-    height: '20px',
-    marginRight: '10px',
-  },
-  iconNumber: {
-    fontSize: '8px',
-    fontWeight: 'bold',
-    color: '#333',
-    backgroundColor: 'cyan',
-    borderRadius: '10%',
-    padding: '1px 5px',
-    marginLeft: '-7px',
-    boxShadow: '0 6px 4px rgba(0, 0, 0, 0.2)',
-  },
-  description: {
-    fontSize: '14px',
-    color: '#262626',
-  },
-};
-
-const FeedItem = ({ username, description }) => {
-  const [clicks, setClicks] = useState({ star: false, like: false, download: false });
-
-  const handleButtonClick = (type) => {
-    setClicks((prevClicks) => ({
-      ...prevClicks,
-      [type]: !prevClicks[type],
-    }));
-  };
-
-  return (
-    <div style={styles.feedContainer}>
-      <div style={styles.feedHeader}>
-        <img src={user} alt="Avatar usuario" style={styles.feedHeaderImg} />
-        <span style={styles.username}>{username}</span>
-      </div>
-      <img src={pub} alt="Publicación" className="h-12 w-full" />
-      <div style={styles.feedFooter}>
-        <div style={styles.iconButtons} className='justify-around'>
-          
-          <button onClick={() => handleButtonClick('star')}>
-            <img src={estrella} alt="star" style={styles.icon} />
-            <span style={styles.iconNumber}>{clicks.star ? 1 : 0}</span>
-          </button>
-          
-          <button onClick={() => handleButtonClick('like')}>
-            <img src={like} alt="like" style={styles.icon} />
-            <span style={styles.iconNumber}>{clicks.like ? 1 : 0}</span>
-          </button>
-          
-          <button onClick={() => handleButtonClick('download')}>
-            <img src={descarga} alt="download" style={styles.icon} />
-            <span style={styles.iconNumber}>{clicks.download ? 1 : 0}</span>
-          </button>
-
-        </div>
-        <div style={styles.description}>
-          <strong></strong> {description}
-        </div>
-      </div>
-    </div>
-  );
 };
 
 const Inicio = () => {
-  const hasFetched = useRef(false); 
+  const hasFetched = useRef(false);
   const [document, setDocument] = useState([]);
-  
+
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
@@ -146,29 +45,34 @@ const Inicio = () => {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });
-        if (!response.ok) { throw new Error('Network response was not ok'); }
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
         const data = await response.json();
         setDocument(data);
-      } catch (error) { console.error('There was a problem with the fetch operation:', error); }
+      } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+      }
     };
     if (!hasFetched.current) {
       fetchDocuments();
       hasFetched.current = true;
     }
   }, []);
-  
+
   return (
     <div style={styles.page}>
       <div style={styles.mainContent}>
         <h2 className="text-xl font-bold mb-2">USUARIOS</h2>
         <p>Publicaciones.</p>
-  
         <div style={styles.flex}>
-          {document.map((document, index) => (
+          {document.map((doc, index) => (
             <FeedItem
-              key={index} 
-              username={document.username}
-              description={document.descripcion}
+              key={index}
+              username={doc.username}
+              title={doc.titulo}
+              description={doc.descripcion}
+              preview={doc.preview_image}
             />
           ))}
         </div>
@@ -178,3 +82,4 @@ const Inicio = () => {
 };
 
 export default Inicio;
+
