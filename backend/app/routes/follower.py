@@ -50,3 +50,4 @@ def get_following(usuario_id):
     following = db.session.query(Usuarios).join(Follows, Usuarios.usuario_id == Follows.following_id).filter(Follows.follower_id == usuario_id).all()
     lista = [{'id': follow.usuario_id, 'username': follow.username} for follow in following]
     return jsonify(lista), 200
+
