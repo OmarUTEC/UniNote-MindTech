@@ -9,6 +9,8 @@ import UploadFile from '../dashboard/components/upload/form';
 import Network from '../dashboard/Network';
 import UpdateUserData from '../dashboard/components/network/form';
 import Dashboard from '../dashboard/Dashboard';
+import Followers from '../dashboard/components/network/followers';
+import Following from '../dashboard/components/network/following';
 
 const root = [{
     path: '/',
@@ -43,7 +45,16 @@ const root = [{
   }, {
     path: '/network/user_data_update',
     Element: UpdateUserData
-  }, {
+  },
+  {
+    path: '/network/followers/:userId',
+    Element: Followers
+  },
+  {
+    path: '/network/following/:userId',
+    Element: Following
+  },
+   {
     path: '/dashboard',
     Element: Dashboard
 }];
