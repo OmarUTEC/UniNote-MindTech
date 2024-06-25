@@ -65,7 +65,11 @@ function Dashboard() {
       <div className="flex flex-1">
         <div className={`${theme.navColor} w-56 p-4 mt-2 rounded-lg`}>
           <div className="text-center mb-4">
-            <div className="bg-blue-500 rounded-full w-24 h-24 mx-auto mb-2"></div>
+          <img 
+              src="https://i.pinimg.com/736x/a9/ef/a9/a9efa9e0d9a868bf182a920938c0c094.jpg" 
+              alt="User Avatar" 
+              className="rounded-full w-24 h-24 mx-auto mb-2 object-cover"
+            />
             <div className="text-xl font-semibold">{userName}</div>
             <div className="text-sm">4 Amigos | 8 Subidos</div>
           </div>
