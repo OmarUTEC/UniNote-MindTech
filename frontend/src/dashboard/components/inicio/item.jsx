@@ -16,16 +16,72 @@ import not_follow from '../icons/not_follow.png';
 
 
 const FeedItem = ({ username, description, title, userId, careerId, authorId, documentId, darkMode, preview }) => {
-    const [clicks, setClicks] = useState({ star: false, like: false, download: false });
-    
-    let like = true;
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [like, setLike] = useState(null);
+  const [likeOperation, setLikeOperation] = useState(false);
+  const [favourite, setFavourite] = useState(null);
+  const [favouriteOperation, setFavouriteOperation] = useState(false);
+  const [follow, setFollow] = useState(null);
 
-    const handleButtonClick = (type) => {
-      setClicks((prevClicks) => ({
-        ...prevClicks,
-        [type]: !prevClicks[type],
-      }));
+  useEffect(() => {
+    const fetchData = async (endpoint, setter) => {
+      try {
+        const response = await fetch(`http://127.0.0.1:5000/${endpoint}/${userId}/${documentId}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
+        setter(data.answer);
+      } catch (error)
+      { console.error(`There was a problem with the fetch operation for ${endpoint}:`, error); }
     };
+    fetchData('likes/find', setLike);
+    fetchData('favourite/find', setFavourite);
+  }, [userId, documentId]);
+
+  const handleDownloadClick = async () => {
+    if (isDownloading) return;
+    setIsDownloading(true);
+
+    try {
+      const downloadFileUrl = `http://127.0.0.1:5000/download/${documentId}`;
+      const response = await fetch(downloadFileUrl);
+      if (!response.ok) throw new Error('Network response was not ok');
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = title;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);  
+    } catch (error) {
+      console.error('There was a problem with the download operation:', error);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
+  const handleOperationClick = async (type, setter, value, setterOperation, operationValue) => {
+    if (operationValue) return;
+    setterOperation(true);
+    const data = { 'usuario_id': userId, 'documento_id': documentId };
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/${type}`, {
+        method: value ? 'DELETE' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) throw new Error('Network response was not ok');
+      setter(!value);
+    } catch (error) {
+      console.error(`There was a problem with the ${type} operation:`, error);
+    } finally {
+      setterOperation(false);
+    }
+  };
   
     return (
       <div className={`w-full h-96 bg-white border border-gray-300 rounded-lg overflow-hidden m-4 shadow-md`}>
@@ -48,17 +104,19 @@ const FeedItem = ({ username, description, title, userId, careerId, authorId, do
                         <img src={not_follow} alt="follow"/>
                     </button>
 
-                    <button onClick={() => handleButtonClick('star')} className="w-5 h-5">
-                        <img src={yes_favourite} alt="favourite"/>
+                    <button onClick={() => handleOperationClick('like', setLike, like, setLikeOperation, likeOperation)} disabled={likeOperation} className="w-6 h-6">
+                      <img src={like ? yes_like : not_like} alt="Like" />
                     </button>
 
-                    <button onClick={() => handleButtonClick('like')} className="w-5 h-5">
-                        <img src={like ? yes_like : not_like} alt="like" />
+                    <button onClick={() => handleOperationClick('favourite', setFavourite, favourite, setFavouriteOperation, favouriteOperation)} disabled={favouriteOperation} className="w-6 h-6">
+                      <img src={favourite ? yes_favourite : not_favourite} alt="Favourite" />
                     </button>
 
-                    <button onClick={() => handleButtonClick('download')} className="w-5 h-5">
-                        <img src={download_file_button} alt="download" />
-                    </button>        
+                    <button onClick={handleDownloadClick} disabled={isDownloading} className="w-6 h-6">
+                      {isDownloading ? (
+                        <img src={loading_spinner} alt="Downloading..." />
+                      ) : (<img src={download_file_button} alt="Download" />)}
+                    </button>
                 </div>
             </div>
 

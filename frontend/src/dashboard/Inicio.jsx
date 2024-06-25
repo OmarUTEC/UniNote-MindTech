@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import useTheme from "../theme";
 import FeedItem from './components/inicio/item';
 
 const styles = {
@@ -33,7 +34,8 @@ const styles = {
   },
 };
 
-const Inicio = () => {
+const Inicio = ({ userId }) => {
+  const { darkMode } = useTheme();
   const hasFetched = useRef(false);
   const [document, setDocument] = useState([]);
 
@@ -70,8 +72,13 @@ const Inicio = () => {
             <FeedItem
               key={index}
               username={doc.username}
+              documentId={doc.documento_id}
               title={doc.titulo}
               description={doc.descripcion}
+              userId={userId}
+              careerId={doc.carrera_id}
+              authorId={doc.usuario_id}
+              darkMode={darkMode}
               preview={doc.preview_image}
             />
           ))}

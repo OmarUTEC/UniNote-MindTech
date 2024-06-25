@@ -11,7 +11,6 @@ def follows():
     data = request.get_json()
     follower = data['follower_id']
     following = data['following_id']
-    
     new_follows = Follows(follower_id=follower, following_id = following)
     db.session.add(new_follows)
     db.session.commit()
