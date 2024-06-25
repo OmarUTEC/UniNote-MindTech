@@ -87,7 +87,7 @@ const LandingPage = () => {
     <div className={`min-h-screen ${theme.backgroundColor}`}>
       
       <header className={`${theme.navColor} ${theme.navShadow}`}>
-        
+        {/*<header className={`${theme.navColor} ${theme.navShadow} fixed mt-2 rounded-lg`}>*/}
         <div className="container mx-auto py-2 px-8 flex justify-between items-center">
           
           <div className="flex items-center text-xl font-bold">

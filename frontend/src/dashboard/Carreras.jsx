@@ -33,7 +33,7 @@ const Carreras = ({ setCareerId, handleClick }) => {
 
   return (
     <div className={`min-h-screen flex items-center justify-center ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-black'}`}>
-      <div className="ml-64 p-4">
+      <div className="ml-4 p-6 flex-1">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {careerList.map((career, index) => (
             <button
