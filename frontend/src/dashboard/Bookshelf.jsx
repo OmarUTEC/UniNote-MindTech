@@ -28,6 +28,7 @@ const Bookshelf = ({ userId }) => {
 
   return (
     <div className={`flex flex-col ${darkMode ? 'bg-gray-900 text-white' : 'bg-cach-l2 text-black'}`}>
+          <div className="ml-64 p-4">
       <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 p-12 overflow-y-auto">
         {document.map((document, index) => (
           <Item
@@ -41,6 +42,7 @@ const Bookshelf = ({ userId }) => {
             preview={document.preview_image}
           />
         ))}
+      </div>
       </div>
     </div>
   );

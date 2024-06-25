@@ -35,25 +35,29 @@ const Library = ({ filters }) => {
 
   return (
     <div className={`flex ${darkMode ? 'bg-gray-900 text-white' : 'bg-cach-l2 text-black'}`} style={{ height: '100vh' }}>
-      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 p-4 overflow-y-auto">
-        {documents.map((document, index) => (
-          <LibraryItem
-            key={index}
-            title={document.titulo}
-            documentId={document.documento_id}
-            userId={userId}
-            careerId={document.carrera_id}
-            authorId={document.usuario_id}
-            darkMode={darkMode}
-            preview={document.preview_image}
-          />
-        ))}
+      <div className="ml-64 p-6 flex-1">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {documents.map((document, index) => (
+            <LibraryItem
+              key={index}
+              title={document.titulo}
+              documentId={document.documento_id}
+              userId={userId}
+              careerId={document.carrera_id}
+              authorId={document.usuario_id}
+              darkMode={darkMode}
+              preview={document.preview_image}
+            />
+          ))}
+        </div>
       </div>
-      <div className="w-80 h-full bg-white dark:bg-gray-800 p-4 flex-shrink-0">
+      <div className="fixed right-0 top-11 bottom-0 w-80 bg-white dark:bg-gray-800 p-4 flex-shrink-0">
         <Chat />
       </div>
     </div>
   );
+  
+  
 };
 
 export default Library;
