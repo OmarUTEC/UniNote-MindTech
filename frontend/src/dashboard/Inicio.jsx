@@ -1,8 +1,9 @@
-
 import React, { useState, useEffect, useRef } from 'react';
+import useTheme from "../theme";
 import FeedItem from './components/inicio/item';
 
-const Inicio = () => {
+const Inicio = ({userId}) => {
+  const { darkMode } = useTheme();
   const hasFetched = useRef(false);
   const [document, setDocument] = useState([]);
   const [error, setError] = useState(null);
@@ -45,6 +46,11 @@ const Inicio = () => {
               title={doc.titulo}
               description={doc.descripcion}
               preview={doc.preview_image}
+              documentId={doc.documento_id}
+              userId={userId}
+              careerId={doc.carrera_id}
+              authorId={doc.usuario_id}
+              darkMode={darkMode}
             />
           ))}
         </div>

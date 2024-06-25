@@ -1,32 +1,30 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
-import pub from '../icons/pub.png';
 import user from '../icons/user.png';
 import download_file_button from '../icons/download_file_button.png';
 import yes_like from '../icons/like.jpg';
 import not_like from '../icons/unlike.jpg';
 import yes_favourite from '../icons/favourite.png';
 import not_favourite from '../icons/unfavourite.png';
-import eye_icon from '../icons/ojo.png';
 import loading_spinner from '../icons/loading_spinner.gif';
-import close_icon from '../icons/close.png';
 
 import yes_follow from '../icons/yes_follow.png';
 import not_follow from '../icons/not_follow.png';
 
 
-const FeedItem = ({ username, description, title, userId, careerId, authorId, documentId, darkMode, preview }) => {
+const FeedItem = ({ username, description, title, userId, authorId, documentId, preview }) => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [like, setLike] = useState(null);
   const [likeOperation, setLikeOperation] = useState(false);
   const [favourite, setFavourite] = useState(null);
   const [favouriteOperation, setFavouriteOperation] = useState(false);
   const [follow, setFollow] = useState(null);
+  const [followOperation, setFollowOperation] = useState(false);
 
   useEffect(() => {
-    const fetchData = async (endpoint, setter) => {
+    const fetchData = async (endpoint, setter, data1, data2) => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/${endpoint}/${userId}/${documentId}`, {
+        const response = await fetch(`http://127.0.0.1:5000/${endpoint}/${data1}/${data2}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
@@ -36,9 +34,10 @@ const FeedItem = ({ username, description, title, userId, careerId, authorId, do
       } catch (error)
       { console.error(`There was a problem with the fetch operation for ${endpoint}:`, error); }
     };
-    fetchData('likes/find', setLike);
-    fetchData('favourite/find', setFavourite);
-  }, [userId, documentId]);
+    fetchData('likes/find', setLike, userId, documentId);
+    fetchData('favourite/find', setFavourite, userId, documentId);
+    fetchData('follow/find', setFollow, userId, authorId);
+  }, [userId, authorId, documentId]);
 
   const handleDownloadClick = async () => {
     if (isDownloading) return;
@@ -67,7 +66,11 @@ const FeedItem = ({ username, description, title, userId, careerId, authorId, do
   const handleOperationClick = async (type, setter, value, setterOperation, operationValue) => {
     if (operationValue) return;
     setterOperation(true);
-    const data = { 'usuario_id': userId, 'documento_id': documentId };
+    let data = { 'usuario_id': userId, 'documento_id': documentId };
+    if(type === 'follow') {
+      data = { 'follower_id': userId, 'following_id': authorId };
+      if (value) {return };
+    }
     try {
       const response = await fetch(`http://127.0.0.1:5000/${type}`, {
         method: value ? 'DELETE' : 'POST',
@@ -100,8 +103,8 @@ const FeedItem = ({ username, description, title, userId, careerId, authorId, do
                 <p className={`w-2/3 font-bold text-base pr-3 pl-3`}>{title}</p> 
 
                 <div className="w-1/3 h-full flex flex-row items-center justify-around pr-2 pl-2">
-                    <button className="w-5 h-5">
-                        <img src={not_follow} alt="follow"/>
+                    <button onClick={() => handleOperationClick('follow', setFollow, follow, setFollowOperation, followOperation)} disabled={followOperation} className="w-5 h-5">
+                        <img src={follow ? yes_follow : not_follow} alt="follow"/>
                     </button>
 
                     <button onClick={() => handleOperationClick('like', setLike, like, setLikeOperation, likeOperation)} disabled={likeOperation} className="w-6 h-6">

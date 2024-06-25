@@ -101,7 +101,7 @@ function App() {
         </div>
         <div className={`flex-1 pt-2 pl-6 pr-6 overflow-y-auto`}>
           <div className="w-full h-full max-w-full max-h-full">
-            {activeTab === 'inicio' && <Inicio />}
+            {activeTab === 'inicio' && <Inicio userId={userId} />}
             {activeTab === 'library' && <Bookshelf userId={userId} />}
             {activeTab === 'career' && <Carreras userId={userId} setCareerId={setCareerId} handleClick={() => handleTabClick('career/library')} />}
             {activeTab === 'career/library' && <Library filters={{ userId: userId, careerId: careerId }} />}

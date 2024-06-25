@@ -52,3 +52,10 @@ def route_following(usuario_id):
             return jsonify({'message': 'Follower deleted successfully'}), 200
         return jsonify({'message': 'Follower not found'}), 404
 
+@follower_bp.route('/follow/find/<int:userId>/<int:authorId>', methods=['GET'])
+def find_like(userId, authorId):
+    answer = False
+    like = Follows.query.filter(Follows.follower_id == userId, Follows.following_id == authorId).first()
+    if like:
+        answer = True
+    return jsonify({'answer': answer}), 200

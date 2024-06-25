@@ -63,9 +63,9 @@ CREATE TABLE comentarios (
 );
 
 CREATE TABLE follows(
-    id SERIAL PRIMARY KEY,
-    follower_id INTEGER NOT NULL,
-    following_id INTEGER NOT NULL,
+    follower_id INTEGER,
+    following_id INTEGER,
+    PRIMARY KEY (follower_id, following_id),
     FOREIGN KEY (follower_id) REFERENCES usuarios(usuario_id) ON DELETE CASCADE,
     FOREIGN KEY (following_id) REFERENCES usuarios(usuario_id) ON DELETE CASCADE
 );
