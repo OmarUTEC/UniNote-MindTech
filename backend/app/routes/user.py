@@ -24,8 +24,19 @@ def get_users():
 def route_user_id(usuario_id):
     if request.method == 'GET':
         user = Usuarios.query.filter_by(usuario_id=usuario_id).first()
-        career = Carreras.query.filter_by(carrera_id=user.carrera).first()
+        
         if user:
+            if user.carrera == " ":
+                return jsonify({
+                'name': user.nombres,
+                'surname': user.apellidos,
+                'career': " ",
+                'idCareer': " ",
+                'cycle': user.ciclo,
+                'username': user.username,
+                'email': user.email
+            }), 200
+            career = Carreras.query.filter_by(carrera_id=user.carrera).first()
             return jsonify({
                 'name': user.nombres,
                 'surname': user.apellidos,
@@ -36,6 +47,7 @@ def route_user_id(usuario_id):
                 'email': user.email
             }), 200
         return jsonify({'message': 'User not found'}), 404
+
     elif request.method == 'PUT':
         user = Usuarios.query.filter_by(usuario_id=usuario_id).first()
         if user:

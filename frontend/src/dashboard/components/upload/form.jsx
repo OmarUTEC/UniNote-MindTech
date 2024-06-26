@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import useTheme from "../../../theme";
+import "../../../pages/Login.css"
 
 import right_arrow from '../icons/right_arrow.jpg';
 import upload_file from '../icons/upload_file.png';
@@ -17,6 +18,8 @@ const UploadFile = ({ userId,  handleUploadClick }) => {
     descripcion: ""
   });
   const [file, setFile] = useState(null);
+  const [error, setError] = useState("");
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,10 +27,14 @@ const UploadFile = ({ userId,  handleUploadClick }) => {
       ...formData,
       [name]: value,
     });
+    setError("");
+
   };
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
+    setError("");
+
   };
 
   const handleSubmit = (e) => {
@@ -45,9 +52,18 @@ const UploadFile = ({ userId,  handleUploadClick }) => {
       body: data,
     })
       .then(response => {
-        response.json()
+        if (response.status === 200) {
+          response.json();
+        } else if (response.status === 402) {
+          setError("El nombre del documento ya existe");
+        } 
+        else {
+          setError("Error inesperado. Por favor, inténtalo de nuevo.");
+        }
       })
-      .catch(error => { console.error('Error:', error); });
+      .catch(error => {
+        console.error('Error:', error);
+      });
   };
 
   return (
@@ -143,8 +159,10 @@ const UploadFile = ({ userId,  handleUploadClick }) => {
                   />
                   <label htmlFor="file" className="block text-gray-700 text-sm font-bold mb-2">
                     El archivo debe ser PDF
+                    {error && <p className="error-message">{error}</p>}
                   </label>
                 </div>
+                
               </div>
               <div className={`w-1/4 h-full justify-center flex items-center flex-col`}>
                 <button type="submit" className="w-full h-full flex flex-col items-center gap-4 p-2 py-2 px-4 rounded focus:outline-none focus:shadow-outline">

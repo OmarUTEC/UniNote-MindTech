@@ -102,11 +102,7 @@ function Dashboard() {
           > <i className="fas fa-upload mr-2"></i>SUBIR
           </button>
   
-          <button
-            className={`w-full flex items-center py-2 px-4 mb-2 rounded ${theme.buttonTextColor} focus:outline-none`}
-            onClick={() => handleTabClick('logout')}
-          > <i className="fas fa-sign-out-alt mr-2"></i>CERRAR SESIÓN
-          </button>
+
         </div>
   
         <div className={`flex-1 pt-2 pl-6 pr-6 ml-56 ${theme.backgroundColor}`}>
