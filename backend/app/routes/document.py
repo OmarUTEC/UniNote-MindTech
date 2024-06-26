@@ -15,33 +15,50 @@ document_bp = Blueprint('document', __name__)
 @document_bp.route('/upload_file', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
+        #Recepcion de parametros de formulacion front-end
         userId = request.form.get('userId')
         titulo = request.form.get('titulo')
         carrera = request.form.get('carrera')
         curso = request.form.get('curso')
         ciclo = request.form.get('ciclo')
         descripcion = request.form.get('descripcion')
-        if 'file' not in request.files:
-            return jsonify({'error': 'No file part'}), 400
         file = request.files['file']
+
+
+        #Busqueda de archivos con el mismo nombre
+        documentos = Documentos.query.filter_by(titulo=str(titulo)).all()
+        resultado = [documento.to_dict() for documento in documentos]
+
+        print("Resultado", resultado, "for ", titulo)
+        #Catch de errores en el formulario
+        if 'file' not in request.files:
+            return jsonify({'error': 'No file agregaste ningun archivo'}), 400
         if file.filename == '':
-            return jsonify({'error': 'No selected file'}), 400
+            return jsonify({'error': 'Archivo no seleccionado'}), 400
+        if resultado:
+            return jsonify({'error': 'Ya se subio un archivo con el mismo nombre, elige otro mejor'}), 400
+                
+        #Guardado de archivo temporal
         file_path = os.path.join("", file.filename)
         file.save(file_path)
+
         file_id = upload_file_basic("1E8cQZY3fUnBg2d7wpIl0F1Q98bwGTWJq", file.filename)
         fecha_actual = datetime.datetime.utcnow()
+
+        #Obtencion de pre-imagen con la libreria Fitz
         doc = fitz.open(file.filename)
         _pixmap = doc.load_page(0).get_pixmap()
-        doc.close()    
-        buffered = BytesIO()
-        Image.frombytes("RGB", [_pixmap.width, _pixmap.height], _pixmap.samples).crop((10, 10, 580, 280)).save(buffered, format="JPEG")
+        doc.close()
+        Image.frombytes("RGB", [_pixmap.width, _pixmap.height], _pixmap.samples).crop((10, 10, 580, 280)).save(BytesIO(), format="JPEG")
+
+        #Inicializacion de nueva transaccion en la base de datos
         new_file = Documentos(
             titulo = titulo,
             descripcion = descripcion,
             curso = curso,
             ciclo = ciclo,
             file_id = file_id,
-            preview_image = buffered.getvalue(),
+            preview_image = BytesIO().getvalue(),
             usuario_id = userId,
             carrera_id = int(carrera),
             fecha_creacion = fecha_actual.strftime("%Y-%m-%d %H:%M:%S")
@@ -49,7 +66,7 @@ def upload_file():
         db.session.add(new_file)
         db.session.commit()
         os.remove(file_path)
-        return jsonify({'message': 'File uploaded successfully to Google Drive', 'drive_message': "Gaaaaaaaaaa!"}), 200
+        return jsonify({'message': 'Archivo subido exitosamente!', 'drive_message': "Gaaaaaaaaaa!"}), 200
     else:
         return render_template('from.html')
 
