@@ -51,11 +51,18 @@ const Login = () => {
     const left = (window.innerWidth / 2) - (width / 2);
     const top = (window.innerHeight / 2) - (height / 2);
 
-    window.open(
+    const authWindow = window.open(
       'http://127.0.0.1:5000/login-google', 
       'GoogleAuth',
       `width=${width},height=${height},top=${top},left=${left}`
     );
+
+    const timer = setInterval(() => {
+      if (authWindow.closed) {
+        clearInterval(timer);
+        setError("Autenticación de Google cancelada o ventana cerrada.");
+      }
+    }, 500);
   };
 
   const handleSubmit = (e) => {
