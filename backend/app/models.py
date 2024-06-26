@@ -90,7 +90,8 @@ class Comentarios(db.Model):
 
 class Follows(db.Model):
     __tablename__ = 'follows'
-    id = db.Column(db.Integer, primary_key=True)
-    follower_id = db.Column(db.Integer, db.ForeignKey('usuarios.usuario_id'), nullable=False)
-    following_id = db.Column(db.Integer, db.ForeignKey('usuarios.usuario_id'), nullable=False)
-        
+    follower_id = db.Column(db.Integer, db.ForeignKey('usuarios.usuario_id'), primary_key=True)
+    following_id = db.Column(db.Integer, db.ForeignKey('usuarios.usuario_id'), primary_key=True)
+    def __init__(self, follower_id, following_id):
+        self.follower_id = follower_id
+        self.following_id = following_id
