@@ -1,0 +1,28 @@
+ -- Creacion de nuevas columnas
+ALTER TABLE documentos ADD COLUMN hash_doc VARCHAR(64);
+ALTER TABLE documentos ADD COLUMN tsvector tsvector;
+ALTER TABLE documentos ADD COLUMN text_content_detected TEXT;
+
+-- Creacion de un indice del contenido existente
+UPDATE documentos
+SET tsvector = to_tsvector('spanish', coalesce(titulo, '') || ' ' || coalesce(text_content_detected, '') ||  ' ' || coalesce(descripcion, '') || ' ' || coalesce(curso, '') || ' ' || coalesce(ciclo::text, ''));
+
+--Creacion de un indice tipo GIN
+CREATE INDEX documentos_tsvector_idx
+ON documentos
+USING gin(tsvector);
+
+-- Funcion
+CREATE OR REPLACE FUNCTION documentos_tsvector_trigger()
+RETURNS trigger AS $$
+BEGIN
+  NEW.tsvector := to_tsvector('spanish', coalesce(NEW.titulo, '') || ' ' || coalesce(text_content_detected, '') ||  ' ' || coalesce(NEW.descripcion, '') || ' ' || coalesce(NEW.curso, '') || ' ' || coalesce(NEW.ciclo::text, ''));
+  RETURN NEW;
+END
+$$ LANGUAGE plpgsql;
+
+-- Triger para indexacion automatica
+CREATE TRIGGER tsvector_update
+BEFORE INSERT OR UPDATE ON documentos
+FOR EACH ROW
+EXECUTE FUNCTION documentos_tsvector_trigger();

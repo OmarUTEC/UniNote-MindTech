@@ -22,13 +22,18 @@ CREATE TABLE documentos (
     curso VARCHAR(255),
     ciclo INTEGER,
     file_id VARCHAR(40) NOT NULL,
-	preview_image BYTEA,
+    preview_image BYTEA,
     usuario_id INTEGER NOT NULL,
     carrera_id INTEGER NOT NULL,
+    hash_doc VARCHAR(64),
+    tsvector tsvector,
+    text_content_detected TEXT,
+    
     fecha_creacion TIMESTAMP WITHOUT TIME ZONE DEFAULT (now() AT TIME ZONE 'utc'),
     FOREIGN KEY (usuario_id) REFERENCES usuarios(usuario_id) ON DELETE CASCADE,
     FOREIGN KEY (carrera_id) REFERENCES carreras(carrera_id)
 );
+
 
 CREATE TABLE favoritos (
     usuario_id INTEGER,
@@ -83,3 +88,26 @@ INSERT INTO carreras(nombre) VALUES
     ('Ingeniería Mecánica'),
     ('Ingeniería Mecatrónica'),
     ('Ingeniería Química');
+
+
+--Creacion de un indice tipo GIN
+CREATE INDEX documentos_tsvector_idx 
+ON documentos 
+USING gin(tsvector);
+
+-- Funcion
+CREATE OR REPLACE FUNCTION documentos_tsvector_trigger()
+RETURNS trigger AS $$
+BEGIN
+  NEW.tsvector := to_tsvector('spanish', coalesce(NEW.titulo, '') || ' ' || coalesce(text_content_detected, '') ||  ' ' || coalesce(NEW.descripcion, '') || ' ' || coalesce(NEW.curso, '') || ' ' || coalesce(NEW.ciclo::text, ''));
+  RETURN NEW;
+END
+$$ LANGUAGE plpgsql;
+
+-- Triger para indexacion automatica
+CREATE TRIGGER tsvector_update
+BEFORE INSERT OR UPDATE ON documentos
+FOR EACH ROW
+EXECUTE FUNCTION documentos_tsvector_trigger();
+
+
