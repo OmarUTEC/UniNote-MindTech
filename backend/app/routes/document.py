@@ -92,14 +92,6 @@ def upload_file():
         curso = request.form.get('curso')
         ciclo = request.form.get('ciclo')
         descripcion = request.form.get('descripcion')
-<<<<<<< HEAD
-
-=======
-        documentos = Documentos.query.filter_by(titulo=str(titulo)).all()
-        resultado = [documento.to_dict() for documento in documentos]
-        if resultado:
-            return jsonify({'error': 'Ya se subio un archivo con el mismo nombre, elige otro mejor'}), 402
->>>>>>> 1e03b0237fcefdc325a99caeed6b3c7f46e68f85
         if 'file' not in request.files:
             return jsonify({'error': 'No agregaste ningún archivo'}), 400
 
@@ -140,7 +132,6 @@ def upload_file():
         doc.close()
         buffered = BytesIO()
         Image.frombytes("RGB", [_pixmap.width, _pixmap.height], _pixmap.samples).crop((10, 10, 580, 280)).save(buffered, format="JPEG")
-<<<<<<< HEAD
         preview_image = buffered.getvalue()
         
         file_path = os.path.join("", file.filename)
@@ -149,9 +140,6 @@ def upload_file():
         #Inicializacion de nueva transaccion en la base de datos
         file_id = upload_file_basic("1E8cQZY3fUnBg2d7wpIl0F1Q98bwGTWJq", file.filename)
         fecha_actual = datetime.datetime.utcnow()
-=======
-
->>>>>>> 1e03b0237fcefdc325a99caeed6b3c7f46e68f85
         new_file = Documentos(
             titulo = titulo,
             descripcion = descripcion,
