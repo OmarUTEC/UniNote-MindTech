@@ -100,19 +100,16 @@ def upload_file():
         if file.filename == '':
             return jsonify({'error': 'Archivo no seleccionado'}), 401
 
-        # Verificación de existencia de documento similar
-        documentos = Documentos.query.filter(or_(Documentos.titulo == titulo, Documentos.hash_doc == "dasda")).all()
-        if documentos:
-            return jsonify({'error': 'Ya se subió un archivo con el mismo nombre o existe otro similar. Elige otro mejor.'}), 402
+        
 
         # Lectura del archivo y cálculo del hash
         contenido_archivo = file.read()
         hash_sha256 = hashlib.sha256(contenido_archivo).hexdigest()
         
-        # Verificar nuevamente la existencia de documento por hash (solo ejemplo, reemplazar "dasda" con hash real)
-        documentos = Documentos.query.filter_by(hash_doc=hash_sha256).all()
+        # Verificación de existencia de documento similar
+        documentos = Documentos.query.with_entities((Documentos.file_id)).filter(or_(Documentos.titulo == titulo, Documentos.hash_doc == hash_sha256)).all()
         if documentos:
-            return jsonify({'error': 'Ya se subió un archivo con el mismo contenido.'}), 403
+            return jsonify({'error': 'Ya se subió un archivo con el mismo nombre o existe otro similar. Elige otro mejor.'}), 402
 
         #Extraccion de contenido del pdf
         text_from_file = ""
@@ -141,7 +138,6 @@ def upload_file():
         file_path = os.path.join("", file.filename)
         file.save(file_path)
 
-        print(text_from_file)
         #Inicializacion de nueva transaccion en la base de datos
         file_id = upload_file_basic("1E8cQZY3fUnBg2d7wpIl0F1Q98bwGTWJq", file.filename)
         fecha_actual = datetime.datetime.utcnow()
