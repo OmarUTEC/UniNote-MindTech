@@ -35,7 +35,7 @@ const Library = ({ filters }) => {
 
   return (
     <div className={`flex ${darkMode ? 'bg-gray-900 text-white' : 'bg-cach-l2 text-black'}`} style={{ height: '100vh' }}>
-      <div className="ml-64 p-6 flex-1">
+      <div className="ml-4 p-6 flex-1">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {documents.map((document, index) => (
             <LibraryItem

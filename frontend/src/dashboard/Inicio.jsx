@@ -34,7 +34,7 @@ const Inicio = ({userId}) => {
 
   return (
     <div className="bg-blue-400 min-h-screen flex justify-center items-center p-5 relative overflow-hidden">
-      <div className="bg-blue-400 p-7 flex flex-col items-center rounded-xl shadow-lg w-full max-w-5xl">
+      <div className="bg-blue-400 p-7 flex flex-col items-center rounded-xl shadow-lg w-full max-w-6xl">
         <h2 className="text-xl font-bold mb-2">USUARIOS</h2>
         <p>Publicaciones.</p>
         {error && <p className="text-red-500 mt-2">Error: {error}</p>}

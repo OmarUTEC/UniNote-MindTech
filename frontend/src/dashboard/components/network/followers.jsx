@@ -44,7 +44,7 @@ const Followers = ({ userId }) => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      const newFollower = await response.json();
+      //const newFollower = await response.json();
       // Actualizar estado para marcar como seguido
       setFollowers(followers.map(follower => 
         follower.id === followerId ? { ...follower, isFollowing: true } : follower

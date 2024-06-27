@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import useTheme from "../../../theme";
 
 import right_arrow from '../icons/right_arrow.jpg';
-import perfil from '../icons/unlike.jpg'
+import perfil from '../../../assets/profilepicture.png'
 
 const UpdateUserData = ({ userId,  handleClick }) => {
   const { darkMode } = useTheme();
