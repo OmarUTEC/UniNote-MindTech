@@ -9,11 +9,15 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload  
 from googleapiclient.errors import HttpError
 import io 
+import hashlib
 
 SCOPES = ['https://www.googleapis.com/auth/drive']
 SERVICE_ACCOUNT_FILE = os.path.join(pathlib.Path(__file__).parent, "account_credentials.json")
 credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
 drive_service = build('drive', 'v3', credentials=credentials)
+
+
+
 
 def create_folder(folder_name, parent_folder_id=None):
     folder_metadata = {
@@ -38,7 +42,7 @@ def upload_file_basic(route, filename):
                         "parents": [route]
                         }
         media = MediaFileUpload(filename, mimetype="application/pdf")
-        #application/pdf
+
         created_file = drive_service.files().create(
             body=file_metadata,
             media_body = media,
@@ -47,7 +51,7 @@ def upload_file_basic(route, filename):
 
         print(f'File ID: {created_file["id"]}')
     except HttpError as error:
-        print(f"An error occurred: {error}")
+        print(f"Ocurrio un error al intentar subir este documento a la nube: {error}")
         file = None
     return created_file["id"]
 
@@ -92,6 +96,8 @@ def delete_files(file_or_folder_id):
     except Exception as e:
         print(f"Error deleting file/folder with ID: {file_or_folder_id}")
         print(f"Error details: {str(e)}")
+
+
 
 def download_file(file_id, destination_path):
     request = drive_service.files().get_media(fileId=file_id)

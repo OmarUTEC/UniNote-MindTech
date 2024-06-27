@@ -1,6 +1,20 @@
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 import base64
+from sqlalchemy.dialects.postgresql import TSVECTOR
+from sqlalchemy.types import UserDefinedType
+from sqlalchemy import func
+
+class TSVector(UserDefinedType):
+    def get_col_spec(self):
+        return 'TSVECTOR'
+
+    def bind_expression(self, bindvalue):
+        return func.to_tsvector('spanish', bindvalue)
+
+    def column_expression(self, col):
+        return func.to_tsvector('spanish', col)
+    
 
 class Usuarios(db.Model):
     __tablename__ = 'usuarios'
@@ -40,6 +54,9 @@ class Documentos(db.Model):
     preview_image = db.Column(db.LargeBinary)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.usuario_id'), nullable=False)
     carrera_id = db.Column(db.Integer, db.ForeignKey('carreras.carrera_id'), nullable=False)
+    hash_doc = db.Column(db.String(64))
+    tsvector = db.Column(TSVector())
+    text_content_detected = db.Column(db.Text)
     fecha_creacion = db.Column(db.DateTime, server_default=db.func.now())
     favoritos = db.relationship('Favoritos', backref='documento', lazy=True, cascade='all, delete-orphan')
     likes = db.relationship('Likes', backref='documento', lazy=True, cascade='all, delete-orphan')
