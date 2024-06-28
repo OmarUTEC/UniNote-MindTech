@@ -11,7 +11,10 @@ import google.auth.transport.requests
 import os
 from google.oauth2 import id_token
 
-UPLOAD_FOLDER = '/temp/folder'
+#UPLOAD_FOLDER = '/temp/folder'
+import tempfile
+UPLOAD_FOLDER = os.path.join(tempfile.gettempdir(), 'uploads')
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
