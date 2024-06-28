@@ -13,8 +13,8 @@ from google.oauth2 import id_token
 
 #UPLOAD_FOLDER = '/temp/folder'
 import tempfile
-UPLOAD_FOLDER = os.path.join(tempfile.gettempdir(), 'uploads')
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+UPLOAD_FOLDER = tempfile.mkdtemp()
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
