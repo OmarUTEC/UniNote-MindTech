@@ -99,7 +99,7 @@ USING gin(tsvector);
 CREATE OR REPLACE FUNCTION documentos_tsvector_trigger()
 RETURNS trigger AS $$
 BEGIN
-  NEW.tsvector := to_tsvector('spanish', coalesce(NEW.titulo, '') || ' ' || coalesce(text_content_detected, '') ||  ' ' || coalesce(NEW.descripcion, '') || ' ' || coalesce(NEW.curso, '') || ' ' || coalesce(NEW.ciclo::text, ''));
+  NEW.tsvector := to_tsvector('spanish', coalesce(NEW.titulo, '') || ' ' || coalesce(NEW.text_content_detected, '') ||  ' ' || coalesce(NEW.descripcion, '') || ' ' || coalesce(NEW.curso, '') || ' ' || coalesce(NEW.ciclo::text, ''));
   RETURN NEW;
 END
 $$ LANGUAGE plpgsql;
