@@ -12,7 +12,7 @@ const Library = ({ filters }) => {
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
-        let searchPath = `http://127.0.0.1:5000/library/${userId}`;
+        let searchPath = `http://34.239.210.249:5000/library/${userId}`;
         if (careerId !== 0) { searchPath += `/career/${careerId}`; }
         const response = await fetch(searchPath, {
           method: 'GET',

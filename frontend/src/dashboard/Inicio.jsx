@@ -11,7 +11,7 @@ const Inicio = ({userId}) => {
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
-        const searchPath = `http://127.0.0.1:5000/document/general-search`;
+        const searchPath = `http://34.239.210.249:5000/document/general-search`;
         const response = await fetch(searchPath, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }

@@ -24,7 +24,7 @@ const FeedItem = ({ username, description, title, userId, authorId, documentId, 
   useEffect(() => {
     const fetchData = async (endpoint, setter, data1, data2) => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/${endpoint}/${data1}/${data2}`, {
+        const response = await fetch(`http://34.239.210.249:5000/${endpoint}/${data1}/${data2}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
@@ -44,7 +44,7 @@ const FeedItem = ({ username, description, title, userId, authorId, documentId, 
     setIsDownloading(true);
 
     try {
-      const downloadFileUrl = `http://127.0.0.1:5000/download/${documentId}`;
+      const downloadFileUrl = `http://34.239.210.249:5000/download/${documentId}`;
       const response = await fetch(downloadFileUrl);
       if (!response.ok) throw new Error('Network response was not ok');
       const blob = await response.blob();
@@ -72,7 +72,7 @@ const FeedItem = ({ username, description, title, userId, authorId, documentId, 
       if (value) {return };
     }
     try {
-      const response = await fetch(`http://127.0.0.1:5000/${type}`, {
+      const response = await fetch(`http://34.239.210.249:5000/${type}`, {
         method: value ? 'DELETE' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),

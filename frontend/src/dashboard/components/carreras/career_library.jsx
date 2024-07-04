@@ -10,7 +10,7 @@ const SearchByCareer = ({ userId, careerId }) => {
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/documents/career/${userId}/${careerId}`, {
+        const response = await fetch(`http://34.239.210.249:5000/documents/career/${userId}/${careerId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });

@@ -48,7 +48,7 @@ const Item = ({ title, idDocument, darkMode, preview }) => {
     setIsLoading(true);
     setShowPdfModal(true);
 
-    const viewPdfUrl = `http://127.0.0.1:5000/download/${idDocument}`;
+    const viewPdfUrl = `http://34.239.210.249:5000/download/${idDocument}`;
 
     try {
       const response = await fetch(viewPdfUrl);

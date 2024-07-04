@@ -8,7 +8,7 @@ const Following = ({ userId }) => {
   useEffect(() => {
     const fetchFollowing = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/following/${userId}`, {
+        const response = await fetch(`http://34.239.210.249:5000/following/${userId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });
@@ -28,7 +28,7 @@ const Following = ({ userId }) => {
 
   const handleUnfollow = async (followingId) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/unfollow`, {
+      const response = await fetch(`http://34.239.210.249:5000/unfollow`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
