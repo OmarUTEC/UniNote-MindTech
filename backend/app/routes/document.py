@@ -138,7 +138,7 @@ def upload_file():
         file.save(file_path)
 
         #Inicializacion de nueva transaccion en la base de datos
-        file_id = upload_file_basic("1E8cQZY3fUnBg2d7wpIl0F1Q98bwGTWJq", file.filename)
+        file_id = upload_file_basic("13q3dIpl95zRzZnS4gpoQf3bCHADA_nAm", file.filename)
         fecha_actual = datetime.datetime.utcnow()
         new_file = Documentos(
             titulo = titulo,
