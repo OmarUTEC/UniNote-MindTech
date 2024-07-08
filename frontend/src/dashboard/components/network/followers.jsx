@@ -8,7 +8,7 @@ const Followers = ({ userId }) => {
   useEffect(() => {
     const fetchFollowers = async () => {
       try {
-        const response = await fetch(`http://34.239.210.249:5000/followers/${userId}`, {
+        const response = await fetch(`http://127.0.0.1:5000/followers/${userId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });
@@ -33,7 +33,7 @@ const Followers = ({ userId }) => {
 
   const handleFollow = async (followerId) => {
     try {
-      const response = await fetch(`http://34.239.210.249:5000/follow`, {
+      const response = await fetch(`http://127.0.0.1:5000/follow`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -19,6 +19,7 @@ from sqlalchemy.orm import sessionmaker
 document_bp = Blueprint('document', __name__)
 nltk.download('stopwords')
 
+
 def serializacion_qanswer(query_result):
     serialized_resultados = []
     for each_item in query_result:
@@ -94,22 +95,23 @@ def upload_file():
         descripcion = request.form.get('descripcion')
         if 'file' not in request.files:
             return jsonify({'error': 'No agregaste ningún archivo'}), 400
-
+        
         file = request.files['file']
         if file.filename == '':
             return jsonify({'error': 'Archivo no seleccionado'}), 401
 
-        
+        filename = file.filename
+        file.save(filename)
 
-        # Lectura del archivo y cálculo del hash
-        contenido_archivo = file.read()
-        hash_sha256 = hashlib.sha256(contenido_archivo).hexdigest()
-        
-        # Verificación de existencia de documento similar
-        documentos = Documentos.query.with_entities((Documentos.file_id)).filter(or_(Documentos.titulo == titulo, Documentos.hash_doc == hash_sha256)).all()
-        if documentos:
-            return jsonify({'error': 'Ya se subió un archivo con el mismo nombre o existe otro similar. Elige otro mejor.'}), 402
-
+        with open(filename, 'rb') as f:
+            # Lectura del archivo y cálculo del hash
+            contenido_archivo = f.read()
+            hash_sha256 = hashlib.sha256(contenido_archivo).hexdigest()
+            # Verificación de existencia de documento similar
+            documentos = Documentos.query.with_entities((Documentos.file_id)).filter(or_(Documentos.titulo == titulo, Documentos.hash_doc == hash_sha256)).all()
+            if documentos:
+                return jsonify({'error': 'Ya se subió un archivo con el mismo nombre o existe otro similar. Elige otro mejor.'}), 402
+        print("Hash:  ",hash_sha256)
         #Extraccion de contenido del pdf
         text_from_file = ""
         doc = fitz.open("pdf", contenido_archivo)
@@ -131,12 +133,14 @@ def upload_file():
         _pixmap = doc.load_page(0).get_pixmap()
         doc.close()
         buffered = BytesIO()
-        Image.frombytes("RGB", [_pixmap.width, _pixmap.height], _pixmap.samples).crop((10, 10, 580, 280)).save(buffered, format="JPEG")
+        image = Image.frombytes("RGB", [_pixmap.width, _pixmap.height], _pixmap.samples)
+        image.resize((600,300))
+        image.crop((10, 10, 580, 280)).save(buffered, format="JPEG")
         preview_image = buffered.getvalue()
         
-        file_path = os.path.join("", file.filename)
-        file.save(file_path)
 
+        
+        #return jsonify({'message': 'Archivo subido exitosamente!', 'drive_message': "Gaaaaaaaaaa!"}), 201
         #Inicializacion de nueva transaccion en la base de datos
         file_id = upload_file_basic("13q3dIpl95zRzZnS4gpoQf3bCHADA_nAm", file.filename)
         fecha_actual = datetime.datetime.utcnow()
@@ -144,7 +148,7 @@ def upload_file():
             titulo = titulo,
             descripcion = descripcion,
             curso = curso,
-            ciclo = ciclo,
+            ciclo = ciclo,      
             file_id = file_id,
             preview_image = preview_image,
             usuario_id = userId,
@@ -156,7 +160,7 @@ def upload_file():
         
         db.session.add(new_file)
         db.session.commit()
-        os.remove(file_path)
+        os.remove(file.filename)
         return jsonify({'message': 'Archivo subido exitosamente!', 'drive_message': "Gaaaaaaaaaa!"}), 200
     else:
         return render_template('from.html')

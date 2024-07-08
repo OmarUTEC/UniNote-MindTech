@@ -10,7 +10,7 @@ const Bookshelf = ({ userId }) => {
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
-        let searchPath = `http://34.239.210.249:5000/favourite/bookshelf/${userId}`;
+        let searchPath = `http://127.0.0.1:5000/favourite/bookshelf/${userId}`;
         const response = await fetch(searchPath, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }

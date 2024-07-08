@@ -19,7 +19,7 @@ const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview
   useEffect(() => {
     const fetchData = async (endpoint, setter) => {
       try {
-        const response = await fetch(`http://34.239.210.249:5000/${endpoint}/${userId}/${documentId}`, {
+        const response = await fetch(`http://127.0.0.1:5000/${endpoint}/${userId}/${documentId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
@@ -36,7 +36,7 @@ const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview
   const handleDownloadClick = async () => {
     if (isDownloading) return;
     setIsDownloading(true);
-    const downloadFileUrl = `http://34.239.210.249:5000/download/${documentId}`;
+    const downloadFileUrl = `http://127.0.0.1:5000/download/${documentId}`;
     try {
       const response = await fetch(downloadFileUrl);
       if (!response.ok) throw new Error('Network response was not ok');
@@ -66,7 +66,7 @@ const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview
     setIsLoading(true);
     setShowPdfModal(true);
 
-    const viewPdfUrl = `http://34.239.210.249:5000/download/${documentId}`;
+    const viewPdfUrl = `http://127.0.0.1:5000/download/${documentId}`;
 
     try {
       const response = await fetch(viewPdfUrl);
@@ -94,7 +94,7 @@ const Item = ({ title, userId, careerId, authorId, documentId, darkMode, preview
     setterOperation(true);
     const data = { 'usuario_id': userId, 'documento_id': documentId };
     try {
-      const response = await fetch(`http://34.239.210.249:5000/${type}`, {
+      const response = await fetch(`http://127.0.0.1:5000/${type}`, {
         method: value ? 'DELETE' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),

@@ -13,7 +13,7 @@ const Upload = ({ userId, handleUploadFileClick }) => {
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
-        const response = await fetch(`http://34.239.210.249:5000/documents/user/${userId}`, {
+        const response = await fetch(`http://127.0.0.1:5000/documents/user/${userId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });
