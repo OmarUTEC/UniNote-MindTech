@@ -8,9 +8,15 @@ const Inicio = ({ userId }) => {
   const hasFetched = useRef(false);
   const [document, setDocument] = useState([]);
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSetDocument = (listDocument) => {
+    setDocument(listDocument);
+  };
 
   useEffect(() => {
     const fetchDocuments = async () => {
+      setIsLoading(true);
       try {
         const searchPath = `http://127.0.0.1:5000/document/general-search`;
         const response = await fetch(searchPath, {
@@ -25,6 +31,8 @@ const Inicio = ({ userId }) => {
       } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
         setError(error.message);
+      } finally {
+        setIsLoading(false);
       }
     };
     if (!hasFetched.current) {
@@ -39,23 +47,27 @@ const Inicio = ({ userId }) => {
         <h2 className="text-xl font-bold mb-2">USUARIOS</h2>
         <p>Publicaciones.</p>
         {error && <p className="text-red-500 mt-2">Error: {error}</p>}
-        <SearchBar />  {/* Usa el componente SearchBar con la primera letra mayúscula */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-          {document.map((doc, index) => (
-            <FeedItem
-              key={index}
-              username={doc.username}
-              title={doc.titulo}
-              description={doc.descripcion}
-              preview={doc.preview_image}
-              documentId={doc.documento_id}
-              userId={userId}
-              careerId={doc.carrera_id}
-              authorId={doc.usuario_id}
-              darkMode={darkMode}
-            />
-          ))}
-        </div>
+        <SearchBar setDocument={handleSetDocument} />  {/* Usa el componente SearchBar con la primera letra mayúscula */}
+        {isLoading ? (
+          <p>Cargando documentos...</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+            {document.map((doc, index) => (
+              <FeedItem
+                key={index}
+                username={doc.username}
+                title={doc.titulo}
+                description={doc.descripcion}
+                preview={doc.preview_image}
+                documentId={doc.documento_id}
+                userId={userId}
+                careerId={doc.carrera_id}
+                authorId={doc.usuario_id}
+                darkMode={darkMode}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -60,3 +60,11 @@ def get_followers_count(usuario_id):
 def get_following_count(usuario_id):
     count = db.session.query(Follows).filter(Follows.follower_id == usuario_id).count()
     return jsonify({'count': count}), 200
+
+@follower_bp.route('/follow/find/<int:userId>/<int:authorId>', methods=['GET'])
+def find_follow(userId, authorId):
+    answer = False
+    like = Follows.query.filter(Follows.follower_id == userId, Follows.following_id == authorId).first()
+    if like:
+        answer = True
+    return jsonify({'answer': answer}), 200
