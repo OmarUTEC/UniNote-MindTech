@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import useTheme from "../theme";
 import FeedItem from './components/inicio/item';
+import SearchBar from './components/inicio/search_bar';
 
-const Inicio = ({userId}) => {
+const Inicio = ({ userId }) => {
   const { darkMode } = useTheme();
   const hasFetched = useRef(false);
   const [document, setDocument] = useState([]);
@@ -30,7 +31,7 @@ const Inicio = ({userId}) => {
       fetchDocuments();
       hasFetched.current = true;
     }
-  }, []); 
+  }, []);
 
   return (
     <div className="bg-blue-400 min-h-screen flex justify-center items-center p-5 relative overflow-hidden">
@@ -38,6 +39,7 @@ const Inicio = ({userId}) => {
         <h2 className="text-xl font-bold mb-2">USUARIOS</h2>
         <p>Publicaciones.</p>
         {error && <p className="text-red-500 mt-2">Error: {error}</p>}
+        <SearchBar />  {/* Usa el componente SearchBar con la primera letra mayúscula */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
           {document.map((doc, index) => (
             <FeedItem
