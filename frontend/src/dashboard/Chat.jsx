@@ -16,15 +16,7 @@ const Chat = () => {
   // Función para obtener o generar un ID de usuario
   const getUserId = () => {
     if (!userIdRef.current) {
-      // Intentar obtener el ID del localStorage
-      let storedId = localStorage.getItem('chatUserId');
-      if (!storedId) {
-        // Si no existe, generar uno nuevo
-        storedId = 'user_' + Math.random().toString(36).substr(2, 9);
-        // Guardar el nuevo ID en localStorage
-        localStorage.setItem('chatUserId', storedId);
-      }
-      userIdRef.current = storedId;
+      userIdRef.current = 'user_' + Math.random().toString(36).substr(2, 9);
     }
     return userIdRef.current;
   };

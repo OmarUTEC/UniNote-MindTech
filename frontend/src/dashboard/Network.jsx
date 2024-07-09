@@ -8,28 +8,38 @@ import followingIcon from '../assets/following.png';
 const Network = ({ userId, handleClick }) => {
   const { darkMode } = useTheme();
   const [userData, setData] = useState([]);
+  const [followersCount, setFollowersCount] = useState(0);
+  const [followingCount, setFollowingCount] = useState(0);
 
   useEffect(() => {
-    const fetchDocuments = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/usuarios/${userId}`, {
+        const userResponse = await fetch(`http://127.0.0.1:5000/usuarios/${userId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setData(data);
+        const userData = await userResponse.json();
+        setData(userData);
+
+        const followersResponse = await fetch(`http://127.0.0.1:5000/followers_count/${userId}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const followersData = await followersResponse.json();
+        setFollowersCount(followersData.count);
+
+        const followingResponse = await fetch(`http://127.0.0.1:5000/following_count/${userId}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const followingData = await followingResponse.json();
+        setFollowingCount(followingData.count);
       } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
       }
     };
-    fetchDocuments();
+    fetchData();
   }, [userId]);
-
-  const numFollowers = 4;
-  const numFollowing = 4;
 
   return (
     <div className={`w-full pt-24 flex flex-col items-center ${darkMode ? 'bg-gray-900 text-white' : 'bg-cach-l2 text-black'}`}>
@@ -88,7 +98,7 @@ const Network = ({ userId, handleClick }) => {
             <img src={followersIcon} alt="Followers" className='w-20 h-20 mr-6' />
             <div className="text-xl font-bold">
               <h2>FOLLOWERS</h2>
-              <h2>{numFollowers}</h2>
+              <h2>{followersCount}</h2>
             </div>
           </button>
 
@@ -102,7 +112,7 @@ const Network = ({ userId, handleClick }) => {
             <img src={followingIcon} alt="Following" className='w-20 h-20 mr-6' />
             <div className="text-xl font-bold">
               <p>FOLLOWING</p>
-              <p>{numFollowing}</p>
+              <p>{followingCount}</p>
             </div>
           </button>
         </div>
