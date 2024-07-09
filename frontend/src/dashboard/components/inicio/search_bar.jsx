@@ -1,63 +1,119 @@
 import React, { useState } from 'react';
+import { FaSearch, FaList } from 'react-icons/fa';
 
 const SearchBar = ({ setDocument }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleInputChange = (e) => {
-    setSearchTerm(e.target.value);
+  const handleInputChange = async (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    
+    if (value.length > 0) {
+      try {
+        const response = await fetch(`http://localhost:5000/suggestions?query=${value}`);
+        if (!response.ok) {
+          throw new Error('Error fetching suggestions');
+        }
+        const data = await response.json();
+        setSuggestions(data.suggestions);
+      } catch (error) {
+        console.error('Error fetching suggestions:', error);
+      }
+    } else {
+      setSuggestions([]);
+    }
   };
 
-  const handleSearch = async () => {
+  const handleSearch = async (query) => {
     setIsLoading(true);
     try {
       const response = await fetch('http://localhost:5000/search_document', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded', },
-        body: new URLSearchParams({ key_words: searchTerm }),
-        });
+        body: new URLSearchParams({ key_words: query || searchTerm }),
+      });
 
       if (!response.ok) {
         throw new Error('Error en la búsqueda');
       }
 
       const data = await response.json();
-      alert(`Buscando: ${searchTerm}`);
-      setDocument(data.resultados);
+      setDocument(data.resultados); // Establecer solo los documentos encontrados
     } catch (error) {
       console.error('Error en la búsqueda:', error);
     } finally {
       setIsLoading(false);
+      setSuggestions([]); // Limpiar las sugerencias después de la búsqueda
+    }
+  };
+
+  const handleViewAll = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('http://localhost:5000/search/documents');
+      if (!response.ok) {
+        throw new Error('Error al recuperar todos los documentos');
+      }
+      const data = await response.json();
+      setDocument(data); // Mostrar todos los documentos
+    } catch (error) {
+      console.error('Error al recuperar todos los documentos:', error);
+    } finally {
+      setIsLoading(false);
+      setSearchTerm('');
+      setSuggestions([]);
     }
   };
 
   return (
-    <div className="flex items-center w-3/5 my-4">
-      <input
-        type="text"
-        value={searchTerm}
-        onChange={handleInputChange}
-        placeholder="Buscar..."
-        className="flex-1 p-3 text-lg 
-          border border-gray-300 
-          rounded-l-md 
-          focus:outline-none 
-          focus:ring-2 
-          focus:ring-blue-500 
-          text-black"
-      />
+    <div className="w-full max-w-3xl mx-auto my-8">
+      <div className="relative">
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={handleInputChange}
+          placeholder="Buscar documentos..."
+          className="w-full p-4 pr-12 text-lg border-2 border-gray-300 rounded-full focus:outline-none focus:border-blue-500 transition duration-300 ease-in-out"
+        />
+        <button
+          onClick={() => handleSearch()}
+          className="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 bg-blue-400 text-white rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
+          disabled={isLoading}
+        >
+          <FaSearch className={`w-5 h-5 ${isLoading ? 'animate-spin' : ''}`} />
+        </button>
+        {suggestions.length > 0 && (
+          <ul className="absolute top-full left-0 w-full mt-2 bg-white border border-gray-300 rounded-lg shadow-lg overflow-hidden z-10">
+            {suggestions.map((suggestion, index) => (
+              <li
+                key={index}
+                className="p-3 cursor-pointer hover:bg-gray-100 transition duration-200 ease-in-out"
+                onClick={() => {
+                  setSearchTerm(suggestion);
+                  handleSearch(suggestion);
+                }}
+              >
+                {suggestion}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+      
+      <div className="mt-4 flex justify-center">
       <button
-        onClick={handleSearch}
-        className={`p-3 text-lg 
-          ${isLoading ? 'bg-gray-400' : 'bg-blue-500'} 
-          text-white 
-          rounded-r-md 
-          ${isLoading ? 'cursor-not-allowed' : 'hover:bg-blue-600'} 
-          focus:outline-none focus:ring-2 focus:ring-blue-500`}
+        onClick={handleViewAll}
+        className={`flex items-center justify-center px-6 py-3 text-lg font-semibold text-white border border-#819FF7 rounded-full bg-transparent 
+                    hover:text-black hover:border-black focus:outline-none focus:ring-2 focus:ring-#819FF7 
+                    transition duration-300 ease-in-out ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
         disabled={isLoading}
       >
-        {isLoading ? 'Buscando...' : 'Buscar'}
+        <FaList className="mr-2" />
+        {isLoading ? 'Cargando...' : 'Ver todos los documentos'}
       </button>
+    </div>
     </div>
   );
 };

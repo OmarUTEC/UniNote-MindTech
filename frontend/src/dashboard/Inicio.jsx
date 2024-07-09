@@ -42,16 +42,16 @@ const Inicio = ({ userId }) => {
   }, []);
 
   return (
-    <div className="bg-blue-400 min-h-screen flex justify-center items-center p-5 relative overflow-hidden">
-      <div className="bg-blue-400 p-7 flex flex-col items-center rounded-xl shadow-lg w-full max-w-6xl">
-        <h2 className="text-xl font-bold mb-2">USUARIOS</h2>
-        <p>Publicaciones.</p>
+    <div className="min-h-screen flex justify-center items-center p-5 relative overflow-hidden">
+      <div className=" p-7 flex flex-col items-center rounded-xl shadow-lg w-full">
+        <h2 className="text-xl font-bold mb-2 text-white">USUARIOS</h2>
+        <p className="text-white">Publicaciones.</p>
         {error && <p className="text-red-500 mt-2">Error: {error}</p>}
         <SearchBar setDocument={handleSetDocument} />  {/* Usa el componente SearchBar con la primera letra mayúscula */}
         {isLoading ? (
-          <p>Cargando documentos...</p>
+          <p className="text-white">Cargando documentos...</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+          <div className="grid grid-cols-2 gap-4 w-full">
             {document.map((doc, index) => (
               <FeedItem
                 key={index}

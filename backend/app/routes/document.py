@@ -289,3 +289,17 @@ def search_documents_by_likes():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+@document_bp.route('/suggestions', methods=['GET'])
+def get_suggestions():
+    query = request.args.get('query', '')
+    if not query:
+        return jsonify({'suggestions': []}), 200
+
+    Session = sessionmaker(bind=db.engine)
+    session = Session()
+    suggestions_query = session.query(Documentos.titulo).filter(Documentos.titulo.ilike(f'%{query}%')).limit(10).all()
+    session.close()
+
+    suggestions = [suggestion[0] for suggestion in suggestions_query]
+    return jsonify({'suggestions': suggestions}), 200

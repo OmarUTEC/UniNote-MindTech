@@ -12,6 +12,8 @@ import Followers from './components/network/followers';
 import Following from './components/network/following';
 import logo from '../assets/logo.png';
 import useTheme, { lightTheme, darkTheme } from '../theme.jsx';
+import { FiChevronLeft } from 'react-icons/fi'; // Importar el ícono de flecha izquierda desde react-icons
+import Chat from './Chat';
 
 function Dashboard() {
   const { darkMode, toggleDarkMode } = useTheme();
@@ -22,6 +24,7 @@ function Dashboard() {
   const [careerId, setCareerId] = useState(0);
   const [activeTab, setActiveTab] = useState('inicio');
   const [userName, setUserName] = useState('');
+  const [showChat, setShowChat] = useState(false); // Estado para controlar la visibilidad del chat
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -59,13 +62,14 @@ function Dashboard() {
           <button onClick={toggleDarkMode} className="mx-2 text-white hover:text-gray-300 focus:outline-none">
             <i className={`fas ${darkMode ? 'fa-sun' : 'fa-moon'}`}></i>
           </button>
-          <button className="mx-2 text-white hover:text-gray-300 focus:outline-none">
-            <i className="fas fa-bell"></i>
+          <button onClick={() => setShowChat(!showChat)} className="mx-2 text-white hover:text-gray-300 focus:outline-none">
+            <i className="fas fa-comment"></i>
           </button>
+          {/* Botón para abrir/cerrar el chat */}
         </div>
       </div>
       <div className="flex flex-1 mt-16"> {/* Agrega un margen superior para evitar que el contenido quede detrás del header fijo */}
-        <div className={`${theme.navColor} w-56 p-4 fixed h-full mt-2 rounded-lg`}> {/* Class fixed para sidebar quede estatico */}
+        <div className={`${theme.navColor} w-56 p-4 fixed h-full mt-2 rounded-lg`}>
           <div className="text-center mb-4">
             <div className="bg-blue-500 rounded-full w-24 h-24 mx-auto mb-2"></div>
             <div className="text-xl font-semibold">{userName}</div>
@@ -75,34 +79,33 @@ function Dashboard() {
           <button
             className={`w-full flex items-center py-2 px-4 mb-2 rounded ${activeTab === 'inicio' ? 'bg-blue-200' : ''} ${theme.buttonTextColor} focus:outline-none`}
             onClick={() => handleTabClick('inicio')}
-          > <i className="fas fa-home mr-2"></i>INICIO
+          ><i className="fas fa-home mr-2"></i>INICIO
           </button>
   
           <button
             className={`w-full flex items-center py-2 px-4 mb-2 rounded ${activeTab === 'library' ? 'bg-blue-200' : ''} ${theme.buttonTextColor} focus:outline-none`}
             onClick={() => handleTabClick('library')}
-          > <i className="fas fa-book mr-2"></i>BIBLIOTECA
+          ><i className="fas fa-book mr-2"></i>BIBLIOTECA
           </button>
   
           <button
             className={`w-full flex items-center py-2 px-4 mb-2 rounded ${activeTab === 'career' ? 'bg-blue-200' : ''} ${theme.buttonTextColor} focus:outline-none`}
             onClick={() => handleTabClick('career')}
-          > <i className="fas fa-graduation-cap mr-2"></i>CARRERAS
+          ><i className="fas fa-graduation-cap mr-2"></i>CARRERAS
           </button>
   
           <button
             className={`w-full flex items-center py-2 px-4 mb-2 rounded ${activeTab === 'network' ? 'bg-blue-200' : ''} ${theme.buttonTextColor} focus:outline-none`}
             onClick={() => handleTabClick('network')}
-          > <i className="fas fa-user mr-2"></i>PERFIL
+          ><i className="fas fa-user mr-2"></i>PERFIL
           </button>
   
           <button
             className={`w-full flex items-center py-2 px-4 mb-2 rounded ${activeTab === 'upload' ? 'bg-blue-200' : ''} ${theme.buttonTextColor} focus:outline-none`}
             onClick={() => handleTabClick('upload')}
-          > <i className="fas fa-upload mr-2"></i>SUBIR
+          ><i className="fas fa-upload mr-2"></i>SUBIR
           </button>
   
-
         </div>
   
         <div className={`flex-1 pt-2 pl-6 pr-6 ml-56 ${theme.backgroundColor}`}>
@@ -119,10 +122,14 @@ function Dashboard() {
             {activeTab === 'following' && <Following userId={userId} />}
           </div>
         </div>
+  
+        {/* Chat desplegable desde el lado izquierdo */}
+        <div className={`fixed left-0 top-16 bottom-0 w-80 bg-white dark:bg-gray-800 p-4 flex-shrink-0 ${showChat ? 'translate-x-0' : '-translate-x-full'}`} style={{ transition: 'transform 0.3s ease' }}>
+          <Chat />
+        </div>
       </div>
     </div>
   );
-  
 }
 
 export default Dashboard;

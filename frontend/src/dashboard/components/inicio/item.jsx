@@ -1,38 +1,27 @@
 import React, { useState, useEffect } from 'react';
-
-import user from '../icons/user.png';
-import download_file_button from '../icons/download_file_button.png';
-import yes_like from '../icons/like.jpg';
-import not_like from '../icons/unlike.jpg';
-import yes_favourite from '../icons/favourite.png';
-import not_favourite from '../icons/unfavourite.png';
+import { FaUser, FaDownload, FaThumbsUp, FaStar, FaUserPlus, FaEye } from 'react-icons/fa';
 import loading_spinner from '../icons/loading_spinner.gif';
-
-import yes_follow from '../icons/yes_follow.png';
-import not_follow from '../icons/not_follow.png';
-
+import close_icon from '../icons/close.png';
 
 const FeedItem = ({ username, description, title, userId, authorId, documentId, preview }) => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [like, setLike] = useState(null);
-  const [likeOperation, setLikeOperation] = useState(false);
   const [favourite, setFavourite] = useState(null);
-  const [favouriteOperation, setFavouriteOperation] = useState(false);
   const [follow, setFollow] = useState(null);
-  const [followOperation, setFollowOperation] = useState(false);
-
+  const [isLoading, setIsLoading] = useState({ like: false, favourite: false, follow: false });
+  const [showPdfModal, setShowPdfModal] = useState(false);
+  const [pdfUrl, setPdfUrl] = useState('');
+  const [isPdfLoading, setIsPdfLoading] = useState(false);
   useEffect(() => {
     const fetchData = async (endpoint, setter, data1, data2) => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/${endpoint}/${data1}/${data2}`, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-        });
+        const response = await fetch(`http://127.0.0.1:5000/${endpoint}/${data1}/${data2}`);
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
         setter(data.answer);
-      } catch (error)
-      { console.error(`There was a problem with the fetch operation for ${endpoint}:`, error); }
+      } catch (error) {
+        console.error(`Error fetching ${endpoint}:`, error);
+      }
     };
     fetchData('likes/find', setLike, userId, documentId);
     fetchData('favourite/find', setFavourite, userId, documentId);
@@ -42,10 +31,8 @@ const FeedItem = ({ username, description, title, userId, authorId, documentId, 
   const handleDownloadClick = async () => {
     if (isDownloading) return;
     setIsDownloading(true);
-
     try {
-      const downloadFileUrl = `http://127.0.0.1:5000/download/${documentId}`;
-      const response = await fetch(downloadFileUrl);
+      const response = await fetch(`http://127.0.0.1:5000/download/${documentId}`);
       if (!response.ok) throw new Error('Network response was not ok');
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
@@ -57,79 +44,139 @@ const FeedItem = ({ username, description, title, userId, authorId, documentId, 
       a.click();
       window.URL.revokeObjectURL(url);  
     } catch (error) {
-      console.error('There was a problem with the download operation:', error);
+      console.error('Download error:', error);
     } finally {
       setIsDownloading(false);
     }
   };
 
-  const handleOperationClick = async (type, setter, value, setterOperation, operationValue) => {
-    if (operationValue) return;
-    setterOperation(true);
-    let data = { 'usuario_id': userId, 'documento_id': documentId };
-    if(type === 'follow') {
-      data = { 'follower_id': userId, 'following_id': authorId };
-      if (value) {return };
-    }
+  const handleOperationClick = async (type) => {
+    if (isLoading[type]) return;
+    setIsLoading(prev => ({ ...prev, [type]: true }));
+
+    const data = type === 'follow' 
+      ? { follower_id: userId, following_id: authorId }
+      : { usuario_id: userId, documento_id: documentId };
+
+    const currentValue = type === 'like' ? like : type === 'favourite' ? favourite : follow;
+    
     try {
       const response = await fetch(`http://127.0.0.1:5000/${type}`, {
-        method: value ? 'DELETE' : 'POST',
+        method: currentValue ? 'DELETE' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
       if (!response.ok) throw new Error('Network response was not ok');
-      setter(!value);
+      
+      if (type === 'like') setLike(!currentValue);
+      else if (type === 'favourite') setFavourite(!currentValue);
+      else setFollow(!currentValue);
     } catch (error) {
-      console.error(`There was a problem with the ${type} operation:`, error);
+      console.error(`${type} operation error:`, error);
     } finally {
-      setterOperation(false);
+      setIsLoading(prev => ({ ...prev, [type]: false }));
     }
   };
-  
-    return (
-      <div className={`w-full h-96 bg-white border border-gray-300 rounded-lg overflow-hidden m-4 shadow-md`}>
-
-        <div className={`w-full h-1/6 flex items-center pl-3 pr-3 border-b border-gray-300 bg-gray-300`}>
-          <img src={user} alt="Avatar usuario" className={`w-12 h-12 mr-3 rounded-full`} />
-          <span className={`font-bold text-xl`}>{username}</span>
+  const handleViewPdfClick = async () => {
+    setShowPdfModal(true);
+    if (!pdfUrl) {
+      setIsPdfLoading(true);
+      try {
+        const response = await fetch(`http://127.0.0.1:5000/download/${documentId}`);
+        if (!response.ok) throw new Error('Network response was not ok');
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        setPdfUrl(url);
+      } catch (error) {
+        console.error('Error loading PDF:', error);
+      } finally {
+        setIsPdfLoading(false);
+      }
+    }
+  };
+  const closeModal = () => {
+    setShowPdfModal(false);
+  };
+  return (
+    <div className="w-full bg-white rounded-xl shadow-lg overflow-hidden m-4 transition-all duration-300 ease-in-out hover:shadow-xl">
+      <div className="p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center">
+            <FaUser className="w-10 h-10 rounded-full bg-gray-200 p-2 mr-3" />
+            <span className="text-xl font-semibold text-gray-800">{username}</span>
+          </div>
+          <button 
+            onClick={() => handleOperationClick('follow')} 
+            disabled={isLoading.follow}
+            className={`flex items-center ${follow ? 'text-blue-400' : 'text-gray-500'} hover:text-blue-600 transition-colors duration-200`}
+          >
+            <FaUserPlus className={`w-6 h-6 ${isLoading.follow ? 'animate-pulse' : ''}`} />
+          </button>
         </div>
-        
-        <img src={`data:image/jpeg;base64,${preview}`} alt="Publicación" className={`w-full h-1/2`} />
-        
-        <div className={`w-full h-1/3`}>
-
-            <div className="w-full h-1/3 flex flex-row items-center bg-gray-300">
-                
-                <p className={`w-2/3 font-bold text-base pr-3 pl-3`}>{title}</p> 
-
-                <div className="w-1/3 h-full flex flex-row items-center justify-around pr-2 pl-2">
-                    <button onClick={() => handleOperationClick('follow', setFollow, follow, setFollowOperation, followOperation)} disabled={followOperation} className="w-5 h-5">
-                        <img src={follow ? yes_follow : not_follow} alt="follow"/>
-                    </button>
-
-                    <button onClick={() => handleOperationClick('like', setLike, like, setLikeOperation, likeOperation)} disabled={likeOperation} className="w-6 h-6">
-                      <img src={like ? yes_like : not_like} alt="Like" />
-                    </button>
-
-                    <button onClick={() => handleOperationClick('favourite', setFavourite, favourite, setFavouriteOperation, favouriteOperation)} disabled={favouriteOperation} className="w-6 h-6">
-                      <img src={favourite ? yes_favourite : not_favourite} alt="Favourite" />
-                    </button>
-
-                    <button onClick={handleDownloadClick} disabled={isDownloading} className="w-6 h-6">
-                      {isDownloading ? (
-                        <img src={loading_spinner} alt="Downloading..." />
-                      ) : (<img src={download_file_button} alt="Download" />)}
-                    </button>
-                </div>
-            </div>
-
-            
-            <div className={`w-full h-2/3 text-sm text-gray-800 bg-white pt-3 pb-3 pr-3 pl-3`}>
-                {description}
-            </div>
+        <button onClick={handleViewPdfClick} className="w-full cursor-pointer">
+          <img className="w-full h-48 object-cover rounded-lg mb-4" src={`data:image/jpeg;base64,${preview}`} alt={title} />
+        </button>
+        <h2 className="text-2xl font-bold text-gray-900 mb-3 hover:text-indigo-600 transition-colors duration-200">{title}</h2>
+        <p className="text-gray-600 mb-4 line-clamp-3">{description}</p>
+        <div className="flex items-center justify-between">
+          <div className="flex space-x-4">
+            <button 
+              onClick={() => handleOperationClick('like')} 
+              disabled={isLoading.like}
+              className={`flex items-center ${like ? 'text-blue-500' : 'text-gray-500'} hover:text-blue-600 transition-colors duration-200`}
+            >
+              <FaThumbsUp className={`w-6 h-6 ${isLoading.like ? 'animate-pulse' : ''}`} />
+            </button>
+            <button 
+              onClick={() => handleOperationClick('favourite')} 
+              disabled={isLoading.favourite}
+              className={`flex items-center ${favourite ? 'text-yellow-500' : 'text-gray-500'} hover:text-yellow-600 transition-colors duration-200`}
+            >
+              <FaStar className={`w-6 h-6 ${isLoading.favourite ? 'animate-pulse' : ''}`} />
+            </button>
+          </div>
+          <div className="flex space-x-4">
+            <button 
+              onClick={handleViewPdfClick}
+              className="flex items-center text-gray-500 hover:text-gray-600 transition-colors duration-200"
+            >
+              <FaEye className="w-6 h-6" />
+            </button>
+            <button 
+              onClick={handleDownloadClick} 
+              disabled={isDownloading}
+              className="flex items-center text-gray-500 hover:text-gray-600 transition-colors duration-200"
+            >
+              <FaDownload className={`w-6 h-6 ${isDownloading ? 'animate-spin' : ''}`} />
+            </button>
+          </div>
         </div>
       </div>
-    );
-  };
 
-  export default FeedItem;
+      {showPdfModal && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+          <div className="bg-white p-3 rounded-lg shadow-lg relative w-3/4 h-3/4">
+            <button onClick={closeModal} className="absolute top-0 right-0 -mt-8 -mr-8 p-2 bg-gray-200 rounded-full shadow-md">
+              <img src={close_icon} alt="Close" className="w-6 h-6" />
+            </button>
+            {isPdfLoading ? (
+              <div className="flex items-center justify-center h-full">
+                <img src={loading_spinner} alt="Loading..." className="w-20 h-20 mr-3" />
+                <p className="text-2xl">Cargando...</p>
+              </div>
+            ) : (
+              <iframe 
+                src={pdfUrl} 
+                className="w-full h-full border-none"
+                title={`PDF viewer for ${title}`}
+              ></iframe>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+
+export default FeedItem;
