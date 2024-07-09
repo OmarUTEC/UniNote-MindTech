@@ -9,8 +9,7 @@ import Network from './Network';
 import UpdateUserData from '../dashboard/components/network/form';
 import Upload from './Upload';
 import UploadFile from './components/upload/form';
-import Followers from './components/network/followers';
-import Following from './components/network/following';
+import Following from './components/network/following'; // Mantengo Following, elimino Followers
 import logo from '../assets/logo.png';
 import useTheme, { lightTheme, darkTheme } from '../theme.jsx';
 
@@ -23,7 +22,6 @@ function Dashboard() {
   const [careerId, setCareerId] = useState(0);
   const [activeTab, setActiveTab] = useState('inicio');
   const [userName, setUserName] = useState('');
-  const [followersCount, setFollowersCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
   const [uploadsCount, setUploadsCount] = useState(0);
 
@@ -45,22 +43,6 @@ function Dashboard() {
       }
     };
 
-    const fetchFollowersCount = async () => {
-      try {
-        const response = await fetch(`http://127.0.0.1:5000/followers_count/${userId}`, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' }
-        });
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setFollowersCount(data.count);
-      } catch (error) {
-        console.error('Error fetching followers count:', error);
-      }
-    };
-
     const fetchFollowingCount = async () => {
       try {
         const response = await fetch(`http://127.0.0.1:5000/following_count/${userId}`, {
@@ -78,7 +60,6 @@ function Dashboard() {
     };
 
     fetchUserData();
-    fetchFollowersCount();
     fetchFollowingCount();
   }, [userId]);
 
@@ -153,7 +134,6 @@ function Dashboard() {
             {activeTab === 'updateProfile' && <UpdateUserData userId={userId} handleClick={() => handleTabClick('network')}/>}
             {activeTab === 'upload' && <Upload userId={userId} handleUploadFileClick={() => handleTabClick('uploadFile')}/>}
             {activeTab === 'uploadFile' && <UploadFile userId={userId} handleUploadClick={() => handleTabClick('upload')}/>}
-            {activeTab === 'followers' && <Followers userId={userId} />}
             {activeTab === 'following' && <Following userId={userId} />}
           </div>
         </div>

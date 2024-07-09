@@ -26,7 +26,8 @@ const Inicio = ({ userId }) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        const data = await response.json();
+        let data = await response.json();
+        data.sort((a, b) => new Date(b.fecha_creacion) - new Date(a.fecha_creacion));
         setDocument(data);
       } catch (error) {
         console.error('There was a problem with the fetch operation:', error);

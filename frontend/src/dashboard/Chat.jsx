@@ -10,15 +10,14 @@ const Chat = () => {
   const messagesEndRef = useRef(null);
   const { darkMode } = useTheme();
 
-  // Usar useRef para almacenar el ID del usuario
-  const userIdRef = useRef(null);
-
-  // Función para obtener o generar un ID de usuario
+  // Función para obtener o generar un ID de usuario usando localStorage
   const getUserId = () => {
-    if (!userIdRef.current) {
-      userIdRef.current = 'user_' + Math.random().toString(36).substr(2, 9);
+    let userId = localStorage.getItem('chatUserId');
+    if (!userId) {
+      userId = 'user_' + Math.random().toString(36).substr(2, 9);
+      localStorage.setItem('chatUserId', userId);
     }
-    return userIdRef.current;
+    return userId;
   };
 
   useEffect(() => {
