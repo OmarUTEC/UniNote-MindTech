@@ -28,7 +28,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/usuarios/${userId}`, {
+        const response = await fetch(`http://34.239.210.249:5000/usuarios/${userId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });
@@ -45,7 +45,7 @@ function Dashboard() {
 
     const fetchFollowingCount = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/following_count/${userId}`, {
+        const response = await fetch(`http://34.239.210.249:5000/following_count/${userId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });

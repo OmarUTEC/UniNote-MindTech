@@ -19,7 +19,7 @@ const UpdateUserData = ({ userId,  handleClick }) => {
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/usuarios/${userId}`, {
+        const response = await fetch(`http://34.239.210.249:5000/usuarios/${userId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });
@@ -45,7 +45,7 @@ const UpdateUserData = ({ userId,  handleClick }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = JSON.stringify(formData);
-    fetch(`http://127.0.0.1:5000/usuarios/${userId}`, {
+    fetch(`http://34.239.210.249:5000/usuarios/${userId}`, {
       method: 'PUT',
       headers: {'Content-Type': 'application/json'},
       body: data

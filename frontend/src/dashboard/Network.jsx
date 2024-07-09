@@ -14,21 +14,21 @@ const Network = ({ userId, handleClick }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userResponse = await fetch(`http://127.0.0.1:5000/usuarios/${userId}`, {
+        const userResponse = await fetch(`http://34.239.210.249:5000/usuarios/${userId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });
         const userData = await userResponse.json();
         setData(userData);
 
-        const followersResponse = await fetch(`http://127.0.0.1:5000/followers_count/${userId}`, {
+        const followersResponse = await fetch(`http://34.239.210.249:5000/followers_count/${userId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });
         const followersData = await followersResponse.json();
         setFollowersCount(followersData.count);
 
-        const followingResponse = await fetch(`http://127.0.0.1:5000/following_count/${userId}`, {
+        const followingResponse = await fetch(`http://34.239.210.249:5000/following_count/${userId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });

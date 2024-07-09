@@ -10,7 +10,7 @@ const Card = ({ title, author, idDocument, darkMode, preview }) => {
   const handleDownloadClick = async () => {
     if (isDownloading) return;
     setIsDownloading(true);
-    const downloadFileUrl = `http://127.0.0.1:5000/download/${idDocument}`;
+    const downloadFileUrl = `http://34.239.210.249:5000/download/${idDocument}`;
 
     try {
       const response = await fetch(downloadFileUrl);

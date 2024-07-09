@@ -47,7 +47,7 @@ const UploadFile = ({ userId,  handleUploadClick }) => {
       data.append('file', file);
     }
 
-    fetch('http://127.0.0.1:5000/upload_file', {
+    fetch('http://34.239.210.249:5000/upload_file', {
       method: 'POST',
       body: data,
     })

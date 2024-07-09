@@ -25,7 +25,7 @@ const Carreras = ({ setCareerId, handleClick }) => {
   useEffect(() => {
     const fetchCareers = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/carreras`, {
+        const response = await fetch(`http://34.239.210.249:5000/carreras`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });

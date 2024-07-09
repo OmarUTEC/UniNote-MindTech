@@ -17,7 +17,7 @@ const Login = () => {
 
   useEffect(() => {
     const handleMessage = (event) => {
-      if (event.origin === "http://127.0.0.1:5000/") {
+      if (event.origin === "http://34.239.210.249:5000/") {
         const userId = event.data.usuario_id;
         if (userId) {
           navigate('/dashboard', { state: { userId } });
@@ -52,7 +52,7 @@ const Login = () => {
     const top = (window.innerHeight / 2) - (height / 2);
 
     const authWindow = window.open(
-      'http://127.0.0.1:5000/login-google', 
+      'http://34.239.210.249:5000/login-google', 
       'GoogleAuth',
       `width=${width},height=${height},top=${top},left=${left}`
     );
@@ -74,7 +74,7 @@ const Login = () => {
       return;
     }
 
-    fetch('http://127.0.0.1:5000/login', {
+    fetch('http://34.239.210.249:5000/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)

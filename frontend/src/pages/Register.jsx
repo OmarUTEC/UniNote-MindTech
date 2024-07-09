@@ -32,7 +32,7 @@ const Register = () => {
       return;
     }
 
-    fetch('http://0.0.0.0:5000/signup', {
+    fetch('http://34.239.210.249:5000/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)

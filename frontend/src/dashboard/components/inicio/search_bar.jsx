@@ -12,7 +12,7 @@ const SearchBar = ({ setDocument }) => {
     
     if (value.length > 0) {
       try {
-        const response = await fetch(`http://localhost:5000/suggestions?query=${value}`);
+        const response = await fetch(`http://34.239.210.249:5000/suggestions?query=${value}`);
         if (!response.ok) {
           throw new Error('Error fetching suggestions');
         }
@@ -29,7 +29,7 @@ const SearchBar = ({ setDocument }) => {
   const handleSearch = async (query) => {
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/search_document', {
+      const response = await fetch('http://34.239.210.249:5000/search_document', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({ key_words: query || searchTerm }),
@@ -40,24 +40,24 @@ const SearchBar = ({ setDocument }) => {
       }
 
       const data = await response.json();
-      setDocument(data.resultados); // Establecer solo los documentos encontrados
+      setDocument(data.resultados);
     } catch (error) {
       console.error('Error en la búsqueda:', error);
     } finally {
       setIsLoading(false);
-      setSuggestions([]); // Limpiar las sugerencias después de la búsqueda
+      setSuggestions([]);
     }
   };
 
   const handleViewAll = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/search/documents');
+      const response = await fetch('http://34.239.210.249:5000/search/documents');
       if (!response.ok) {
         throw new Error('Error al recuperar todos los documentos');
       }
       const data = await response.json();
-      setDocument(data); // Mostrar todos los documentos
+      setDocument(data); 
     } catch (error) {
       console.error('Error al recuperar todos los documentos:', error);
     } finally {

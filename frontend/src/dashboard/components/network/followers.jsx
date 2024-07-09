@@ -12,7 +12,7 @@ const Followers = ({ userId }) => {
   useEffect(() => {
     const fetchFollowers = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/followers/${userId}`, {
+        const response = await fetch(`http://34.239.210.249:5000/followers/${userId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });
@@ -28,7 +28,7 @@ const Followers = ({ userId }) => {
 
     const fetchFollowing = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/following/${userId}`, {
+        const response = await fetch(`http://34.239.210.249:5000/following/${userId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });
@@ -46,7 +46,7 @@ const Followers = ({ userId }) => {
 
     const fetchFollowersCount = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/followers_count/${userId}`, {
+        const response = await fetch(`http://34.239.210.249:5000/followers_count/${userId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });
@@ -62,7 +62,7 @@ const Followers = ({ userId }) => {
 
     const fetchFollowingCount = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/following_count/${userId}`, {
+        const response = await fetch(`http://34.239.210.249:5000/following_count/${userId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });
@@ -94,7 +94,7 @@ const Followers = ({ userId }) => {
 
   const handleFollow = async (followerId) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/follow`, {
+      const response = await fetch(`http://34.239.210.249:5000/follow`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -117,7 +117,7 @@ const Followers = ({ userId }) => {
 
   const handleUnfollow = async (followingId) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/unfollow`, {
+      const response = await fetch(`http://34.239.210.249:5000/unfollow`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

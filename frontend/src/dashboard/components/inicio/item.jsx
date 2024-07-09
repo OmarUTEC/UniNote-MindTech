@@ -15,7 +15,7 @@ const FeedItem = ({ username, description, title, userId, authorId, documentId, 
   useEffect(() => {
     const fetchData = async (endpoint, setter, data1, data2) => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/${endpoint}/${data1}/${data2}`);
+        const response = await fetch(`http://34.239.210.249:5000/${endpoint}/${data1}/${data2}`);
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
         setter(data.answer);
@@ -32,7 +32,7 @@ const FeedItem = ({ username, description, title, userId, authorId, documentId, 
     if (isDownloading) return;
     setIsDownloading(true);
     try {
-      const response = await fetch(`http://127.0.0.1:5000/download/${documentId}`);
+      const response = await fetch(`http://34.239.210.249:5000/download/${documentId}`);
       if (!response.ok) throw new Error('Network response was not ok');
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
@@ -61,7 +61,7 @@ const FeedItem = ({ username, description, title, userId, authorId, documentId, 
     const currentValue = type === 'like' ? like : type === 'favourite' ? favourite : follow;
     
     try {
-      const response = await fetch(`http://127.0.0.1:5000/${type}`, {
+      const response = await fetch(`http://34.239.210.249:5000/${type}`, {
         method: currentValue ? 'DELETE' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -82,7 +82,7 @@ const FeedItem = ({ username, description, title, userId, authorId, documentId, 
     if (!pdfUrl) {
       setIsPdfLoading(true);
       try {
-        const response = await fetch(`http://127.0.0.1:5000/download/${documentId}`);
+        const response = await fetch(`http://34.239.210.249:5000/download/${documentId}`);
         if (!response.ok) throw new Error('Network response was not ok');
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
