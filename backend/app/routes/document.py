@@ -118,7 +118,7 @@ def upload_file():
         for page_num in range(len(doc)):
             page = doc.load_page(page_num)
             text_from_file += page.get_text()
-            #if len(text_from_file.split()) >= 500:break
+            if len(text_from_file.split()) >= 300:break
 
         #Eliminacion de stopwords:
         stopwords = set(nltk.corpus.stopwords.words('spanish')) 
