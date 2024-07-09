@@ -26,6 +26,8 @@ cd nombre-proyecto
 ```
 ### 5. Inicializamos el servidor de desarrollo
 ```bash
+    npm install react-icon
+    npm install firebase
     npm start
 ```
 > [!IMPORTANT]

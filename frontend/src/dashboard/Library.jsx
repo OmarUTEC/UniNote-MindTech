@@ -44,7 +44,7 @@ const Library = ({ filters }) => {
   };
 
   return (
-    <div className={`flex ${darkMode ? 'bg-gray-900 text-white' : 'bg-cach-l2 text-black'}`} style={{ height: '100vh' }}>
+    <div className={`min-h-screen flex items-center justify-center ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-black'}`}>
       <div className="ml-4 p-6 flex-1">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6"> {/* Cambio a grid-cols-3 en pantallas medianas */}
           {documents.map((document, index) => (
