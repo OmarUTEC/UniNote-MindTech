@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.models import Usuarios, Follows
+from app.models import Usuarios, Carreras, Follows
 from .. import db
 
 follower_bp = Blueprint('follower', __name__)
@@ -24,8 +24,8 @@ def get_followers(usuario_id):
     if not usuario:
         return jsonify({'message': 'Usuario no encontrado'}), 404
     
-    seguidores = db.session.query(Usuarios).join(Follows, Usuarios.usuario_id == Follows.follower_id).filter(Follows.following_id == usuario_id).all()
-    lista_seguidores = [{'id': seguidor.usuario_id, 'username': seguidor.username} for seguidor in seguidores]
+    seguidores = db.session.query(Usuarios, Carreras).join(Follows, Usuarios.usuario_id == Follows.follower_id).join(Carreras, Usuarios.carrera == db.cast(Carreras.carrera_id, db.String)).filter(Follows.following_id == usuario_id).all()
+    lista_seguidores = [{'id': seguidor.Usuarios.usuario_id, 'username': seguidor.Usuarios.username, 'career': seguidor.Carreras.nombre} for seguidor in seguidores]
     return jsonify(lista_seguidores), 200
 
 @follower_bp.route('/unfollow', methods=['POST'])
@@ -47,7 +47,16 @@ def get_following(usuario_id):
     if not usuario:
         return jsonify({'message': 'User not found'}), 404
     
-    following = db.session.query(Usuarios).join(Follows, Usuarios.usuario_id == Follows.following_id).filter(Follows.follower_id == usuario_id).all()
-    lista = [{'id': follow.usuario_id, 'username': follow.username} for follow in following]
+    following = db.session.query(Usuarios, Carreras).join(Follows, Usuarios.usuario_id == Follows.following_id).join(Carreras, Usuarios.carrera == db.cast(Carreras.carrera_id, db.String)).filter(Follows.follower_id == usuario_id).all()
+    lista = [{'id': follow.Usuarios.usuario_id, 'username': follow.Usuarios.username, 'career': follow.Carreras.nombre} for follow in following]
     return jsonify(lista), 200
 
+@follower_bp.route('/followers_count/<int:usuario_id>', methods=['GET'])
+def get_followers_count(usuario_id):
+    count = db.session.query(Follows).filter(Follows.following_id == usuario_id).count()
+    return jsonify({'count': count}), 200
+
+@follower_bp.route('/following_count/<int:usuario_id>', methods=['GET'])
+def get_following_count(usuario_id):
+    count = db.session.query(Follows).filter(Follows.follower_id == usuario_id).count()
+    return jsonify({'count': count}), 200

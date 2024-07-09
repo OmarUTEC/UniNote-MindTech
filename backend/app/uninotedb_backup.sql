@@ -297,7 +297,6 @@ ALTER TABLE ONLY public.foros ALTER COLUMN foro_id SET DEFAULT nextval('public.f
 
 ALTER TABLE ONLY public.usuarios ALTER COLUMN usuario_id SET DEFAULT nextval('public.usuarios_usuario_id_seq'::regclass);
 
-
 --
 -- Data for Name: carreras; Type: TABLE DATA; Schema: public; Owner: postgres
 --

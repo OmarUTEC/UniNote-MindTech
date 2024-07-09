@@ -142,4 +142,3 @@ def login_simple():
         data = user.get_usuario_id()
         return jsonify(data), 200
     return jsonify({'message': 'Invalid username or password'}), 401
-
