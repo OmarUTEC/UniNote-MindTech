@@ -142,7 +142,10 @@ def upload_file():
         
         #return jsonify({'message': 'Archivo subido exitosamente!', 'drive_message': "Gaaaaaaaaaa!"}), 201
         #Inicializacion de nueva transaccion en la base de datos
-        file_id = upload_file_basic("13q3dIpl95zRzZnS4gpoQf3bCHADA_nAm", file.filename)
+        try:
+            file_id = upload_file_basic("13q3dIpl95zRzZnS4gpoQf3bCHADA_nAm", file.filename)
+        except:
+            return jsonify({'error': 'Hubo un error tranfiriendo tu conocimiento. Presiona una vez mas'}), 403
         fecha_actual = datetime.datetime.utcnow()
         new_file = Documentos(
             titulo = titulo,
