@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
-from app.models import Favoritos
+from app.models import Favoritos, Documentos
+import base64
 from .. import db
 from ..drive_api_connect import *
 
@@ -43,9 +44,32 @@ def count_favourite(documentId):
 @favourite_bp.route('/favourite/bookshelf/<int:userId>', methods=['GET'])
 def get_bookshelf(userId):
     try:
-        favourite = Favoritos.query.filter_by(usuario_id=userId).all()
-        bookshelf = [fav.documento.to_dict() for fav in favourite]
+
+        favourite_documents = (
+            db.session.query(       
+                Documentos.documento_id,
+                Documentos.titulo,
+                Documentos.carrera_id,
+                Documentos.usuario_id,
+                Documentos.preview_image
+            )
+            .join(Favoritos, Documentos.documento_id == Favoritos.documento_id)
+            .filter(Favoritos.usuario_id == userId)
+            .all()
+        )
+
+        bookshelf = []
+        for doc in favourite_documents:
+            bookshelf.append({
+                'documento_id': doc.documento_id,
+                'titulo': doc.titulo,
+                'carrera_id': doc.carrera_id,
+                'usuario_id': doc.usuario_id,
+                'preview_image': base64.b64encode(doc.preview_image).decode('utf-8') if doc.preview_image else None
+            })
+
         return jsonify(bookshelf)
     except Exception as e:
+        print(e)
         return jsonify({'error': str(e)}), 500
     
